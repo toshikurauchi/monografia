@@ -1,0 +1,23 @@
+h1. Monografia do Trabalho de Conclusão de Curso do Bacharelado em Ciências da Computação
+
+h2. Autores
+
+Andrew Toshiaki Nakayama Kurauchi
+
+Victor Kendy Harada
+
+h2. Como compilar
+
+No diretório /monografia execute:
+
+@latex monografia@
+
+@bibtex monografia@
+
+@latex monografia@
+
+@latex monografia@
+
+Caso deseje converter para pdf:
+
+@dvipdfm@
