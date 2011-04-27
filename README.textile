@@ -1,4 +1,4 @@
-h1. Monografia do Trabalho de Conclusão de Curso do Bacharelado em Ciências da Computação
+h1. Monografia do Trabalho de Conclusao de Curso do Bacharelado em Ciencias da Computacao
 
 h2. Autores
 
@@ -8,7 +8,7 @@ Victor Kendy Harada
 
 h2. Como compilar
 
-No diretório /monografia execute:
+No diretorio /monografia execute (e necessario executar os 4 comandos por causa do bibtex):
 
 @latex monografia@
 
