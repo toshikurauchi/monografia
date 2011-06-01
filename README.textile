@@ -20,4 +20,6 @@ No diretorio /monografia execute (e necessario executar os 4 comandos por causa 
 
 Caso deseje converter para pdf:
 
-@dvipdfm@
+@dvipdfm monografia@
+
+Para a proposta.tex o processo e analogo
