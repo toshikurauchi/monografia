@@ -14,7 +14,7 @@
 
 \begin{document}
 
-\title{PandoraBox Graphic Engine - uma engine gráfica otimizada para visualização de campos tensoriais}
+\title{PandoraBox Graphic Engine - uma engine gráfica com aplicação em visualização de campos tensoriais \\ Proposta de Monografia} 
 
 \author{Andrew Toshiaki Nakayama Kurauchi \\ 5894035 \and Victor Kendy Harada \\ 5893823}
 
@@ -24,27 +24,24 @@
 \vfill
 \begin{flushright}
 \emph{Supervisor:} \\
-Prof. Doutor Marcel Parolin Jackowski
+Prof. Dr. Marcel Parolin Jackowski
 \end{flushright}
 
 \newpage
 \setcounter{page}{1}
 	
-\section{Introdução}
-	Introdução
-
 \section{Resumo da monografia}
 \indent\indent	
 	O estudo de tensores e campos tensoriais é de importância fundamental para diversas áreas do conhecimento. São encontradas aplicações no estudo de fenômenos sísmicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de ressonância magnética~\cite{citeulike:3787472}. A visualização de tais campos é, portanto, de grande relevância para o avanço do conhecimento.
-
-	O desenvolvimento de programas de computação gráfica voltados à visualização de campos tensoriais em tempo real exige a aplicação de um vasto conjunto de técnicas de otimização. Muitas dessas técnicas são recorrentes em diversas aplicações. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}.
+ 
+	O desenvolvimento de programas de computação gráfica em tempo real exige a aplicação de um vasto conjunto de técnicas de otimização que são recorrentes em diversas aplicações. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}. Entretanto, tais engines evoluíram de tal forma que o tempo de aprendizagem é longo. O intuito desse trabalho é desenvolver uma engine gráfica que implemente técnicas básicas de computação gráfica e que seja fácil de ser aprendida e utilizada.
 
 \section{Objetivos do trabalho}
 
-	Com a PandoraBox Graphic Engine visa-se atingir os seguintes objetivos:
+	Com o PandoraBox Graphic Engine visa-se atingir os seguintes objetivos:
 
 	\begin{itemize}
-		\item Construir uma engine de fácil utilização e aprendizado
+		\item Construir uma engine gráfica de fácil utilização e aprendizado
 		\item Criar uma ferramenta de visualização em tempo real de campos tensoriais
 	\end{itemize}
 	
@@ -71,11 +68,37 @@ Prof. Doutor Marcel Parolin Jackowski
 	
 \section{Cronograma de Atividades}
 
-	Cronograma
+	\begin{itemize}
+		\item Janeiro de 2011 - Definição e criação dos nós do grafo de cena que serão inicialmente suportados
+		\item Fevereiro de 2011 - Implementação do buffer de vértices e do renderizador do grafo de cena
+		\item Março de 2011 - Implementação da classe responsável por gerenciar os shaders e criação de modelos geométricos básicos
+		\item Abril de 2011 - Suporte inicial a texturas e criação de métodos que calculam autovalores e autovetores de matrizes 3x3
+		\item Maio de 2011 - Suporte a renderização eficiente de várias instâncias de um mesmo modelo (renderização instanciada) e a arquivos Analyze (representação de campos tensoriais) e versão inicial da visualização do campo
+		\item Junho de 2011 - Implementação da técnica de renderização em texturas e iniciar modificações na engine para utilizar a técnica de iluminação deferida e aplicação das técnicas de renderização instanciada e outras otimizações na visualização do campo tensorial
+		\item Julho de 2011 - Continuação da implementação do suporte a iluminação deferida e adicionar suporte a pós-processamento da cena renderizada e implementação de um jogo simples como exemplo de utilização genérica da engine
+		\item Agosto de 2011 - Desenvolvimento de mais exemplos de uso
+		\item Setembro de 2011 - Limpeza de código e, se houver disponibilidade de tempo, adicionar suporte a modelos translúcidos
+	\end{itemize}
 	
 \section{Estrutura esperada da monografia}
-	
-	Estrutura
+
+	\subsection{Introdução}
+		Importância da visualização de campos tensoriais e como uma engine gráfica pode auxiliar o desenvolvimento de aplicações com tal propósito. Apresentação de engines gráficas alternativas existentes e os motivos para a criação de mais uma alternativa.
+
+	\subsection{Conceitos e tecnologias estudadas}
+		Conceitos utilizados na implementação da engine, assim como tensores e suas formas de visualização. Além de uma breve introdução ao OpenGL.
+
+	\subsection{Atividades realizadas}
+		Idéias aplicadas na solução dos problemas.
+
+	\subsection{Resultados e produtos obtidos}
+		Trechos de código relevantes e resultados obtidos.
+
+	\subsection{Conclusões}
+		Considerações e futuro do projeto desenvolvido.
+
+	\subsection{Bibliografia}
+	Referências bibliográficas utilizadas ao longo do desenvolvimento da engine.
 
 \newpage \bibliographystyle{plain}
 \bibliography{proposta-bibliografia}
