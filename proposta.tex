@@ -14,7 +14,7 @@
 
 \begin{document}
 
-\title{PandoraBox Graphic Engine - uma engine gráfica com aplicação em visualização de campos tensoriais \\ Proposta de Monografia} 
+\title{Pandora's Box Graphic Engine - Uma Engine Gráfica com Aplicação em Visualização de Campos Tensoriais \\ Proposta de Monografia} 
 
 \author{Andrew Toshiaki Nakayama Kurauchi \\ 5894035 \and Victor Kendy Harada \\ 5893823}
 
@@ -32,9 +32,9 @@ Prof. Dr. Marcel Parolin Jackowski
 	
 \section{Resumo da monografia}
 \indent\indent	
-	O estudo de tensores e campos tensoriais é de importância fundamental para diversas áreas do conhecimento. São encontradas aplicações no estudo de fenômenos sísmicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de ressonância magnética~\cite{citeulike:3787472}. A visualização de tais campos é, portanto, de grande relevância para o avanço do conhecimento.
- 
 	O desenvolvimento de programas de computação gráfica em tempo real exige a aplicação de um vasto conjunto de técnicas de otimização que são recorrentes em diversas aplicações. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}. Entretanto, tais engines evoluíram de tal forma que o tempo de aprendizagem é longo. O intuito desse trabalho é desenvolver uma engine gráfica que implemente técnicas básicas de computação gráfica e que seja fácil de ser aprendida e utilizada.
+
+	O estudo de tensores e campos tensoriais é de importância fundamental para diversas áreas do conhecimento. São encontradas aplicações no estudo de fenômenos sísmicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de ressonância magnética sensíveis a difusão~\cite{citeulike:3787472}. A visualização de tais campos é, portanto, de grande relevância para o avanço do conhecimento. Por esse motivo uma das aplicações desenvolvidas com o auxílio da engine será um programa que permita tais visualizações. Serão utilizados para testes campos tensoriais provenientes de imagens de ressonância magnética sensíveis a difusão e campos representativos de deformações físicas em 3 dimensões
 
 \section{Objetivos do trabalho}
 
@@ -42,7 +42,7 @@ Prof. Dr. Marcel Parolin Jackowski
 
 	\begin{itemize}
 		\item Construir uma engine gráfica de fácil utilização e aprendizado
-		\item Criar uma ferramenta de visualização em tempo real de campos tensoriais
+		\item Criar uma ferramenta com aplicação em visualização em tempo real de campos tensoriais em 3 dimensões
 	\end{itemize}
 	
 \section{Atividades já realizadas}
@@ -62,8 +62,8 @@ Prof. Dr. Marcel Parolin Jackowski
 				\item Luzes
 				\item Suporte a shaders customizados
 			\end{itemize}
-		\item Leitura de campos tensoriais representados em arquivos no formato Analyze
-		\item Cálculo dos autovalores e autovetores dos tensores e renderização dos modelos de elipsóides
+		\item Leitura de campos tensoriais representados em arquivos no formato Analyze\textregistered~\cite{Analyze}
+		\item Cálculo dos autovalores e autovetores dos tensores e renderização da representação elipsoidal de tensores
 	\end{itemize}
 	
 \section{Cronograma de Atividades}
@@ -73,7 +73,7 @@ Prof. Dr. Marcel Parolin Jackowski
 		\item Fevereiro de 2011 - Implementação do buffer de vértices e do renderizador do grafo de cena
 		\item Março de 2011 - Implementação da classe responsável por gerenciar os shaders e criação de modelos geométricos básicos
 		\item Abril de 2011 - Suporte inicial a texturas e criação de métodos que calculam autovalores e autovetores de matrizes 3x3
-		\item Maio de 2011 - Suporte a renderização eficiente de várias instâncias de um mesmo modelo (renderização instanciada) e a arquivos Analyze (representação de campos tensoriais) e versão inicial da visualização do campo
+		\item Maio de 2011 - Suporte a renderização eficiente de várias instâncias de um mesmo modelo (renderização instanciada) e a arquivos Analyze\textregistered (representação de campos tensoriais) e versão inicial da visualização do campo
 		\item Junho de 2011 - Implementação da técnica de renderização em texturas e iniciar modificações na engine para utilizar a técnica de iluminação deferida e aplicação das técnicas de renderização instanciada e outras otimizações na visualização do campo tensorial
 		\item Julho de 2011 - Continuação da implementação do suporte a iluminação deferida e adicionar suporte a pós-processamento da cena renderizada e implementação de um jogo simples como exemplo de utilização genérica da engine
 		\item Agosto de 2011 - Desenvolvimento de mais exemplos de uso e implementação de frustum culling na engine
@@ -83,7 +83,7 @@ Prof. Dr. Marcel Parolin Jackowski
 \section{Estrutura esperada da monografia}
 
 	\subsection{Introdução}
-		Importância da visualização de campos tensoriais e como uma engine gráfica pode auxiliar o desenvolvimento de aplicações com tal propósito. Apresentação de engines gráficas alternativas existentes e os motivos para a criação de mais uma alternativa.
+		Apresentação de engines gráficas alternativas existentes e os motivos para a criação de mais uma alternativa. Importância da visualização de campos tensoriais e como uma engine gráfica pode auxiliar o desenvolvimento de aplicações com tal propósito.
 
 	\subsection{Conceitos e tecnologias estudadas}
 		Conceitos utilizados na implementação da engine, assim como tensores e suas formas de visualização. Além de uma breve introdução ao OpenGL.
@@ -102,5 +102,6 @@ Prof. Dr. Marcel Parolin Jackowski
 
 \newpage \bibliographystyle{plain}
 \bibliography{proposta-bibliografia}
+\nocite{*}
 
 \end{document}
