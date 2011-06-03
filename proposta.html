@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <title>Proposta de Monografia</title>
+    </head>
+    <body>
+        <h1>Pandora's Box Graphic Engine - Uma Engine Gráfica com Aplicação em Visualização de Campos Tensoriais</h1>
+        <h2>Proposta de Monografia</h2>
+        <table>
+            <tr><td style="padding-right: 30px">Andrew Toshiaki Nakayama Kurauchi</td><td>Victor Kendy Harada</td></tr>
+            <tr><td style="text-align: center">5894035</td><td style="text-align: center">5893823</td></tr>
+        </table>
+
+        <p style="font-style: italic">Supervisor:</p>
+        <p>&nbsp;&nbsp;Prof. Dr. Marcel Parolin Jackowski</p>
+
+        <h3>Resumo da monografia</h3>
+        <p>O desenvolvimento de programas de computação gráfica em tempo real exige a aplicação de um vasto conjunto de técnicas de otimização que são recorrentes em diversas aplicações. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}. Entretanto, tais engines evoluíram de tal forma que o tempo de aprendizagem é longo. O intuito desse trabalho é desenvolver uma engine gráfica que implemente técnicas básicas de computação gráfica e que seja fácil de ser aprendida e utilizada.</p>
+
+	    <p>O estudo de tensores e campos tensoriais é de importância fundamental para diversas áreas do conhecimento. São encontradas aplicações no estudo de fenômenos sísmicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de ressonância magnética sensíveis a difusão~\cite{citeulike:3787472}. A visualização de tais campos é, portanto, de grande relevância para o avanço do conhecimento. Por esse motivo uma das aplicações desenvolvidas com o auxílio da engine será um programa que permita tais visualizações. Serão utilizados para testes campos tensoriais provenientes de imagens de ressonância magnética sensíveis a difusão e campos representativos de deformações físicas em 3 dimensões</p>
+
+        <h3>Objetivos do trabalho</h3>
+
+        <p>Com o PandoraBox Graphic Engine visa-se atingir os seguintes objetivos:</p>
+        <ul>
+            <li>Construir uma engine gráfica de fácil utilização e aprendizado</li>
+            <li>Criar uma ferramenta com aplicação em visualização em tempo real de campos tensoriais em 3 dimensões</li>
+        </ul>
+	
+        <h3>Atividades já realizadas</h3>
+
+	    <p>As seguintes atividades já foram desenvolvidas:</p>
+	    <ul>
+            <li>Estudo inicial sobre tensores e visualização de campos tensoriais</li>
+            <li>
+                Codificação da estrutura geral da engine:
+                <ul>
+                    <li>Renderizador</li>
+                    <li>Grafo de cena</li>
+                    <li>Gerenciador de janelas</li>
+                    <li>Câmera</li>
+                    <li>Transformações lineares</li>
+                    <li>Modelos</li>
+                    <li>Luzes</li>
+                    <li>Suporte a shaders customizados</li>
+                </ul>
+            </li>
+            <li>Leitura de campos tensoriais representados em arquivos no formato Analyze\textregistered~\cite{Analyze}</li>
+            <li>Cálculo dos autovalores e autovetores dos tensores e renderização da representação elipsoidal de tensores</li>
+        </ul>
+	
+        <h3>Cronograma de Atividades</h3>
+
+        <table>
+            <tr><td>Janeiro de 2011</td><td>Definição e criação dos nós do grafo de cena que serão inicialmente suportados</td></tr>
+            <tr><td>Fevereiro de 2011</td><td>Implementação do buffer de vértices e do renderizador do grafo de cena</td></tr>
+            <tr><td>Março de 2011</td><td>Implementação da classe responsável por gerenciar os shaders e criação de modelos geométricos básicos</td></tr>
+            <tr><td>Abril de 2011</td><td>Suporte inicial a texturas e criação de métodos que calculam autovalores e autovetores de matrizes 3x3</td></tr>
+            <tr><td>Maio de 2011</td><td>Suporte a renderização eficiente de várias instâncias de um mesmo modelo (renderização instanciada) e a arquivos Analyze\textregistered (representação de campos tensoriais) e versão inicial da visualização do campo</td></tr>
+            <tr><td>Junho de 2011</td><td>Implementação da técnica de renderização em texturas e iniciar modificações na engine para utilizar a técnica de iluminação deferida e aplicação das técnicas de renderização instanciada e outras otimizações na visualização do campo tensorial</td></tr>
+            <tr><td>Julho de 2011</td><td>Continuação da implementação do suporte a iluminação deferida e adicionar suporte a pós-processamento da cena renderizada e implementação de um jogo simples como exemplo de utilização genérica da engine</td></tr>
+            <tr><td>Agosto de 2011</td><td>Desenvolvimento de mais exemplos de uso e implementação de frustum culling na engine</td></tr>
+            <tr><td>Setembro de 2011</td><td>Limpeza de código e, se houver disponibilidade de tempo, adicionar suporte a modelos translúcidos</td></tr>
+        </table>
+	
+        <h3>Estrutura esperada da monografia</h3>
+
+    	<h4>Introdução</h4>
+		<p>Apresentação de engines gráficas alternativas existentes e os motivos para a criação de mais uma alternativa. Importância da visualização de campos tensoriais e como uma engine gráfica pode auxiliar o desenvolvimento de aplicações com tal propósito.</p>
+
+	    <h4>Conceitos e tecnologias estudadas</h4>
+		<p>Conceitos utilizados na implementação da engine, assim como tensores e suas formas de visualização. Além de uma breve introdução ao OpenGL.</p>
+
+        <h4>Atividades realizadas</h4>
+		<p>Idéias aplicadas na solução dos problemas.</p>
+
+        <h4>Resultados e produtos obtidos</h4>
+		<p>Trechos de código relevantes e resultados obtidos.</p>
+
+        <h4>Conclusões</h4>
+		<p>Considerações e futuro do projeto desenvolvido.</p>
+
+        <h4>Bibliografia</h4>
+	    <p>Referências bibliográficas utilizadas ao longo do desenvolvimento da engine.</p>
+
+    </body>
+</html>
