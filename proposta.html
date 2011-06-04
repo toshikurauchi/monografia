@@ -1,86 +1,126 @@
 <html>
     <head>
+        <link href="./css/style.css" rel="stylesheet" type="text/css" media="screen" />
         <title>Proposta de Monografia</title>
     </head>
     <body>
-        <h1>Pandora's Box Graphic Engine - Uma Engine Gráfica com Aplicação em Visualização de Campos Tensoriais</h1>
-        <h2>Proposta de Monografia</h2>
-        <table>
-            <tr><td style="padding-right: 30px">Andrew Toshiaki Nakayama Kurauchi</td><td>Victor Kendy Harada</td></tr>
-            <tr><td style="text-align: center">5894035</td><td style="text-align: center">5893823</td></tr>
+    <div id="wrapper">
+        <div id="logo">
+	        <h1><a name="topo">Pandora's Box Graphic Engine - Uma Engine Gr&aacute;fica com Aplica&ccedil;&atilde;o em Visualiza&ccedil;&atilde;o de Campos Tensoriais </a></h1>
+	        <p>Proposta de Monografia</p>
+        </div>
+        <div id="header">
+	        <div id="menu">
+		        <ul>
+			        <li><a href="#resumo">Resumo da monografia</a></li>
+			        <li><a href="#objetivos">Objetivos do trabalho</a></li>
+			        <li><a href="#atividades">Atividades já realizadas</a></li>
+			        <li><a href="#cronograma">Cronograma de Atividades</a></li>
+			        <li><a href="#estrutura">Estrutura esperada da monografia</a></li>
+		        </ul>
+	        </div>
+	        <div id="gallery"><img src="css/images/800px-Glasses_800_edit.png" width="692" height="340" alt="" /></div>
+        </div>
+        <div id="page">
+	    <div id="page-bgtop">
+		<div id="content">
+        <table style="font-size: 16px">
+            <tr><td style="padding-right: 30px">Andrew Toshiaki Nakayama Kurauchi</td><td>5894035</td></tr>
+            <tr><td>Victor Kendy Harada</td><td style="text-align: center">5893823</td></tr>
         </table>
+        <p style="font-size: 16px"><i>Supervisor:</i>&nbsp;&nbsp;Prof. Dr. Marcel Parolin Jackowski</p>
 
-        <p style="font-style: italic">Supervisor:</p>
-        <p>&nbsp;&nbsp;Prof. Dr. Marcel Parolin Jackowski</p>
+        <div class="post">
+        <h2 class="title"><a name="resumo">Resumo da monografia</a></h2>
+        <a href="#topo">Voltar para o topo</a>        
+        <p class="meta" />
+        <p>O desenvolvimento de programas de computa&ccedil;&atilde;o gr&aacute;fica em tempo real exige a aplica&ccedil;&atilde;o de um vasto conjunto de t&eacute;cnicas de otimiza&ccedil;&atilde;o que s&atilde;o recorrentes em diversas aplica&ccedil;&otilde;es. Por esse motivo s&atilde;o desenvolvidas engines gr&aacute;ficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}. Entretanto, tais engines evolu&iacute;ram de tal forma que o tempo de aprendizagem &eacute; longo. O intuito desse trabalho &eacute; desenvolver uma engine gr&aacute;fica que implemente t&eacute;cnicas b&aacute;sicas de computa&ccedil;&atilde;o gr&aacute;fica e que seja f&aacute;cil de ser aprendida e utilizada.</p>
 
-        <h3>Resumo da monografia</h3>
-        <p>O desenvolvimento de programas de computação gráfica em tempo real exige a aplicação de um vasto conjunto de técnicas de otimização que são recorrentes em diversas aplicações. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}. Entretanto, tais engines evoluíram de tal forma que o tempo de aprendizagem é longo. O intuito desse trabalho é desenvolver uma engine gráfica que implemente técnicas básicas de computação gráfica e que seja fácil de ser aprendida e utilizada.</p>
+	    <p>O estudo de tensores e campos tensoriais &eacute; de import&acirc;ncia fundamental para diversas &aacute;reas do conhecimento. S&atilde;o encontradas aplica&ccedil;&otilde;es no estudo de fenômenos s&iacute;smicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de resson&acirc;ncia magn&eacute;tica sens&iacute;veis a difus&atilde;o~\cite{citeulike:3787472}. A visualiza&ccedil;&atilde;o de tais campos &eacute;, portanto, de grande relev&acirc;ncia para o avan&ccedil;o do conhecimento. Por esse motivo uma das aplica&ccedil;&otilde;es desenvolvidas com o aux&iacute;lio da engine ser&aacute; um programa que permita tais visualiza&ccedil;&otilde;es. Ser&atilde;o utilizados para testes a visualiza&ccedil;&atilde;o da representa&ccedil;&atilde;o elipsoidal de campos tensoriais provenientes de imagens de resson&acirc;ncia magn&eacute;tica sens&iacute;veis a difus&atilde;o e campos representativos de deforma&ccedil;&otilde;es f&iacute;sicas em 3 dimens&otilde;es</p>
+        </div>
 
-	    <p>O estudo de tensores e campos tensoriais é de importância fundamental para diversas áreas do conhecimento. São encontradas aplicações no estudo de fenômenos sísmicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de ressonância magnética sensíveis a difusão~\cite{citeulike:3787472}. A visualização de tais campos é, portanto, de grande relevância para o avanço do conhecimento. Por esse motivo uma das aplicações desenvolvidas com o auxílio da engine será um programa que permita tais visualizações. Serão utilizados para testes a visualização da representação elipsoidal de campos tensoriais provenientes de imagens de ressonância magnética sensíveis a difusão e campos representativos de deformações físicas em 3 dimensões</p>
-
-        <h3>Objetivos do trabalho</h3>
+        <div class="post">
+        <h2 class="title"><a name="objetivos">Objetivos do trabalho</a></h2>
+        <a href="#topo">Voltar para o topo</a>
+        <p class="meta" />
 
         <p>Com o Pandora's Box Graphic Engine visa-se atingir os seguintes objetivos:</p>
         <ul>
-            <li>Construir uma engine gráfica de fácil utilização e aprendizado com a linguagem C++</li>
-            <li>Criar uma ferramenta para a visualização em tempo real da representação elipsoidal de campos tensoriais em 3 dimensões</li>
+            <li>Construir uma engine gr&aacute;fica de f&aacute;cil utiliza&ccedil;&atilde;o e aprendizado com a linguagem C++</li>
+            <li>Criar uma ferramenta para a visualiza&ccedil;&atilde;o em tempo real da representa&ccedil;&atilde;o elipsoidal de campos tensoriais em 3 dimens&otilde;es</li>
         </ul>
-	
-        <h3>Atividades já realizadas</h3>
+	    </div>
 
-	    <p>As seguintes atividades já foram desenvolvidas:</p>
+        <div class="post">
+        <h2 class="title"><a name="atividades">Atividades j&aacute; realizadas</a></h2>
+        <a href="#topo">Voltar para o topo</a>
+        <p class="meta" />
+
+	    <p>As seguintes atividades j&aacute; foram desenvolvidas:</p>
 	    <ul>
-            <li>Estudo inicial sobre tensores e visualização de campos tensoriais</li>
+            <li>Estudo inicial sobre tensores e visualiza&ccedil;&atilde;o de campos tensoriais</li>
             <li>
-                Codificação da estrutura geral da engine:
+                Codifica&ccedil;&atilde;o da estrutura geral da engine:
                 <ul>
                     <li>Renderizador</li>
                     <li>Grafo de cena</li>
                     <li>Gerenciador de janelas</li>
-                    <li>Câmera</li>
-                    <li>Transformações lineares</li>
+                    <li>C&acirc;mera</li>
+                    <li>Transforma&ccedil;&otilde;es lineares</li>
                     <li>Modelos</li>
                     <li>Luzes</li>
                     <li>Suporte a shaders customizados</li>
                 </ul>
             </li>
             <li>Leitura de campos tensoriais representados em arquivos no formato Analyze\textregistered~\cite{Analyze}</li>
-            <li>Cálculo dos autovalores e autovetores dos tensores e renderização da representação elipsoidal de tensores</li>
+            <li>C&aacute;lculo dos autovalores e autovetores dos tensores e renderiza&ccedil;&atilde;o da representa&ccedil;&atilde;o elipsoidal de tensores</li>
         </ul>
-	
-        <h3>Cronograma de Atividades</h3>
+        </div>
+
+        <div class="post">
+        <h2 class="title"><a name="cronograma">Cronograma de Atividades</a></h2>
+        <a href="#topo">Voltar para o topo</a>
+        <p class="meta" />
 
         <table>
-            <tr><td>Janeiro de 2011</td><td>Definição e criação dos nós do grafo de cena que serão inicialmente suportados</td></tr>
-            <tr><td>Fevereiro de 2011</td><td>Implementação do buffer de vértices e do renderizador do grafo de cena</td></tr>
-            <tr><td>Março de 2011</td><td>Implementação da classe responsável por gerenciar os shaders e criação de modelos geométricos básicos</td></tr>
-            <tr><td>Abril de 2011</td><td>Suporte inicial a texturas e criação de métodos que calculam autovalores e autovetores de matrizes 3x3</td></tr>
-            <tr><td>Maio de 2011</td><td>Suporte a renderização eficiente de várias instâncias de um mesmo modelo (renderização instanciada) e a arquivos Analyze\textregistered (representação de campos tensoriais) e versão inicial da visualização do campo</td></tr>
-            <tr><td>Junho de 2011</td><td>Implementação da técnica de renderização em texturas e iniciar modificações na engine para utilizar a técnica de iluminação deferida e aplicação das técnicas de renderização instanciada e outras otimizações na visualização do campo tensorial</td></tr>
-            <tr><td>Julho de 2011</td><td>Continuação da implementação do suporte a iluminação deferida e adicionar suporte a pós-processamento da cena renderizada e implementação de um jogo simples como exemplo de utilização genérica da engine</td></tr>
-            <tr><td>Agosto de 2011</td><td>Desenvolvimento de mais exemplos de uso e implementação de frustum culling na engine</td></tr>
+            <tr><td>Janeiro de 2011</td><td>Defini&ccedil;&atilde;o e cria&ccedil;&atilde;o dos nós do grafo de cena que ser&atilde;o inicialmente suportados</td></tr>
+            <tr><td>Fevereiro de 2011</td><td>Implementa&ccedil;&atilde;o do buffer de v&eacute;rtices e do renderizador do grafo de cena</td></tr>
+            <tr><td>Mar&ccedil;o de 2011</td><td>Implementa&ccedil;&atilde;o da classe respons&aacute;vel por gerenciar os shaders e cria&ccedil;&atilde;o de modelos geom&eacute;tricos b&aacute;sicos</td></tr>
+            <tr><td>Abril de 2011</td><td>Suporte inicial a texturas e cria&ccedil;&atilde;o de m&eacute;todos que calculam autovalores e autovetores de matrizes 3x3</td></tr>
+            <tr><td>Maio de 2011</td><td>Suporte a renderiza&ccedil;&atilde;o eficiente de v&aacute;rias inst&acirc;ncias de um mesmo modelo (renderiza&ccedil;&atilde;o instanciada) e a arquivos Analyze\textregistered (representa&ccedil;&atilde;o de campos tensoriais) e vers&atilde;o inicial da visualiza&ccedil;&atilde;o do campo</td></tr>
+            <tr><td>Junho de 2011</td><td>Implementa&ccedil;&atilde;o da t&eacute;cnica de renderiza&ccedil;&atilde;o em texturas e iniciar modifica&ccedil;&otilde;es na engine para utilizar a t&eacute;cnica de ilumina&ccedil;&atilde;o deferida e aplica&ccedil;&atilde;o das t&eacute;cnicas de renderiza&ccedil;&atilde;o instanciada e outras otimiza&ccedil;&otilde;es na visualiza&ccedil;&atilde;o do campo tensorial</td></tr>
+            <tr><td>Julho de 2011</td><td>Continua&ccedil;&atilde;o da implementa&ccedil;&atilde;o do suporte a ilumina&ccedil;&atilde;o deferida e adicionar suporte a pós-processamento da cena renderizada e implementa&ccedil;&atilde;o de um jogo simples como exemplo de utiliza&ccedil;&atilde;o gen&eacute;rica da engine</td></tr>
+            <tr><td>Agosto de 2011</td><td>Desenvolvimento de mais exemplos de uso e implementa&ccedil;&atilde;o de frustum culling na engine</td></tr>
             <tr><td>Setembro de 2011</td><td>Limpeza de código e, se houver disponibilidade de tempo, adicionar suporte a modelos translúcidos</td></tr>
         </table>
-	
-        <h3>Estrutura esperada da monografia</h3>
+        </div>
 
-    	<h4>Introdução</h4>
-		<p>Apresentação de engines gráficas alternativas existentes e os motivos para a criação de mais uma alternativa. Importância da visualização de campos tensoriais e como uma engine gráfica pode auxiliar o desenvolvimento de aplicações com tal propósito.</p>
+        <div class="post">
+        <h2 class="title"><a name="estrutura">Estrutura esperada da monografia</a></h2>
+        <a href="#topo">Voltar para o topo</a>
+        <p class="meta" />
 
-	    <h4>Conceitos e tecnologias estudadas</h4>
-		<p>Conceitos utilizados na implementação da engine, assim como tensores e suas formas de visualização. Além de uma breve introdução ao OpenGL e C++.</p>
+    	<h3>Introdu&ccedil;&atilde;o</h3>
+		<p>Apresenta&ccedil;&atilde;o de engines gr&aacute;ficas alternativas existentes e os motivos para a cria&ccedil;&atilde;o de mais uma alternativa. Import&acirc;ncia da visualiza&ccedil;&atilde;o de campos tensoriais e como uma engine gr&aacute;fica pode auxiliar o desenvolvimento de aplica&ccedil;&otilde;es com tal propósito.</p>
 
-        <h4>Atividades realizadas</h4>
-		<p>Idéias aplicadas na solução dos problemas.</p>
+	    <h3>Conceitos e tecnologias estudadas</h3>
+		<p>Conceitos utilizados na implementa&ccedil;&atilde;o da engine, assim como tensores e suas formas de visualiza&ccedil;&atilde;o. Al&eacute;m de uma breve introdu&ccedil;&atilde;o ao OpenGL e C++.</p>
 
-        <h4>Resultados e produtos obtidos</h4>
+        <h3>Atividades realizadas</h3>
+		<p>Id&eacute;ias aplicadas na solu&ccedil;&atilde;o dos problemas.</p>
+
+        <h3>Resultados e produtos obtidos</h3>
 		<p>Trechos de código relevantes e resultados obtidos.</p>
 
-        <h4>Conclusões</h4>
-		<p>Considerações e futuro do projeto desenvolvido.</p>
+        <h3>Conclus&otilde;es</h3>
+		<p>Considera&ccedil;&otilde;es e futuro do projeto desenvolvido.</p>
 
-        <h4>Bibliografia</h4>
-	    <p>Referências bibliográficas utilizadas ao longo do desenvolvimento da engine.</p>
-
+        <h3>Bibliografia</h3>
+	    <p>Referências bibliogr&aacute;ficas utilizadas ao longo do desenvolvimento da engine.</p>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div id="footer" />
     </body>
 </html>
