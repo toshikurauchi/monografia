@@ -1,14 +1,33 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage{setspace}
+\usepackage{boxedminipage}
+\usepackage[latin1]{inputenc}
 \usepackage{cite}
 
+\setlength{\paperheight}{29.7cm}
+\setlength{\footskip}{1.0cm}
+\setlength{\textheight}{20.0cm}
+\setlength{\textwidth}{16.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\topmargin}{0.0cm}
+
 \begin{document}
-\title{Monografia}
+\title{Pandora's Box Graphic Engine - Uma Engine Gráfica com Aplicação em Visualização de Campos Tensoriais}
 \author{Andrew Toshiaki Nakayama Kurauchi \and Victor Kendy Harada}
 \maketitle
 
-Primeiro artigo~\cite{citeulike:3787472}
+\include{introducao}
+
+\include{conceitos_e_tecnologias_estudadas}
+
+\include{atividades_realizadas}
+
+\include{resultados_e_produtos_obtidos}
+
+\include{conclusoes}
 
 \newpage \bibliographystyle{plain}
-\bibliography{bibliografia}
+\bibliography{bibliografia_monografia}
 
 \end{document}
