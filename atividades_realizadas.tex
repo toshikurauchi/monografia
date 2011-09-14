@@ -1,6 +1,22 @@
 \section{Atividades realizadas}
 Idéias aplicadas na solução dos problemas.
 
+\subsection{Objetos da API gráfica}
+
+Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos definidos pela API gráfica.
+
+\subsubsection {Shader}
+
+\subsubsection {GPUProgram}
+
+\subsubsection {Bufer}
+
+\subsubsection {Texture1D}
+
+\subsubsection {Texture2D}
+
+\subsubsection {BufferTexture}
+
 \subsection{Grafo de cena}
 
 \subsubsection{Tipos de nós}
@@ -54,11 +70,18 @@ A interface que deve ser implementada é a ScenePostProcessor que define métodos 
 
 \subsubsection{Algoritmos de processamento de cena pré-definidos}
 
-% color pass
+A engine atualmente define apenas um algoritmo de processamento padrão, o ColorPass. % checar o nome do algoritmo
+
+Esse algoritmo executa uma busca em profundidade no grafo de cena executando o método colorPass de cada nó do grafo de cena %Mudar se implementarmos o frustum culling
 
 \subsubsection{Algoritmos de pós-processamento de cena pré-definidos}
+ 
+Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes: FramebufferImageProcessor e BlitToFramebuffer.
 
-% process framebuffer image
+O FramebufferImageProcessor implementa uma técnica de renderização conhecida como ping-pong rendering % achar o termo técnico correto
+% descrever a técnica e a implementação.
+
+O BlitToFramebuffer renderiza um retângulo com as dimensões da tela com a textura armazenada no renderizador de nome "color".
 % blit to framebuffer
 
 \subsection{Visualização de campos tensoriais}
