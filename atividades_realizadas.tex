@@ -9,4 +9,56 @@ Idéias aplicadas na solução dos problemas.
 % Citar artigo da NVidia
 Geometry instancing
 
+\subsection{Renderizador}
+
+O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
+
+\begin{itemize}
+\item Atualização dos nós do grafo de cena
+\item Processamento do grafo de cena
+\item Pós-Processamento da imagem gerada pela fase de processamento
+\end{itemize}
+
+\subsubsection {Fase de atualização}
+
+Nessa fase cada nó do grafo de cena é atualizado através de uma chamada ao método updatePass da interface Node.
+
+Para a implementação dessa fase foi utilizado o Visitor, % não esquecer de colocar referencia para o GOF aqui
+que implementa uma busca em profundidade no grafo de cena. Essa é a única parte do algoritmo de renderização que não pode ser customizada.
+
+\subsubsection {Fase de processamento do grafo de cena}
+
+Nessa fase executa-se uma sequência de algoritmos definida pelo usuário da engine, a execução é equivalente ao código:
+
+std::vector<SceneProcessor*>::iterator it;
+for(it = processors.begin(); it != processors.end(); it++){
+   if(it->isActive()){
+       if->process(gfx, renderer); %verificar se os argumentos estão corretos
+   }
+}
+
+Cada algoritmo deve implementar a interface SceneProcessor, que tem os seguintes métodos:
+
+\begin{itemize}
+\item bool isInitialized(GraphicAPI*): método que indica se o algoritmo já preparou todas as suas dependências
+\item void initialize(GraphicAPI*, Renderer*): esse método deve criar todas as dependencias do método process
+\item void process(GraphicAPI*, Renderer*): executa o algoritmo de processamento
+\item bool isActive(): indica se o algoritmo deve ou não ser executado
+\end{itemize}
+
+\subsubsection{Fase de pós-processamento}
+
+Essa fase é parecida com a anterior, porém o teste de profundidade do fragmento não é executado por padrão, a implementação do algoritmo deve ativá-lo manualmente.
+
+A interface que deve ser implementada é a ScenePostProcessor que define métodos com a mesma semântica dos métodos do SceneProcessor.
+
+\subsubsection{Algoritmos de processamento de cena pré-definidos}
+
+% color pass
+
+\subsubsection{Algoritmos de pós-processamento de cena pré-definidos}
+
+% process framebuffer image
+% blit to framebuffer
+
 \subsection{Visualização de campos tensoriais}
