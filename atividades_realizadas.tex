@@ -45,11 +45,11 @@ que implementa uma busca em profundidade no grafo de cena. Essa é a única parte 
 \subsubsection {Fase de processamento do grafo de cena}
 
 Nessa fase executa-se uma sequência de algoritmos definida pelo usuário da engine, a execução é equivalente ao código:
-
+ 
 std::vector<SceneProcessor*>::iterator it;
 for(it = processors.begin(); it != processors.end(); it++){
    if(it->isActive()){
-       if->process(gfx, renderer); %verificar se os argumentos estão corretos
+       it->process(gfx, renderer); %verificar se os argumentos estão corretos
    }
 }
 
@@ -64,7 +64,8 @@ Cada algoritmo deve implementar a interface SceneProcessor, que tem os seguintes
 
 \subsubsection{Fase de pós-processamento}
 
-Essa fase é parecida com a anterior, porém o teste de profundidade do fragmento não é executado por padrão, a implementação do algoritmo deve ativá-lo manualmente.
+%Em algum lugar vai ser explicado o que é o teste de profundidade do fragmento?
+Essa fase é semelhante à anterior, porém o teste de profundidade do fragmento não é executado por padrão, a implementação do algoritmo deve ativá-lo manualmente.
 
 A interface que deve ser implementada é a ScenePostProcessor que define métodos com a mesma semântica dos métodos do SceneProcessor.
 
