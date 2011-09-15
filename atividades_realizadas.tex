@@ -21,6 +21,16 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 
 \subsubsection{Tipos de nós}
 
+\subsubsection{Node Visitors}
+
+Todos os Visitors padrão da engine herdam da classe abstrata VisitorTrait, que encapsula o algoritmo de busca em profundidade para grafos direcionados. 
+Cada visitor é responsável por executar um determinado conjunto de métodos durante sua travessia no grafo de cena.
+
+%checar os nomes dos visitors pq eu realmente não me lembro....
+Os visitors definidos pela engine são: UpdatePassVisitor e ColorPassVisitor.
+
+O UpdatePassVisitor é responsável por fazer a travessia dentro do UpdatePass do renderizador. Durante a travessia esse visitor executa o método updatePass e em seguida continua em seguida continua a busca em profundidade e, por fim, executa o método postUpdatePass.
+
 % Pensar melhor nesse nome
 % Citar artigo da NVidia
 Geometry instancing
