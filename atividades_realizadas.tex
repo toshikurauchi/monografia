@@ -1,3 +1,5 @@
+
+
 \section{Atividades realizadas}
 Idéias aplicadas na solução dos problemas.
 
@@ -98,3 +100,37 @@ O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com
 % blit to framebuffer
 
 \subsection{Visualização de campos tensoriais}
+
+A aplicação de visualização de campos tensoriais é dividida em duas etapas:
+
+\begin{itemize}
+\item Compilação do formato Analyze\textregistered para o formato \texttt{.ctf} (Compiled Tensor Field)
+\item Apresentação do campo contido no arquivo \texttt{.ctg}
+\end{itemize}
+
+\subsubsection{O formato Analyze\textregistered}
+
+O formato Analyze\textregistered é um formato de armazenamento de informações de imagens de ressonância magnética. A informação é dividida em dois arquivos: um cabeçalho (extensão \texttt{.hdr}) com informações sobre o campo (dimensões, ordenação, identificação e histórico) e o arquivo de imagem (extensão \texttt{.img}) contendo somente os valores da imagem (organizados conforme a descrição do cabeçalho).
+
+Para o desenvolvimento do leitor de arquivos Analyze\textregistered foi feita a suposição de que os nomes dos arquivos (\texttt{.hdr} e \texttt{.img}) são iguais visando simplificar a utilização e implementação. % Mudar isso se mudar o código
+
+\subsubsection{O formato Compiled Tensor Field (.ctf)}
+
+O formato Compiled Tensor Field \texttt{.ctf} foi desenvolvido para armazenamento de informações sobre o campo tensorial a ser mostrado na aplicação de visualização de campos tensoriais. É um formato binário que contém o número de elipsóides (representação visual do tensor) no arquivo seguido por um conjunto de matrizes de transformação linear. Cada matriz será aplicada a uma esfera para obter um elipsóide na posição correta no campo. Por esse motivo ela contém uma escala (proporcional aos autovalores do tensor aplicados nos eixos cartesianos), uma rotação (dos eixos cartesianos para os eixos definidos pelos autovetores do tensor) e uma translação (para posicionar o elipsóide corretamente no campo).
+
+\subsubsection{Compilação da imagem de ressonância magnética}
+
+Na etapa de compilação a imagem de ressonância magnética é lida e os tensores armazenados em um vetor. Dada a seguinte definição para um tensor $A$ $3 \times 3$ nulo (para um dado $\varepsilon > 0$) para $1 \leq i, j \leq 3$, $i, j \in \mathbb{I}$:
+
+\begin{math}
+|A_{i,j}| < \varepsilon
+\end{math}
+
+Todos os tensores nulos são ignorados na compilação. São então calculados os autovalores e autovetores de todos os tensores não nulos, geradas as matrizes de transformação linear que levam uma esfera centralizada na origem para um elipsóide na posição correta no campo e armazenadas em um vetor. Essas matrizes são então reorganizadas em blocos de proximidade para otimizar a utilização pela aplicação de visualização. O vetor de matrizes reordenado é finalmente escrito no arquivo, além das informações iniciais sobre o campo.
+
+\subsubsection{Apresentação do campo compilado}
+
+O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. Os componentes r,g e b da cor aplicada a cada elipsóide são os valores do x, y e z do autovetor associado ao maior autovalor do tensor (como o autovetor é normalizado os componentes r,g e b nunca serão maiores do que 1).
+
+Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação sobre o campo.
+
