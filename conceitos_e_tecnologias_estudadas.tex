@@ -43,9 +43,53 @@ nome::n
 Possibilitam programação genérica
 
 \subsubsection{A Standard Template Library (STL)}
+
 A Standard Template Library (STL)~\cite{stl}é uma biblioteca C++ baseada em templates que oferece um conjunto de algoritmos e estruturas de dados configuráveis.
 
 \subsection{Boost C++ Libraries}
+
+Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida como uma extensão para a STL dentro do \texttt{boost}. Os principais módulos da boost utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} e \texttt{smart\_ptr}. 
+
+O módulo \texttt{function} cria functors que são capazes de armazenar tanto funções nativas da linguagem ou quanto outros functors. Essas funções são criadas através da seguinte construção:
+
+\begin{verbatim}
+void f (int i, int j, int k) {
+    // implementação
+}
+// boost::function[numero de argumentos]<tipo de retorno, tipos dos argumentos>
+boost::function3<void,int,int,int> funcao = f;
+\end{verbatim}
+
+A biblioteca \texttt{bind} cria functors (classes que implementam o método operator ()) a partir de uma função ou outro functor mas com alguns argumentos já posicionados, por exemplo:
+
+\begin{verbatim}
+boost::bind(f, 1, _1, _2)
+\end{verbatim}
+
+Nesse caso boost::bind cria um functor que recebe apenas dois argumentos, indicados pelos nomes _1 e _2, o primeiro e o segundo argumento do functor criado respectivamente.
+
+As funcionalidades de bind e function podem ser combinadas:
+
+\begin{verbatim}
+// functor sem retorno que recebe dois argumentos inteiros
+boost::function2<void, int, int> functor1 = boost::bind(f, 1, _1, _2);
+// cria um boost::function a partir do resultado do boost::bind de uma 
+// boost::function
+boost::function1<void, int> functor2 = boost::bind(functor1, 2, _1);
+\end{verbatim}
+
+Os módulos bind e function da boost são utilizados principalmente em conjunto com algoritmos da STL, como o std::for\_each.
+
+Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. Essas classes tem comportamento parecido com o de ponteiros nativos da linguagem, com a diferença de que elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos smart\_ptr definidos:
+
+\begin{itemize}
+\item scoped\_ptr: representa o conceito de ponteiro não compartilhável, logo não podem ser copiados. Desalocam a memória ao sair de escopo.
+\item scoped\_array: mesmo que scoped\_ptr mas para um array de objetos.
+\item shared\_ptr: representa um ponteiro que tem diversos donos, pode ser copiado e só é destruído quando todos os donos forem destruídos.
+\item shared\_array: mesmo que shared\_ptr mas para arrays.
+\item weak\_ptr: são ponteiros para recursos de um shared\_ptr mas que não são donos do recurso.
+\item intrusive\_ptr: são shared\_ptr que guardam dentro do objeto para o qual apontam o contador de referências utilizado internamente.
+\end{itemize}
 
 \subsection{OpenGL}
 
