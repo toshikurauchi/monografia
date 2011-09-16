@@ -23,13 +23,13 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 
 \subsubsection{Node Visitors}
 
-Todos os Visitors padrão da engine herdam da classe abstrata VisitorTrait, que encapsula o algoritmo de busca em profundidade para grafos direcionados. 
-Cada visitor é responsável por executar um determinado conjunto de métodos durante sua travessia no grafo de cena.
+Todos os \texttt{Visitors} padrão da engine herdam da classe abstrata \texttt{VisitorTrait}, que encapsula o algoritmo de busca em profundidade para grafos direcionados. 
+Cada \texttt{visitor} é responsável por executar um determinado conjunto de métodos durante sua travessia no grafo de cena.
 
 %checar os nomes dos visitors pq eu realmente não me lembro....
-Os visitors definidos pela engine são: UpdatePassVisitor e ColorPassVisitor.
+Os \texttt{visitors} definidos pela engine são: \texttt{UpdatePassVisitor} e \texttt{ColorPassVisitor}.
 
-O UpdatePassVisitor é responsável por fazer a travessia dentro do UpdatePass do renderizador. Durante a travessia esse visitor executa o método updatePass e em seguida continua a busca em profundidade e, por fim, executa o método postUpdatePass.
+O \texttt{UpdatePassVisitor} é responsável por fazer a travessia dentro do \texttt{UpdatePass} do renderizador. Durante a travessia esse visitor executa o método \texttt{updatePass} e em seguida continua a busca em profundidade e, por fim, executa o método \texttt{postUpdatePass}.
 
 % Pensar melhor nesse nome
 % Citar artigo da NVidia
@@ -49,27 +49,29 @@ O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 
 Nessa fase cada nó do grafo de cena é atualizado através de uma chamada ao método updatePass da interface Node.
 
-Para a implementação dessa fase foi utilizado o Visitor, % não esquecer de colocar referencia para o GOF aqui
+Para a implementação dessa fase foi utilizado o \texttt{Visitor}, % não esquecer de colocar referencia para o GOF aqui
 que implementa uma busca em profundidade no grafo de cena. Essa é a única parte do algoritmo de renderização que não pode ser customizada.
 
 \subsubsection {Fase de processamento do grafo de cena}
 
 Nessa fase executa-se uma sequência de algoritmos definida pelo usuário da engine, a execução é equivalente ao código:
- 
+
+\begin{verbatim}
 std::vector<SceneProcessor*>::iterator it;
 for(it = processors.begin(); it != processors.end(); it++){
    if(it->isActive()){
        it->process(gfx, renderer); %verificar se os argumentos estão corretos
    }
 }
+\end{verbatim}
 
-Cada algoritmo deve implementar a interface SceneProcessor, que tem os seguintes métodos:
+Cada algoritmo deve implementar a interface \texttt{SceneProcessor}, que tem os seguintes métodos:
 
 \begin{itemize}
-\item bool isInitialized(GraphicAPI*): método que indica se o algoritmo já preparou todas as suas dependências
-\item void initialize(GraphicAPI*, Renderer*): esse método deve criar todas as dependencias do método process
-\item void process(GraphicAPI*, Renderer*): executa o algoritmo de processamento
-\item bool isActive(): indica se o algoritmo deve ou não ser executado
+\item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo já preparou todas as suas dependências
+\item \texttt{void initialize(GraphicAPI*, Renderer*)}: esse método deve criar todas as dependencias do método \texttt{process}
+\item \texttt{void process(GraphicAPI*, Renderer*)}: executa o algoritmo de processamento
+\item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado
 \end{itemize}
 
 \subsubsection{Fase de pós-processamento}
@@ -77,22 +79,22 @@ Cada algoritmo deve implementar a interface SceneProcessor, que tem os seguintes
 %Em algum lugar vai ser explicado o que é o teste de profundidade do fragmento?
 Essa fase é semelhante à anterior, porém o teste de profundidade do fragmento não é executado por padrão, a implementação do algoritmo deve ativá-lo manualmente.
 
-A interface que deve ser implementada é a ScenePostProcessor que define métodos com a mesma semântica dos métodos do SceneProcessor.
+A interface que deve ser implementada é a \texttt{ScenePostProcessor} que define métodos com a mesma semântica dos métodos do \texttt{SceneProcessor}.
 
 \subsubsection{Algoritmos de processamento de cena pré-definidos}
 
-A engine atualmente define apenas um algoritmo de processamento padrão, o ColorPass. % checar o nome do algoritmo
+A engine atualmente define apenas um algoritmo de processamento padrão, o \texttt{ColorPass}. % checar o nome do algoritmo
 
-Esse algoritmo executa uma busca em profundidade no grafo de cena executando o método colorPass de cada nó do grafo de cena %Mudar se implementarmos o frustum culling
+Esse algoritmo executa uma busca em profundidade no grafo de cena executando o método \texttt{colorPass} de cada nó do grafo de cena %Mudar se implementarmos o frustum culling
 
 \subsubsection{Algoritmos de pós-processamento de cena pré-definidos}
  
-Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes: FramebufferImageProcessor e BlitToFramebuffer.
+Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes: \texttt{FramebufferImageProcessor} e \texttt{BlitToFramebuffer}.
 
-O FramebufferImageProcessor implementa uma técnica de renderização conhecida como ping-pong rendering % achar o termo técnico correto
+O \texttt{FramebufferImageProcessor} implementa uma técnica de renderização conhecida como ping-pong rendering % achar o termo técnico correto
 % descrever a técnica e a implementação.
 
-O BlitToFramebuffer renderiza um retângulo com as dimensões da tela com a textura armazenada no renderizador de nome "color".
+O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com a textura armazenada no renderizador de nome \texttt{"color"}.
 % blit to framebuffer
 
 \subsection{Visualização de campos tensoriais}

@@ -7,37 +7,37 @@ A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C
 \subsubsection{Variáveis e funções}
 As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um qualificador seguido de um tipo e de um nome, podendo receber um valor inicial):
 
-%Code
 % Pensar em uma forma melhor de mostrar isso.
+\begin{verbatim}
 <qualificador> <tipo> <nome>[=<valor inicial>]
-%/Code
+\end{verbatim}
 
 \subsubsection{Classes}
-Classes são definidas pelas palavras reservadas \textit{class} ou \textit{struct}, sendo que a diferença entre elas é o fato de atributos de uma \textit{class} serem privados por padrão e os de uma \textit{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \textit{public}, \textit{private} e \textit{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente.
+Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente.
 
 \subsubsection{Namespaces}
-Para evitar colisão de identificadores como nomes de classes, variáveis e funções é possível utilizar um \textit{namespace}:
+Para evitar colisão de identificadores como nomes de classes, variáveis e funções é possível utilizar um \texttt{namespace}:
 
-%Code
+\begin{verbatim}
 namespace nome {
 // Entidades
     int n;
 }
-%/Code
+\end{verbatim}
 
-Onde \textit{nome} é qualquer identificador válido e \textit{Entidades} é o conjunto de classes, variáveis e funções que ficarão protegidas dentro de um \textit{namespace}.
+Onde \texttt{nome} é qualquer identificador válido e \texttt{Entidades} é o conjunto de classes, variáveis e funções que ficarão protegidas dentro de um \texttt{namespace}.
 
-Para referenciar identificadores de um \textit{namespace} é utilizada a seguinte sintaxe:
+Para referenciar identificadores de um \texttt{namespace} é utilizada a seguinte sintaxe:
 
-%Code
+\begin{verbatim}
 <nome do namespace>::<identificador>
-%/Code
+\end{verbatim}
 
-Para acessar a variável \textit{n} do exemplo utiliza-se o seguinte código:
+Para acessar a variável \texttt{n} do exemplo utiliza-se o seguinte código:
 
-%Code
+\begin{verbatim}
 nome::n
-%/Code
+\end{verbatim}
 
 \subsubsection{Templates}
 Possibilitam programação genérica
@@ -54,8 +54,11 @@ A Standard Template Library (STL)~\cite{stl}é uma biblioteca C++ baseada em temp
 \subsection{Windows API}
 
 \subsection{Tensores de imagens de ressonância magnética de difusão}
-Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). %Falar sobre coeficiente de difusão, meio isotrópico e anisotrópico
-Tensores são abstrações de escalares, vetores e matrizes utilizados, entre outras aplicações~\cite{}, para a análise de imagens de ressonância magnética de difusão. Tais imagens fornecem informações sobre os coeficientes de difusão relativos das moléculas de água em diferentes direções para cada pixel.
+Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
+
+Imagens de ressonância magnética de difusão são um dos meios de obter informações sobre o coeficiente de difusão de moléculas de água em diferentes direções em tecidos biológicos.
+
+Para representar tais coeficientes são utilizados tensores, que são abstrações de escalares, vetores e matrizes utilizados em diversas aplicações.
 
 % Pensar melhor nesse nome
 \subsection{Representação gráfica de tensores}
