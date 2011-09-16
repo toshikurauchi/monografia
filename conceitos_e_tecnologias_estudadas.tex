@@ -12,8 +12,41 @@ As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem
 <qualificador> <tipo> <nome>[=<valor inicial>]
 \end{verbatim}
 
-\subsubsection{Classes}
-Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente.
+\subsubsection{Classes e objetos}
+Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores são declarados como funções com o nome da classe. A declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
+
+Utilizando \texttt{class}:
+
+\begin{verbatim}
+class Coordenada2d {
+public:
+    Coordenada2d(double x, double y);
+private:
+    double x,y;
+};
+\end{verbatim}
+
+Utilizando \texttt{struct}:
+
+\begin{verbatim}
+struct Coordenada2d {
+    double x,y;
+};
+\end{verbatim}
+
+Para se instanciar um objeto existem duas opções. A primeira consiste em declarar uma variável da classe desejada (da mesma forma como variáveis do tipo \texttt{int} são declaradas, por exemplo). Na declaração da variável a classe será instanciada e inicializada. A segunda maneira é a utilização da palavra reservada \texttt{new} seguida do nome da classe. O valor devolvido é um ponteiro para uma instância da classe desejada. Seguindo o exemplo anterior, a classe Coordenada2d poderia ser instanciada das seguintes formas:
+
+\begin{verbatim}
+Coordenada2d coordenada1;
+Coordenada2d * coordenada2 = new Coordenada2d;
+\end{verbatim}
+
+Os argumentos do construtor são passados da seguinte maneira:
+
+\begin{verbatim}
+Coordenada2d coordenada1(1.0, 2.0);
+Coordenada2d * coordenada2 = new Coordenada2d(1.0, 2.0);
+\end{verbatim}
 
 \subsubsection{Namespaces}
 Para evitar colisão de identificadores como nomes de classes, variáveis e funções é possível utilizar um \texttt{namespace}:
