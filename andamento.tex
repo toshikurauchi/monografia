@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage{setspace}
+\usepackage{boxedminipage}
+\usepackage[latin1]{inputenc}
+\usepackage{hyperref}
+
+\setlength{\paperheight}{29.7cm}
+\setlength{\footskip}{1.0cm}
+\setlength{\textheight}{20.0cm}
+\setlength{\textwidth}{16.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\topmargin}{0.0cm}
+
+\begin{document}
+\title{Andamento do trabalho}
+\maketitle
+
+\section{Cronograma}
+O cronograma apresentado na proposta da monografia (\url{http://www.linux.ime.usp.br/~kaminaga/mac499}) continha os seguintes itens:
+	\begin{itemize}
+		\item Janeiro de 2011 - Definição e criação dos nós do grafo de cena que serão inicialmente suportados
+		\item Fevereiro de 2011 - Implementação do buffer de vértices e do renderizador do grafo de cena
+		\item Março de 2011 - Implementação da classe responsável por gerenciar os shaders e criação de modelos geométricos básicos
+		\item Abril de 2011 - Suporte inicial a texturas e criação de métodos que calculam autovalores e autovetores de matrizes 3x3
+		\item Maio de 2011 - Suporte a renderização eficiente de várias instâncias de um mesmo modelo (renderização instanciada) e a arquivos Analyze\textregistered (representação de campos tensoriais) e versão inicial da visualização do campo
+		\item Junho de 2011 - Implementação da técnica de renderização em texturas e iniciar modificações na engine para utilizar a técnica de iluminação deferida e aplicação das técnicas de renderização instanciada e outras otimizações na visualização do campo tensorial
+		\item Julho de 2011 - Continuação da implementação do suporte a iluminação deferida e adicionar suporte a pós-processamento da cena renderizada e implementação de um jogo simples como exemplo de utilização genérica da engine
+		\item Agosto de 2011 - Desenvolvimento de mais exemplos de uso e implementação de frustum culling na engine
+		\item Setembro de 2011 - Limpeza de código e, se houver disponibilidade de tempo, adicionar suporte a modelos translúcidos
+	\end{itemize}
+
+\section{Atividades a serem realizadas}
+Das atividades propostas no cronograma as seguintes atividades ainda não foram realizadas:
+
+\begin{itemize}
+\item Implementação do suporte a iluminação deferida
+\item Implementação de um jogo simples
+\item Implementação de mais exemplos de uso
+\item Suporte a modelos translúcidos
+\end{itemize}
+
+\section{Atividades fora do cronograma}
+As seguintes atividades foram realizadas, mas não estavam previstas no cronograma:
+
+\begin{itemize}
+\item Implementação de um compilador para o campo tensorial (tornando o carregamento mais rápido e consumindo menos memória)
+\item Isolamento das chamadas ao OpenGL em uma biblioteca externa
+\item Implementação de exemplos de pós processamento
+\end{itemize}
+
+\end{document}
