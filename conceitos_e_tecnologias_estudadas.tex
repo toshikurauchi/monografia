@@ -170,6 +170,32 @@ ATOM WINAPI RegisterClass(
 
 O argumento lpWndClass um ponteiro para uma instância de \texttt{WNDCLASS}\cite{docwndclass}, uma estrutura que guarda, entre outras coisas, o nome da classe que está sendo registrada, o ponteiro para a função que irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo\cite{docdevicecontext} pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo.
 
+Após criada, deve-se avisar o sistema que a janela é visível, para isso, executa-se\cite{docshowwindow}:
+
+\begin{verbatim}
+BOOL WINAPI ShowWindow(
+  __in  HWND hWnd,
+  __in  int nCmdShow
+);
+\end{verbatim}
+
+Onde hWnd é o handler retornado pela função \texttt{CreateWindow} e nCmdShow controla como a janela deve ser exibida (maximizada, minimizada, simplesmente exibida, \ldots)
+
+Depois de criar a janela, a thread mãe começa a receber os eventos da janela criada em sua fila de mensagens. Para se recuperar uma mensagem da fila, utiliza-se a função\cite{docgetmessage}:
+
+\begin{verbatim}
+BOOL WINAPI GetMessage(
+  __out     LPMSG lpMsg,
+  __in_opt  HWND hWnd,
+  __in      UINT wMsgFilterMin,
+  __in      UINT wMsgFilterMax
+);
+\end{verbatim}
+
+Que recebe como parâmetros um ponteiro para uma estrutura do tipo \texttt{MSG}\cite{docmsg}, o handler retornado pela função \texttt{CreateWindow} e 
+
+\subsubsection{O loop de eventos da janela}
+
 A função registrada na WNDCLASS que tratará os eventos gerados pelo sistema deve ter a seguinte assinatura\cite{docwindowproc}:
 \begin{verbatim}
 LRESULT CALLBACK WindowProc(
