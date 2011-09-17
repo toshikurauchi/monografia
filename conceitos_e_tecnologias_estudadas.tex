@@ -79,6 +79,51 @@ Possibilitam programação genérica
 
 A Standard Template Library (STL)~\cite{stl}é uma biblioteca C++ baseada em templates que oferece um conjunto de algoritmos e estruturas de dados configuráveis.
 
+É possível, por exemplo, aplicar uma função para todos os itens de um vetor de inteiros da seguinte maneira:
+
+\begin{verbatim}
+void imprime(int i) {
+    printf("%d ", i);
+}
+
+int main() {
+    std::vector<int> vetor;
+    // Adicionando os valores 1, 2 e 3 no vetor
+    vetor.push_back(1);
+    vetor.push_back(2);
+    vetor.push_back(3);
+
+    for_each(vetor.begin(), vetor.end(), imprime);
+    // Saída: 1 2 3
+
+    return 0;
+}
+\end{verbatim}
+
+O método \texttt{for\_each} pode, alternativamente, receber um objeto com a função a ser aplicada a cada item da lista definida na sobrescrita do operador \texttt{()} como a seguir:
+
+\begin{verbatim}
+struct impressor {
+    void operator() (int i) {
+        printf("%d ", i);
+    }
+} meuImpressor;
+
+int main() {
+    std::vector<int> vetor;
+    vetor.push_back(1);
+    vetor.push_back(2);
+    vetor.push_back(3);
+
+    for_each(vetor.begin(), vetor.end(), meuImpressor);
+    // Saída: 1 2 3
+
+    return 0;
+}
+\end{verbatim}
+
+Há diversos outros tipos de algoritmos implementados na STL~\cite{algorithm}
+
 \subsection{Boost C++ Libraries}
 
 Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida como uma extensão para a STL dentro do \texttt{boost}. Os principais módulos da boost utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} e \texttt{smart\_ptr}. 
@@ -210,7 +255,7 @@ LRESULT WINAPI DispatchMessage(
 );
 \end{verbatim}
 
-Quando a thread principal recebe a mensagem \texttt{WM_QUIT}, o retorno de \texttt{GetMessage} é 0, nesse momento a tradução e envio de mensagens deve parar e o programa deve apagar o registro da classe criada por \texttt{RegisterClass}. O registro é apagado pela função\cite{docunregisterclass}:
+Quando a thread principal recebe a mensagem \texttt{WM\_QUIT}, o retorno de \texttt{GetMessage} é 0, nesse momento a tradução e envio de mensagens deve parar e o programa deve apagar o registro da classe criada por \texttt{RegisterClass}. O registro é apagado pela função\cite{docunregisterclass}:
 
 \begin{verbatim}
 BOOL WINAPI UnregisterClass(
