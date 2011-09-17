@@ -12,41 +12,8 @@ As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem
 <qualificador> <tipo> <nome>[=<valor inicial>]
 \end{verbatim}
 
-\subsubsection{Classes e objetos}
-Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores são declarados como funções com o nome da classe. A declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
-
-Utilizando \texttt{class}:
-
-\begin{verbatim}
-class Coordenada2d {
-public:
-    Coordenada2d(double x, double y);
-private:
-    double x,y;
-};
-\end{verbatim}
-
-Utilizando \texttt{struct}:
-
-\begin{verbatim}
-struct Coordenada2d {
-    double x,y;
-};
-\end{verbatim}
-
-Para se instanciar um objeto existem duas opções. A primeira consiste em declarar uma variável da classe desejada (da mesma forma como variáveis do tipo \texttt{int} são declaradas, por exemplo). Na declaração da variável a classe será instanciada e inicializada. A segunda maneira é a utilização da palavra reservada \texttt{new} seguida do nome da classe. O valor devolvido é um ponteiro para uma instância da classe desejada. Seguindo o exemplo anterior, a classe Coordenada2d poderia ser instanciada das seguintes formas:
-
-\begin{verbatim}
-Coordenada2d coordenada1;
-Coordenada2d * coordenada2 = new Coordenada2d;
-\end{verbatim}
-
-Os argumentos do construtor são passados da seguinte maneira:
-
-\begin{verbatim}
-Coordenada2d coordenada1(1.0, 2.0);
-Coordenada2d * coordenada2 = new Coordenada2d(1.0, 2.0);
-\end{verbatim}
+\subsubsection{Classes}
+Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente.
 
 \subsubsection{Namespaces}
 Para evitar colisão de identificadores como nomes de classes, variáveis e funções é possível utilizar um \texttt{namespace}:
@@ -130,7 +97,7 @@ Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória a
 %Citar anteriormente...
 Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho utilizamos apenas a API do sistema operacional Windows.
 
-Para se inicializar um contexto para a execução de programas de OpenGL, é necessário criar uma janela, para isso usa-se a seguinte função\cite{doc_create_window}:
+Para se inicializar um contexto para a execução de programas de OpenGL, é necessário criar uma janela, para isso usa-se a seguinte função\cite{doccreatewindow}:
 
 \begin{verbatim}
 HWND WINAPI CreateWindow(
@@ -152,16 +119,33 @@ Onde:
 \begin{itemize}
 \item lpClassName: representa uma classe registrada anteriormente no sistema.
 \item lpWindowName: representa o título da janela.
-\item dwStyle: conjunto de flags que definem como a janela será exibida: com bordas, maximixada, minimizada, \ldots
+\item dwStyle: conjunto de flags que definem como a janela será exibida\cite{docwindowstyle}: com bordas, maximixada, minimizada, \ldots
 \item x, y: posição inicial da janela.
 \item nWidth, nHeight: dimensões iniciais da janela.
 \item hWndParent: se a janela que está sendo criada é uma subjanela de uma já existente, passa-se o handler da janela pai nesse argumento, caso contrário, passa-se NULL. Para a engine gráfica, esse argumento sempre recebe o valor NULL.
 \item hMenu: se for necessário criar uma menu, deve-se passar o handler do menu nesse argumento, caso contrário, passa-se NULL.
 \item hInstance: o handler da instância do programa que está sendo executado, esse parâmetro é utilizado dentro do sistema na criação de um identificador único para a janela.
-\item lpParam: dados do usuário. Esse parâmetro recebe um ponteiro para qualquer tipo de dado que o usuário necessite. Na engine esse argumento recebe o ponteiro para a classe que representa a janela do sistema.
+\item lpParam: dados do usuário. Esse parâmetro recebe um ponteiro para qualquer tipo de dado que o usuário necessite. Na engine esse argumento recebe o ponteiro para uma instância de uma classe interna que representa a janela do sistema.
 \end{itemize}
 
+Para se registrar uma classe no sistema deve-se chamar a função\cite{docregisterclass}:
+\begin{verbatim}
+ATOM WINAPI RegisterClass(
+  __in  const WNDCLASS *lpWndClass
+);
+\end{verbatim}
 
+O argumento lpWndClass um ponteiro para uma instância de \texttt{WNDCLASS}\cite{docwndclass}, uma estrutura que guarda, entre outras coisas, o nome da classe que está sendo registrada, o ponteiro para a função que irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo\cite{docdevicecontext} pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo.
+
+A função registrada na WNDCLASS que tratará os eventos gerados pelo sistema deve ter a seguinte assinatura:
+\begin{verbatim}
+LRESULT CALLBACK WindowProc(
+  __in  HWND hwnd,
+  __in  UINT uMsg,
+  __in  WPARAM wParam,
+  __in  LPARAM lParam
+);
+\end{verbatim}
 
 \subsection{Transformações lineares}
 
