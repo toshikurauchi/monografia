@@ -6,6 +6,7 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 \subsection{Objetos da API gráfica}
 
 Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos definidos pela API gráfica.
+% TODO: O que é a API gráfica
 
 \subsubsection {Shader}
 
@@ -20,17 +21,21 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 \subsubsection {BufferTexture}
 
 \subsection{Grafo de cena}
+%TODO: Geral sobre o que é o grafo de cena, como é percorrido, etc.
 
 \subsubsection{Tipos de nós}
 
 \subsubsection{Node Visitors}
 
+%TODO: O que é um visitor (referencia pro GOF só?)
 Todos os \texttt{Visitors} padrão da engine herdam da classe abstrata \texttt{VisitorTrait}, que encapsula o algoritmo de busca em profundidade para grafos direcionados. 
 Cada \texttt{visitor} é responsável por executar um determinado conjunto de métodos durante sua travessia no grafo de cena.
 
 %checar os nomes dos visitors pq eu realmente não me lembro....
 Os \texttt{visitors} definidos pela engine são: \texttt{UpdatePassVisitor} e \texttt{ColorPassVisitor}.
 
+% O que é o UpdatePass do renderizador? Vai estar explicado antes?
+% É executado o updatePass do nó?
 O \texttt{UpdatePassVisitor} é responsável por fazer a travessia dentro do \texttt{UpdatePass} do renderizador. Durante a travessia esse visitor executa o método \texttt{updatePass} e em seguida continua a busca em profundidade e, por fim, executa o método \texttt{postUpdatePass}.
 
 % Pensar melhor nesse nome
@@ -48,6 +53,7 @@ O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 \end{itemize}
 
 \subsubsection {Fase de atualização}
+% Acho que essa explicação precisa acontecer antes da explicação sobre os NodeVisitors
 
 Nessa fase cada nó do grafo de cena é atualizado através de uma chamada ao método updatePass da interface Node.
 
@@ -58,11 +64,12 @@ que implementa uma busca em profundidade no grafo de cena. Essa é a única parte 
 
 Nessa fase executa-se uma sequência de algoritmos definida pelo usuário da engine, a execução é equivalente ao código:
 
+%verificar se os argumentos estão corretos
 \begin{verbatim}
 std::vector<SceneProcessor*>::iterator it;
 for(it = processors.begin(); it != processors.end(); it++){
    if(it->isActive()){
-       it->process(gfx, renderer); %verificar se os argumentos estão corretos
+       it->process(gfx, renderer);
    }
 }
 \end{verbatim}
@@ -87,16 +94,16 @@ A interface que deve ser implementada é a \texttt{ScenePostProcessor} que define
 
 A engine atualmente define apenas um algoritmo de processamento padrão, o \texttt{ColorPass}. % checar o nome do algoritmo
 
-Esse algoritmo executa uma busca em profundidade no grafo de cena executando o método \texttt{colorPass} de cada nó do grafo de cena %Mudar se implementarmos o frustum culling
+Esse algoritmo executa uma busca em profundidade no grafo de cena executando o método \texttt{colorPass} de cada nó. %Mudar se implementarmos o frustum culling
 
 \subsubsection{Algoritmos de pós-processamento de cena pré-definidos}
  
 Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes: \texttt{FramebufferImageProcessor} e \texttt{BlitToFramebuffer}.
 
-O \texttt{FramebufferImageProcessor} implementa uma técnica de renderização conhecida como ping-pong rendering % achar o termo técnico correto
+O \texttt{FramebufferImageProcessor} implementa uma técnica de renderização conhecida como ping-pong rendering. % achar o termo técnico correto
 % descrever a técnica e a implementação.
 
-O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com a textura armazenada no renderizador de nome \texttt{"color"}.
+O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com a textura de nome \texttt{"color"} armazenada no renderizador.
 % blit to framebuffer
 
 \subsection{Visualização de campos tensoriais}
@@ -104,19 +111,19 @@ O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com
 A aplicação de visualização de campos tensoriais é dividida em duas etapas:
 
 \begin{itemize}
-\item Compilação do formato Analyze\textregistered para o formato \texttt{.ctf} (Compiled Tensor Field)
+\item Compilação do formato Analyze\textregistered  para o formato \texttt{.ctf} (Compiled Tensor Field)
 \item Apresentação do campo contido no arquivo \texttt{.ctg}
 \end{itemize}
 
 \subsubsection{O formato Analyze\textregistered}
 
-O formato Analyze\textregistered é um formato de armazenamento de informações de imagens de ressonância magnética. A informação é dividida em dois arquivos: um cabeçalho (extensão \texttt{.hdr}) com informações sobre o campo (dimensões, ordenação, identificação e histórico) e o arquivo de imagem (extensão \texttt{.img}) contendo somente os valores da imagem (organizados conforme a descrição do cabeçalho).
+O formato Analyze\textregistered\space é um formato de armazenamento de informações de imagens de ressonância magnética. A informação é dividida em dois arquivos: um cabeçalho (extensão \texttt{.hdr}) com informações sobre o campo (dimensões, ordenação, identificação e histórico) e o arquivo de imagem (extensão \texttt{.img}) contendo somente os valores da imagem (organizados conforme a descrição do cabeçalho).
 
-Para o desenvolvimento do leitor de arquivos Analyze\textregistered foi feita a suposição de que os nomes dos arquivos (\texttt{.hdr} e \texttt{.img}) são iguais visando simplificar a utilização e implementação. % Mudar isso se mudar o código
+Para o desenvolvimento do leitor de arquivos Analyze\textregistered\space foi feita a suposição de que os nomes dos arquivos (\texttt{.hdr} e \texttt{.img}) são iguais visando simplificar a utilização e implementação. % Mudar isso se mudar o código
 
 \subsubsection{O formato Compiled Tensor Field (.ctf)}
 
-O formato Compiled Tensor Field \texttt{.ctf} foi desenvolvido para armazenamento de informações sobre o campo tensorial a ser mostrado na aplicação de visualização de campos tensoriais. É um formato binário que contém o número de elipsóides (representação visual do tensor) no arquivo seguido por um conjunto de matrizes de transformação linear. Cada matriz será aplicada a uma esfera para obter um elipsóide na posição correta no campo. Por esse motivo ela contém uma escala (proporcional aos autovalores do tensor aplicados nos eixos cartesianos), uma rotação (dos eixos cartesianos para os eixos definidos pelos autovetores do tensor) e uma translação (para posicionar o elipsóide corretamente no campo).
+O formato Compiled Tensor Field (\texttt{.ctf}) foi desenvolvido para armazenamento de informações sobre o campo tensorial a ser mostrado na aplicação de visualização de campos tensoriais. É um formato binário que contém o número de elipsóides (representação visual do tensor) no arquivo seguido por um conjunto de matrizes de transformação linear. Cada matriz será aplicada a uma esfera para obter um elipsóide na posição correta no campo. Por esse motivo ela contém uma escala (proporcional aos autovalores do tensor aplicados nos eixos cartesianos), uma rotação (dos eixos cartesianos para os eixos definidos pelos autovetores do tensor) e uma translação (para posicionar o elipsóide corretamente no campo).
 
 \subsubsection{Compilação da imagem de ressonância magnética}
 
