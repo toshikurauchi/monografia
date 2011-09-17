@@ -99,7 +99,7 @@ A biblioteca \texttt{bind} cria functors (classes que implementam o método opera
 boost::bind(f, 1, _1, _2)
 \end{verbatim}
 
-Nesse caso boost::bind cria um functor que recebe apenas dois argumentos, indicados pelos nomes \_1 e \_2, o primeiro e o segundo argumento do functor criado respectivamente.
+Nesse caso boost::bind cria um functor que recebe apenas dois argumentos, indicados pelos nomes _1 e _2, o primeiro e o segundo argumento do functor criado respectivamente.
 
 As funcionalidades de bind e function podem ser combinadas:
 
@@ -126,17 +126,51 @@ Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória a
 
 \subsection{OpenGL}
 
-\subsection{Transformações lineares}
-
 \subsection{Windows API}
+%Citar anteriormente...
+Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho utilizamos apenas a API do sistema operacional Windows.
+
+Para se inicializar um contexto para a execução de programas de OpenGL, é necessário criar uma janela, para isso usa-se a seguinte função\cite{doc_create_window}:
+
+\begin{verbatim}
+HWND WINAPI CreateWindow(
+  __in_opt  LPCTSTR lpClassName,
+  __in_opt  LPCTSTR lpWindowName,
+  __in      DWORD dwStyle,
+  __in      int x,
+  __in      int y,
+  __in      int nWidth,
+  __in      int nHeight,
+  __in_opt  HWND hWndParent,
+  __in_opt  HMENU hMenu,
+  __in_opt  HINSTANCE hInstance,
+  __in_opt  LPVOID lpParam
+);
+\end{verbatim}
+
+Onde:
+\begin{itemize}
+\item lpClassName: representa uma classe registrada anteriormente no sistema.
+\item lpWindowName: representa o título da janela.
+\item dwStyle: conjunto de flags que definem como a janela será exibida: com bordas, maximixada, minimizada, \ldots
+\item x, y: posição inicial da janela.
+\item nWidth, nHeight: dimensões iniciais da janela.
+\item hWndParent: se a janela que está sendo criada é uma subjanela de uma já existente, passa-se o handler da janela pai nesse argumento, caso contrário, passa-se NULL. Para a engine gráfica, esse argumento sempre recebe o valor NULL.
+\item hMenu: se for necessário criar uma menu, deve-se passar o handler do menu nesse argumento, caso contrário, passa-se NULL.
+\item hInstance: o handler da instância do programa que está sendo executado, esse parâmetro é utilizado dentro do sistema na criação de um identificador único para a janela.
+\item lpParam: dados do usuário. Esse parâmetro recebe um ponteiro para qualquer tipo de dado que o usuário necessite. Na engine esse argumento recebe o ponteiro para a classe que representa a janela do sistema.
+\end{itemize}
+
+
+
+\subsection{Transformações lineares}
 
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
 
 Imagens de ressonância magnética de difusão são um dos meios de obter informações sobre o coeficiente de difusão de moléculas de água em diferentes direções em tecidos biológicos.
 
-Para representar tais coeficientes são utilizados tensores, que são abstrações de escalares, vetores e matrizes utilizados em diversas aplicações. Em imagens de ressonância magnética de difusão, tais tensores são representados por matrizes $ 3 \times 3 $ simétricas.
+Para representar tais coeficientes são utilizados tensores, que são abstrações de escalares, vetores e matrizes utilizados em diversas aplicações.
 
 % Pensar melhor nesse nome
 \subsection{Representação gráfica de tensores}
-Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfera, pois o movimento das moléculas se distribui igualmente para todas as direções em um determinado período de tempo. Já em meios anisotrópicos, como o movimento depende da direção, o coeficiente é modelado como um elipsóide, sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor ($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores $\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
