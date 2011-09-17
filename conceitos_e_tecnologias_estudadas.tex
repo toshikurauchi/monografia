@@ -126,8 +126,9 @@ Há diversos outros tipos de algoritmos implementados na STL~\cite{algorithm}
 
 \subsection{Boost C++ Libraries}
 
-Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida como uma extensão para a STL dentro do \texttt{boost}. Os principais módulos da boost utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} e \texttt{smart\_ptr}. 
+Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida como uma extensão para a STL sob o namespace \texttt{boost}. Os principais módulos dessa biblioteca utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} e \texttt{smart\_ptr}. 
 
+% TODO: O que são functors!
 O módulo \texttt{function} cria functors que são capazes de armazenar tanto funções nativas da linguagem ou quanto outros functors. Essas funções são criadas através da seguinte construção:
 
 \begin{verbatim}
@@ -138,7 +139,7 @@ void f (int i, int j, int k) {
 boost::function3<void,int,int,int> funcao = f;
 \end{verbatim}
 
-A biblioteca \texttt{bind} cria functors (classes que implementam o método operator ()) a partir de uma função ou outro functor mas com alguns argumentos já posicionados, por exemplo:
+A biblioteca \texttt{bind} cria functors (classes que implementam o método \texttt{operator ()}) a partir de uma função ou outro functor mas com alguns argumentos já posicionados, por exemplo:
 
 \begin{verbatim}
 boost::bind(f, 1, _1, _2)
@@ -156,17 +157,17 @@ boost::function2<void, int, int> functor1 = boost::bind(f, 1, _1, _2);
 boost::function1<void, int> functor2 = boost::bind(functor1, 2, _1);
 \end{verbatim}
 
-Os módulos bind e function da boost são utilizados principalmente em conjunto com algoritmos da STL, como o std::for\_each.
+Os módulos bind e function da boost são utilizados principalmente em conjunto com algoritmos da STL, como o std::for\_each. %TODO: exemplo de código?
 
-Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. Essas classes tem comportamento parecido com o de ponteiros nativos da linguagem, com a diferença de que elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos smart\_ptr definidos:
+Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. Essas classes tem comportamento parecido com o de ponteiros nativos da linguagem, com a diferença de que elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos \texttt{smart\_ptr} definidos:
 
 \begin{itemize}
-\item scoped\_ptr: representa o conceito de ponteiro não compartilhável, logo não podem ser copiados. Desalocam a memória ao sair de escopo.
-\item scoped\_array: mesmo que scoped\_ptr mas para um array de objetos.
-\item shared\_ptr: representa um ponteiro que tem diversos donos, pode ser copiado e só é destruído quando todos os donos forem destruídos.
-\item shared\_array: mesmo que shared\_ptr mas para arrays.
-\item weak\_ptr: são ponteiros para recursos de um shared\_ptr mas que não são donos do recurso.
-\item intrusive\_ptr: são shared\_ptr que guardam dentro do objeto para o qual apontam o contador de referências utilizado internamente.
+\item \texttt{scoped\_ptr}: representa o conceito de ponteiro não compartilhável, logo não podem ser copiados. Desalocam a memória ao sair de escopo.
+\item \texttt{scoped\_array}: mesmo que \texttt{scoped\_ptr} mas para um array de objetos.
+\item \texttt{shared\_ptr}: representa um ponteiro que tem diversos donos, pode ser copiado e só é destruído quando todos os donos forem destruídos.
+\item \texttt{shared\_array}: mesmo que \texttt{shared\_ptr} mas para arrays.
+\item \texttt{weak\_ptr}: são ponteiros para recursos de um \texttt{shared\_ptr} mas que não são donos do recurso.
+\item \texttt{intrusive\_ptr}: são \texttt{shared\_ptr} que guardam dentro do objeto para o qual apontam o contador de referências utilizado internamente.
 \end{itemize}
 
 \subsection{OpenGL}
