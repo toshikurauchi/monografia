@@ -281,9 +281,70 @@ LRESULT CALLBACK WindowProc(
   __in  LPARAM lParam
 );
 \end{verbatim}
-% TODO: O que é cada um dos argumentos (isso é explicado antes?)
+
+Nessa função, o argumento hwnd é o handler da janela corrente, uMsg é um inteiro sem sinal que códifica a mensagem recebida e os argumentos wParam e lParam são os parâmetros da mensagem.
+
+Por exemplo:
+% falar sobre window resize...
+
+Um laço de eventos típico para um programa em OpenGL tem a seguinte forma:
+
+\begin{verbatim}
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam){
+	switch(msg) {
+		case WM_CREATE: 
+			// Inicialização do contexto de renderização
+			// no caso da WM_CREATE o valor de lParam é um ponteiro para um struct
+			// do tipo CREATESTRUCT que contém o ponteiro para os dados do usuário
+			// passado na função CreateWindow
+			
+		case WM_DESTROY:
+			// Liberação de recursos gráficos e deleção do contexto criado
+		case WM_CLOSE:
+			// O usuário clicou no botão de fechamento da janela
+			// Então deve-se avisar para o sistema operacional que a aplicação deve
+			// ser encerrada.
+			PostQuitMessage(0);
+			break;
+		case WM_PAINT:
+			// O sistema requisitou à aplicação a atualização da janela
+
+			// Funções do OpenGL para limpar e renderizar
+			wglSwapBuffers();
+			// avisa ao sistema que o evento já foi completamente tratado
+			return 0;
+	}
+	// Executa a rotina padrão para tratar o evento gerado
+	return (DefWindowProc(hwnd, msg, wParam, lParam));
+}
+\end{verbatim}
+
+Ao receber \texttt{WM\_CREATE} a aplicação deve inicializar todos os recursos para que a janela possa ser utilizada. No caso da Pandora's Box utilizando OpenGL como API gráfica, deve-se inicializar o contexto de renderização que será utilizado.
+
+% antes de chamarmos wglCreateContext devemos criar o pixel format descriptor
+A criação do contexto é gerenciada pela API do wgl (também conhecido como Wiggle), que é a implementação de OpenGL para o Windows. O contexto que será utilizado pela aplicação deve ser criado através da função wglCreateContext \cite{wglcreatecontextdoc}:
+
+\begin{verbatim}
+% assinatura da wglCreateContext
+\end{verbatim}
+
+Essa função tem como argumento o handler para o dispositivo utilizado pela janela. Tal handler pode ser obtido através da função GetDC \cite{getdcdoc}:
+
+% outro prototipo
+
+Logo a criação do contexto pode ser feita pelo seguinte trecho de código:
+
+\begin{verbatim}
+case WM_CREATE:
+	HDC hDC = GetDC(hWnd);
+	setPixelFormatDescriptor();
+	HGLRC hglrc = wglCreateContext(hDC);
+	wglMakeCurrent(hglrc);
+	break;
+\end{verbatim}
 
 \subsection{Transformações lineares}
+
 
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
