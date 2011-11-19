@@ -144,3 +144,8 @@ As matrizes são então reorganizadas em blocos de proximidade para otimizar a uti
 O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. A política de transparência (alfa) dos elipsóides é escolhida pelo usuário, sendo o valor de alfa algum dos quatro resultados das equações de anisotropia fracionada. A cor aplicada a cada elipsóide é calculada a partir do valor de alfa em uma rampa de cores também definida pelo usuário.
 
 Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação.
+
+\subsection{Técnicas aplicadas}
+
+\subsubsection{Depth Peeling}
+No campo tensorial em diversos casos existem elipsóides sobrepostos. Para observar alguns tipos de estrutura é interessante que tais elipsóides possuam algum nível de transparência. Para isso é necessário simular a transparência através de combinações de cores sobrepostas. Existem técnicas~\cite{alphasorting} que dependem dos objetos serem renderizados dos mais distantes para os mais próximos da câmera, entretanto no caso do campo esse tipo de processo se torna muito lento devido à grande quantidade de objetos a serem ordenados antes de cada renderização. Por esse motivo é necessário algum algoritmo independente da ordem de renderização.
