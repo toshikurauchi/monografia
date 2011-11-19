@@ -244,7 +244,7 @@ BOOL WINAPI ShowWindow(
 \end{verbatim}
 
 %TODO: Explicar em algum lugar o que são handlers (por mais simples que isso soe)
-Onde \texttt{hWnd} é o handler retornado pela função \texttt{CreateWindow} e \texttt{nCmdShow} controla como a janela deve ser exibida (maximizada, minimizada, simplesmente exibida, \ldots)
+Onde \texttt{hWnd} é o handler devolvido pela função \texttt{CreateWindow} e \texttt{nCmdShow} controla como a janela deve ser exibida (maximizada, minimizada, simplesmente exibida, \ldots)
 
 % TODO: Em nenhum lugar foi citado que o trabalho é dividido em threads
 Depois de criar a janela, a thread mãe começa a receber os eventos da janela criada em sua fila de mensagens. Para se recuperar uma mensagem da fila, utiliza-se a função\cite{docgetmessage}:
@@ -258,7 +258,7 @@ BOOL WINAPI GetMessage(
 );
 \end{verbatim}
 
-Que recebe como parâmetros um ponteiro para uma estrutura do tipo \texttt{MSG}\cite{docmsg}, o handler retornado pela função \texttt{CreateWindow}, \texttt{wMsgFilterMin} e \texttt{wMsgFilterMax} são constantes que podem ser passadas para indicar que tipo de mensagem deve ser retornada. O valor de retorno dessa função é um inteiro que indica qual o tipo de mensagem foi retornada ou se ocorreu um erro durante a execução da função.
+Que recebe como parâmetros um ponteiro para uma estrutura do tipo \texttt{MSG}\cite{docmsg}, o handler devolvido pela função \texttt{CreateWindow}, \texttt{wMsgFilterMin} e \texttt{wMsgFilterMax} são constantes que podem ser passadas para indicar que tipo de mensagem deve ser retornada. O valor de retorno dessa função é um inteiro que indica qual o tipo de mensagem foi retornada ou se ocorreu um erro durante a execução da função.
 
 Após recuperar a mensagem ela precisa ser traduzida e em seguida enviada para o seu destino final, a função responsável pela tradução da mensagem é\cite{doctranslatemessage}
 
@@ -361,6 +361,48 @@ case WM_CREATE:
 \end{verbatim}
 
 \subsection{Carregamento dinâmico de dll}
+
+Para que seja possível suportar diversas implementações independentes de especificações de APIs gráficas, a engine possui um mecanismo de carregamento dinâmico de dlls.
+
+Para se executar código presente em uma dll, é necessário carregá-la durante a execução do programa. Através da windows API, pode-se abrir um arquivo dll com a função LoadLibrary:
+
+\begin{verbatim}
+% protótipo da load library
+\end{verbatim}
+
+essa função retorna o handler para a biblioteca carregada ou NULL caso tenha ocorrido um erro. Caso o carregamento seja bem sucedido, pode-se utilizar o handler obtido para procurar ponteiro de funções.
+
+Na windows API, a função que cuida da busca de ponteiros de função é a GetProcAddress
+
+\begin{verbatim}
+% protótipo da get proc address
+\end{verbatim}
+
+essa função devolve um ponteiro genérico do tipo void* que precisa ser transformado para um ponteiro de função.
+
+O carregamento de uma dll dynamic\_create.dll com uma função chamada create é exemplificado no código abaixo:
+
+\begin{verbatim}
+// função que não recebe argumentos e retorna um ponteiro genérico
+typedef void * (__cdecl * MYPROC)();
+
+HINSTANCE lib = LoadLibrary(L"dynamic_create.dll");
+MYPROC lib_create = (MYPROC)GetProcAddress(lib, L"create");
+SomeObject object = (SomeObject) lib_create();
+\end{verbatim}
+
+Um detalhe importante do carregamento dinâmico de bibliotecas escritas em C++, é que para permitir o uso de namespaces, classes e sobrecarga de funções, o compilador da linguagem muda os nomes das funções geradas. Logo se uma função chamada create for compilada como um procedimento de c++, seu nome no arquivo dll não será create, mas sim um nome que depende da implementação do compilador utilizado. Para evitar a mudança de nomes, as funções a serem exportadas devem ser declaradas da forma abaixo:
+
+\begin{verbatim}
+extern "C" {
+	// declaração das funções a serem exportadas.
+}
+\end{verbatim}
+
+Outro detalhe específico do compilador da Microsoft, que foi utilizado nesse trabalho, é que os procedimentos que serão exportados devem ser definidos com a diretiva da seguinte forma:
+\begin{verbatim}
+__declspec(dllexport) TipoDeRetorno nome_da_funcao(parametros);
+\end{verbatim}
 
 \subsection{Transformações lineares}
 
