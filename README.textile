@@ -8,7 +8,11 @@ Victor Kendy Harada
 
 h2. Como compilar
 
-No diretorio /monografia execute (e necessario executar os 4 comandos por causa do bibtex):
+No Windows execute no diretorio /monografia:
+
+@compile.bat
+
+Esse script executa os seguintes comandos (e necessario executar os 4 comandos por causa do bibtex):
 
 @latex monografia@
 
