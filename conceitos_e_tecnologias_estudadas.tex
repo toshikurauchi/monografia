@@ -373,3 +373,35 @@ Para representar tais coeficientes são utilizados tensores, que são abstrações d
 % Pensar melhor nesse nome
 \subsection{Representação elipsoidal de tensores}
 Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfera, pois o movimento das moléculas se distribui igualmente para todas as direções em um determinado período de tempo. Já em meios anisotrópicos, como o movimento depende da direção, o coeficiente é modelado como um elipsóide, sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor ($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores $\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
+
+\subsection{Anisotropia Fracionada}
+A anisotropia fracionada é um valor no intervalo $ [0,1] $ que descreve o grau de anisotropia de um processo de difusão. Sejam $\lambda_{1}, \lambda_{2}, \lambda_{3}$ os autovalores do tensor. A anisotropia fracionada ($AF$) pode ser calculada a partir da seguinte fórmula\cite{hagmann}:
+\\
+\\
+\begin{math}
+AF = \sqrt{\frac{1}{2}}\frac{\sqrt{(\lambda_{1}-\lambda_{2})^{2} + (\lambda_{1}-\lambda_{3})^{2} + (\lambda_{2}-\lambda_{3})^{2}}}{\sqrt{\lambda_{1}^{2} + \lambda_{2}^{2} + \lambda_{3}^{2}}}
+\end{math}
+\\
+\\
+A anisotropia fracionada pode também ser dividida em três medidas (linear, planar e esférica) que indicam a forma da difusão\cite{westinISMRM97}. Sejam $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \geq 0$:
+\\
+\\
+Caso linear:
+\begin{math}
+C_{l} = \frac{\lambda_{1} - \lambda_{2}}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
+\end{math}
+\\
+\\
+Caso planar:
+\begin{math}
+C_{p} = \frac{2(\lambda_{2} - \lambda_{3})}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
+\end{math}
+\\
+\\
+Caso esférico:
+\begin{math}
+C_{s} = \frac{3\lambda_{3}}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
+\end{math}
+\\
+\\
+Tais medidas também pertencem ao intervalo $ [0,1] $. Quanto mais próximo de 1, em cada caso, mais o tensor se assemelha à forma referente.
