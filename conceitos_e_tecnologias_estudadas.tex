@@ -172,6 +172,23 @@ Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória a
 
 \subsection{OpenGL}
 
+O OpenGL é uma especificação de uma interface de software para o hardware gráfico.
+
+\subsubsection{O que ele não faz}
+
+O OpenGL não realiza tratamentos que dependam do sistema operacional, ou seja, não gerencia janelas, nem controla eventos de entrada e saída.
+
+Além disso ele não disponibiliza nenhuma forma de leitura de arquivos. Por esse motivo, não é possível visualizar diretamente imagens guardadas em arquivos (como png, jpg, bmp, ou modelos em três dimensões como 3ds\cite{3dsfileformat}, blend\cite{blendfileformat}, ou obj\cite{objfileformat}).
+
+\subsubsection{O que ele faz}
+
+O OpenGL é capaz de representar vértices em três dimensões combinados em pontos, retas, triângulos e quadriláteros, chamados de primitivas.
+
+Tais primitivas são projetadas em um plano e transformadas em conjuntos de pixels. Essa transformação, conhecida como rasterização é parte do processo descrito a seguir.
+
+\subsection{O pipeline}
+%TODO
+
 \subsection{Windows API}
 %Citar anteriormente...
 Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho foi utilizada apenas a API do sistema operacional Windows.
@@ -354,5 +371,5 @@ Imagens de ressonância magnética de difusão são uma das formas de obter informaç
 Para representar tais coeficientes são utilizados tensores, que são abstrações de escalares, vetores e matrizes utilizados em diversas aplicações. Em imagens de ressonância magnética de difusão, tais tensores são comumente representados por matrizes $ 3 \times 3 $ simétricas.
 
 % Pensar melhor nesse nome
-\subsection{Representação gráfica de tensores}
+\subsection{Representação elipsoidal de tensores}
 Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfera, pois o movimento das moléculas se distribui igualmente para todas as direções em um determinado período de tempo. Já em meios anisotrópicos, como o movimento depende da direção, o coeficiente é modelado como um elipsóide, sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor ($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores $\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
