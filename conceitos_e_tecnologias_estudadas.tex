@@ -376,32 +376,30 @@ Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfe
 
 \subsection{Anisotropia Fracionada}
 A anisotropia fracionada é um valor no intervalo $ [0,1] $ que descreve o grau de anisotropia de um processo de difusão. Sejam $\lambda_{1}, \lambda_{2}, \lambda_{3}$ os autovalores do tensor. A anisotropia fracionada ($AF$) pode ser calculada a partir da seguinte fórmula\cite{hagmann}:
-\\
-\\
-\begin{math}
+
+\begin{equation}
 AF = \sqrt{\frac{1}{2}}\frac{\sqrt{(\lambda_{1}-\lambda_{2})^{2} + (\lambda_{1}-\lambda_{3})^{2} + (\lambda_{2}-\lambda_{3})^{2}}}{\sqrt{\lambda_{1}^{2} + \lambda_{2}^{2} + \lambda_{3}^{2}}}
-\end{math}
-\\
-\\
+\label{af}
+\end{equation}
+
 A anisotropia fracionada pode também ser dividida em três medidas (linear, planar e esférica) que indicam a forma da difusão\cite{westinISMRM97}. Sejam $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \geq 0$:
-\\
-\\
+
 Caso linear:
-\begin{math}
+\begin{equation}
 C_{l} = \frac{\lambda_{1} - \lambda_{2}}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
-\end{math}
-\\
-\\
+\label{linearCase}
+\end{equation}
+
 Caso planar:
-\begin{math}
+\begin{equation}
 C_{p} = \frac{2(\lambda_{2} - \lambda_{3})}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
-\end{math}
-\\
-\\
+\label{planarCase}
+\end{equation}
+
 Caso esférico:
-\begin{math}
+\begin{equation}
 C_{s} = \frac{3\lambda_{3}}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
-\end{math}
-\\
-\\
+\label{sphericalCase}
+\end{equation}
+
 Tais medidas também pertencem ao intervalo $ [0,1] $. Quanto mais próximo de 1, em cada caso, mais o tensor se assemelha à forma referente.

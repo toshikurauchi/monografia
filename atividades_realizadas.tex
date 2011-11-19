@@ -133,11 +133,14 @@ Na etapa de compilação a imagem de ressonância magnética é lida e os tensores ar
 |A_{i,j}| < \varepsilon
 \end{math}
 
-Todos os tensores nulos são ignorados na compilação. São então calculados os autovalores e autovetores de todos os tensores não nulos, geradas as matrizes de transformação linear que levam uma esfera centralizada na origem para um elipsóide na posição correta no campo e armazenadas em um vetor. Essas matrizes são então reorganizadas em blocos de proximidade para otimizar a utilização pela aplicação de visualização. O vetor de matrizes reordenado é finalmente escrito no arquivo, além das informações iniciais sobre o campo.
+Todos os tensores nulos são ignorados na compilação. São então calculados os autovalores e autovetores de todos os tensores não nulos, geradas as matrizes de transformação linear que levam uma esfera centralizada na origem para um elipsóide na posição correta no campo e armazenadas em um vetor. 
+
+Como tais matrizes são matrizes de transformação homogênea, sabemos que a última linha sempre será $(0,0,0,1)$. Assim é possível ocultar tais dados e enviar outras informações em seu lugar (é necessário substituir os valores dessa linha para realizar quaisquer operações com a matriz). Nessa linha são armazenados os valores das equações (\ref{af}), (\ref{linearCase}), (\ref{planarCase}) e (\ref{sphericalCase}) (definidas na página \pageref{af}) que serão utilizados como diferentes políticas de escolha de nível de transparência (alfa) e cor dos elipsóides.
+
+As matrizes são então reorganizadas em blocos de proximidade para otimizar a utilização pela aplicação de visualização. O vetor de matrizes reordenado é finalmente escrito no arquivo, além das informações iniciais sobre o campo.
 
 \subsubsection{Apresentação do campo compilado}
 
-O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. Os componentes r,g e b da cor aplicada a cada elipsóide são os valores do x, y e z do autovetor associado ao maior autovalor do tensor (como o autovetor é normalizado os componentes r,g e b nunca serão maiores do que 1).
+O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. A política de transparência (alfa) dos elipsóides é escolhida pelo usuário, sendo o valor de alfa algum dos quatro resultados das equações de anisotropia fracionada. A cor aplicada a cada elipsóide é calculada a partir do valor de alfa em uma rampa de cores também definida pelo usuário.
 
-Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação sobre o campo.
-
+Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação.
