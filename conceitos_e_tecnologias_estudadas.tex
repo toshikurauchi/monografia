@@ -339,13 +339,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam){
 Ao receber \texttt{WM\_CREATE} a aplicação deve inicializar todos os recursos para que a janela possa ser utilizada. No caso da Pandora's Box utilizando OpenGL como API gráfica, deve-se inicializar o contexto de renderização que será utilizado.
 
 % antes de chamarmos wglCreateContext devemos criar o pixel format descriptor
-A criação do contexto é gerenciada pela API do wgl (também conhecido como Wiggle), que é a implementação de OpenGL para o Windows. O contexto que será utilizado pela aplicação deve ser criado através da função wglCreateContext \cite{wglcreatecontextdoc}:
+A criação do contexto é gerenciada pela API do wgl (também conhecido como Wiggle), que é a implementação de OpenGL para o Windows. O contexto que será utilizado pela aplicação deve ser criado através da função wglCreateContext \cite{wglcreatecontextdoc}: %TODO essa citação está como [?]
 
 \begin{verbatim}
 % assinatura da wglCreateContext
 \end{verbatim}
 
-Essa função tem como argumento o handler para o dispositivo utilizado pela janela. Tal handler pode ser obtido através da função GetDC \cite{getdcdoc}:
+Essa função tem como argumento o handler para o dispositivo utilizado pela janela. Tal handler pode ser obtido através da função GetDC \cite{getdcdoc}: %TODO essa citação está como [?]
 
 % outro prototipo
 
