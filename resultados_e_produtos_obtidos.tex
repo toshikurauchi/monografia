@@ -1,5 +1,14 @@
 \section{Resultados e produtos obtidos}
 
-O código do Pandora's Box Graphics Engine, assim como da aplicação de visualização de campos tensoriais pode ser encontrado no seguinte endereço:
+O código do Pandora's Box Graphics Engine, assim como da aplicação de visualização de campos tensoriais e outros exemplos pode ser encontrado no seguinte endereço:
 
 \url{https://github.com/victorkendy/PandoraBox}
+
+\subsection{Compilador de campos tensoriais}
+A aplicação de compilação de campos tensoriais pode ser executada através da linha de comando com os seguintes argumentos opcionais:
+
+\begin{verbatim}
+field_compiler.exe [ARQUIVO DO CAMPO] [ARQUIVO CTF]
+\end{verbatim}
+
+Caso o programa seja executado sem nenhum argumento o usuário deve escolher entre as opções 1 e 2 (campo de uma dupla hélice sintética e de um cérebro humano respectivamente). A opção \texttt{ARQUIVO DO CAMPO} deve indicar o nome de um arquivo .img sem a extensão (supõe-se que o arquivo .hdr tenha o mesmo nome), ou seja, suponha que existam os arquivos \texttt{campo.hdr} e \texttt{campo.img}, então o argumento deve ser \texttt{campo}. O último argumento deve ser o nome do arquivo .ctf a ser criado, por exemplo \texttt{campo.ctf}.
