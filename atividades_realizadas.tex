@@ -21,7 +21,36 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 \subsubsection {BufferTexture}
 
 \subsubsection{VertexBuffer}
-% explicar o que é e como construir com o builder
+% precisa da historinha?
+No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte forma:
+
+\begin{verbatim}
+glBegin(GL_TRIANGLES);
+glVertex3f(0.0f, 0.0f, 0.0f);
+glNormal3f(0.0f, 0.0f, 1.0f);
+glVertex3f(0.0f, 1.0f, 0.0f);
+glNormal3f(0.0f, 0.0f, 1.0f);
+glVertex3f(1.0f, 0.0f, 0.0f);
+glNormal3f(0.0f, 0.0f, 1.0f);
+glEnd();
+\end{verbatim}
+
+pode-se observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
+
+Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é específicado atravez de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura abaixo.
+
+%todo: colocar uam figura sobre vertex array
+
+Como a especificação desse modelo de dados era flexível e permitia enviar uma grande quantidade de dados para a \texttt{GPU} em um número constante de chamadas de função, ele foi rapidamente adotado pelos programadores.
+
+Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução do problema de tráfego de dados foi colocar o \textt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
+
+% como construir com o builder
+
+Na Pandora's Box, \texttt{Vertex Buffers} são especificados através da classe VertexBuffer, sua estrutura interna é semelhante à apresentada na figura X. % não esquecer de referenciar o nome da figura dos vertex buffer
+Cada vértice é específicado através da classe VertexAttrib que guarda informações sobre o primeiro índice do atributo dentro o buffer, seu significado, número de componentes e qual a distância entre valores consecutivos do atributo.
+
+A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}. % falar mais sobre o vertexbufferbuilder
 
 \subsubsection {FrameBufferObject}
 
