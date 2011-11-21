@@ -158,6 +158,15 @@ Foram desenvolvidos alguns algoritmos de pós-processamento customizados como exe
 
 \subsubsection{Passagem de parâmetros para o GPUProgram}
 
+A customização do pipeline através de shaders gera grande flexibilidade, porém essa customização só é interessante por causa da passagem de diferentes parâmetros para o shader.
+
+Um programa do OpenGL pode receber dois tipos de parâmetros:
+
+\begin{itemize}
+\item Uniformes: um valor que é constante para uma dada primitiva, por exemplo, para um triângulo, o processamento de seus três vértices utilizam o mesmo valor de uniforme.
+\item Atributos: um valor que é constante para um vértice. Atributos só podem ser acessados dentro do \texttt{vertex shader}. No exemplo acima, cada um dos vértices do triângulo poderia ter um valor diferente para o atributo.
+\end{itemize}
+
 % Eu sei que tá zuado mas é só pra pensar um poko...
 Uniforms são parâmetros constantes por primitiva. São passados para o shader através da classe UniformSet.
 
@@ -174,7 +183,14 @@ Para minimizar o número de troca de estados do OpenGL, a Pandora's Box possui a 
 %explicar o state set e os state controller(depthcontroller e blendcontroller)
 
 \subsubsection{Desenho de modelos}
-% explicar o drawcontroller
+
+Para lidar com a variedade de tipos de modelos e com as diferentes técnicas de renderização, foi desenvolvido um controlador de desenho.
+
+A implementação dessa classe utilizando OpenGL 
+% introdução ao drawcontroller
+%explicar a implementação para um model generico
+% explicar a implementação para VBOModel
+% explicar a implementação do render instanced
 
 \subsection{Visualização de campos tensoriais}
 
