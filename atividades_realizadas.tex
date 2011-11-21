@@ -12,7 +12,17 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 
 \subsubsection {Shader}
 
+Como já foi explicado, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Até a versão 1.5, esse pipeline tinha funcionalidade fixa. 
+
+A partir da versão 2.0, os \texttt{shaders} foram introduzidos. Um shader é um programa que sobrescreve alguma das funcionalidades fixas do pipeline.
+
+Na Pandora's Box, ....
+
 \subsubsection {GPUProgram}
+
+No OpenGL, programas são grupos de shaders, onde cada fase do pipeline pode ser sobrescrita apenas uma vez, o que implica que os shaders que sobrescrevem um determinado passo do pipeline só podem especificar uma função main.
+
+Na engine, esse mesmo conceito é implementado...
 
 \subsubsection {Texture1D}
 
