@@ -53,7 +53,7 @@ Com o aumento da complexidade dos modelos, foi necessário reinventar a API exist
 
 Como a especificação desse modelo de dados era flexível e permitia enviar uma grande quantidade de dados para a \texttt{GPU} em um número constante de chamadas de função, ele foi rapidamente adotado pelos programadores.
 
-Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução do problema de tráfego de dados foi colocar o \textt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
+Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução do problema de tráfego de dados foi colocar o \texttt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
 
 % como construir com o builder
 
