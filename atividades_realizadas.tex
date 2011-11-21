@@ -8,17 +8,22 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos definidos pela API gráfica.
 % TODO: O que é a API gráfica
 
+\subsubsection {Bufer}
+
 \subsubsection {Shader}
 
 \subsubsection {GPUProgram}
-
-\subsubsection {Bufer}
 
 \subsubsection {Texture1D}
 
 \subsubsection {Texture2D}
 
 \subsubsection {BufferTexture}
+
+\subsubsection{VertexBuffer}
+% explicar o que é e como construir com o builder
+
+\subsubsection {FrameBufferObject}
 
 \subsection{Grafo de cena}
 %TODO: Geral sobre o que é o grafo de cena, como é percorrido, etc.
@@ -109,11 +114,20 @@ O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com
 \subsection{Mecanismos da Engine}
 
 \subsubsection{Passagem de parâmetros para o GPUProgram}
+
+% Eu sei que tá zuado mas é só pra pensar um poko...
+Uniforms são parâmetros constantes por primitiva. São passados para o shader através da classe UniformSet.
+
+Atributos são parâmetros constantes por vértice da primitiva. São passados para o shader através de vertex buffers.
+
+
 % explicar uniforms e attribs
 % explicar o uniform set e o uniform stack e os tipos suportados
 % tradução de atributos para o shader
 
-\subsubsection{Mapeamento dos estados do OpenGL}
+\subsubsection{Mapeamento dos estados}
+
+Para minimizar o número de troca de estados do OpenGL, a Pandora's Box possui a classe \texttt{StateSet}. Essa classe representa quais objetos estão associados ao contexto corrente da API gráfica. % lazy state
 %explicar o state set e os state controller(depthcontroller e blendcontroller)
 
 \subsubsection{Desenho de modelos}
