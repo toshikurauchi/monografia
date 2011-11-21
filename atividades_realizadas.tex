@@ -176,3 +176,9 @@ Para a translação e rotação do campo foram implementados um \texttt{KeyboardEven
 
 \subsubsection{Depth Peeling}
 No campo tensorial em diversos casos existem elipsóides sobrepostos. Para observar alguns tipos de estrutura é interessante que tais elipsóides possuam algum nível de transparência. Para isso é necessário simular a transparência através de combinações de cores sobrepostas. Existem técnicas~\cite{alphasorting} que dependem dos objetos serem renderizados dos mais distantes para os mais próximos da câmera, entretanto no caso do campo esse tipo de processo se torna muito lento devido à grande quantidade de objetos a serem ordenados antes de cada renderização. Por esse motivo é necessário algum algoritmo independente da ordem de renderização.
+
+Depth peeling~\cite{everitt} é uma técnica iterativa que consiste de remoções de camadas próximas a cada iteração. Inicialmente a cena é renderizada normalmente armazenando o color buffer e o depth buffer em buffers auxiliares. A cada nova iteração todos os fragmentos com profundidade menor ou igual à profundidade armazenada no depth buffer auxiliar são descartados. Um novo depth buffer auxiliar é gerado a partir das profundidades dos fragmentos restantes, que são então renderizados e o resultado (color buffer) é acumulado no color buffer auxiliar.
+
+Para a realização da técnica completa são necessárias $N$ iterações, onde $N$ é o número máximo de fragmentos sobrepostos na cena. Entretanto foi fixado um número de iterações para diminuir a complexidade da técnica.
+
+Na aplicação de exemplo o depth peeling foi implementado como um processador de cena sendo que a cada iteração o grafo de cena é percorrido uma vez.

@@ -1,5 +1,63 @@
 \section{Resultados e produtos obtidos}
 
-O código do Pandora's Box Graphics Engine, assim como da aplicação de visualização de campos tensoriais pode ser encontrado no seguinte endereço:
+O código do Pandora's Box Graphics Engine, assim como da aplicação de visualização de campos tensoriais e outros exemplos pode ser encontrado no seguinte endereço:
 
 \url{https://github.com/victorkendy/PandoraBox}
+
+\subsection{Compilador de campos tensoriais}
+A aplicação de compilação de campos tensoriais pode ser executada através da linha de comando com os seguintes argumentos opcionais:
+
+\begin{verbatim}
+field_compiler.exe [ARQUIVO DO CAMPO] [ARQUIVO CTF]
+\end{verbatim}
+
+Caso o programa seja executado sem nenhum argumento o usuário deve escolher entre as opções 1 e 2 (campo de uma dupla hélice sintética e de um cérebro humano respectivamente). A opção \texttt{ARQUIVO DO CAMPO} deve indicar o nome de um arquivo .img sem a extensão (supõe-se que o arquivo .hdr tenha o mesmo nome), ou seja, suponha que existam os arquivos \texttt{campo.hdr} e \texttt{campo.img}, então o argumento deve ser \texttt{campo}. O último argumento deve ser o nome do arquivo .ctf a ser criado, por exemplo \texttt{campo.ctf}.
+
+\subsection{Visualizador de campos tensoriais}
+O visualizador de campos tensoriais também pode ser executada através da linha de comando da seguinte maneira:
+
+\begin{verbatim}
+tensor_field.exe [ARQUIVO CTF]
+\end{verbatim}
+
+A execução sem nenhum argumento permitirá ao usuário escolher entre os dois campos utilizados como teste (dupla hélice e cérebro). É possível visualizar outros campos no formato .ctf enviando como argumento o nome do arquivo, por exemplo \texttt{campo.ctf}.
+
+\subsubsection{Movimentação e interação com o campo tensorial}
+É possível utilizar as seguintes teclas para interagir com o campo tensorial:
+
+\begin{center}
+	\begin{longtable}{ | c | p{10cm} | }
+	\hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Alternância de efeitos}} \\ \hline
+	1 & Ativa/desativa o inversor de cores \\ \hline
+	2 & Ativa/desativa o filtro do componente vermelho das cores \\ \hline
+	3 & Ativa/desativa o efeito de lentes senoidais \\ \hline
+	4 & Ativa/desativa o depth peeling \\ \hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Movimentação da câmera}} \\ \hline
+	W & Move a câmera para cima \\ \hline
+	S & Move a câmera para baixo \\ \hline
+	A & Move a câmera para a esquerda \\ \hline
+	D & Move a câmera para a direita \\ \hline
+	Q & Move a câmera em direção ao campo \\ \hline
+	E & Move a câmera na direção oposta ao campo \\ \hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Nível de anisotropia considerado (são somente mostrados os elipsóides que representam tensores cuja anisotropia fracionada pertence ao intervalo [min\_AF,max\_AF])}} \\ \hline
+	Z & Aumenta o valor de min\_AF \\ \hline
+	X & Diminui o valor de min\_AF \\ \hline
+	V & Aumenta o valor de max\_AF \\ \hline
+	C & Diminui o valor de max\_AF \\ \hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Escala dos elipsóides}} \\ \hline
+	O & Diminui o tamanho dos elipsóides \\ \hline
+	P & Aumenta o tamanho dos elipsóides \\ \hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Cálculo da anisotropia fracionada}} \\ \hline
+	R & Utiliza o cálculo da forma linear \\ \hline
+	T & Utiliza o cálculo da forma planar \\ \hline
+	Y & Utiliza o cálculo da forma esférica \\ \hline
+	U & Utiliza o cálculo geral da anisotropia fracionada \\ \hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Grade (eixos cartesianos)}} \\ \hline
+	G & Mostra/esconde a grade \\ \hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Rampa de cores}} \\ \hline
+	F & Alterna entre as rampas de cores disponíveis \\ \hline
+	\end{longtable}
+\end{center}
+
+Além da interação com o teclado é possível rotacionar o campo utilizando o mouse. O movimento se inicia com o clique do botão esquerdo do mouse e termina quando o botão é solto.
