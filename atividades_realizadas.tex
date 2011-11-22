@@ -167,15 +167,41 @@ Um programa do OpenGL pode receber dois tipos de parâmetros:
 \item Atributos: um valor que é constante para um vértice. Atributos só podem ser acessados dentro do \texttt{vertex shader}. No exemplo acima, cada um dos vértices do triângulo poderia ter um valor diferente para o atributo.
 \end{itemize}
 
-% Eu sei que tá zuado mas é só pra pensar um poko...
-Uniforms são parâmetros constantes por primitiva. São passados para o shader através da classe UniformSet.
+No OpenGL, as uniformes são enviadas de forma homogênea através da seguinte rotina:
 
-Atributos são parâmetros constantes por vértice da primitiva. São passados para o shader através de vertex buffers.
+\begin{verbatim}
+// troca o programa associado ao contexto de renderização
+glUseProgram(programID);
+// localização da uniforme dentro do programa
+GLint location = glGetUniformLocation(programID, nome_da_uniforme);
+// Existe uma função da família glUniform* para cada tipo de atributo.
+// Além disso, para o caso de vetores de valores, existem as funções 
+// cujo nome tem o sufixo v, por exemplo, glUniform1fv
+// no caso de um float:
+glUniform1f(location, valor);
+\end{verbatim}
+
+Para atributos, o processo é semelhante:
+
+\begin{verbatim}
+glUseProgram(programID);
+// localização do atributo dentro do programa
+GLint location = glGetAttribLocation(programID, nome_do_atributo);
+// Existe uma função da família glVertexAttrib* para cada tipo de atributo.
+// Além disso, para o caso de vetores de valores, existem as funções 
+// cujo nome tem o sufixo v, por exemplo, glVertexAttrib1fv
+// no caso de um float:
+glVertexAttrib1f(location, valor);
+\end{verbatim}
+
+Dentro da Pandora's Box, o mecanismo de passagem de parâmetros para o shader é implementado através do \texttt{UniformSet}, \texttt{UniformStack}, \texttt{GPUProgram}, \texttt{UniformValue}, \texttt{AttribBinder} e \texttt{BuiltInUniformBinder}.
+
+Um \texttt{UniformSet} é uma classe que representa um conjunto de valores de uniforme que foram definidos pelo usuário, cada uniform set é responsável por gerenciar instâncias de \texttt{UniformValue}.
 
 
-% explicar uniforms e attribs
 % explicar o uniform set e o uniform stack e os tipos suportados
 % tradução de atributos para o shader
+
 
 \subsubsection{Mapeamento dos estados}
 
