@@ -196,13 +196,33 @@ glVertexAttrib1f(location, valor);
 
 Dentro da Pandora's Box, o mecanismo de passagem de parâmetros para o shader é implementado através do \texttt{UniformSet}, \texttt{UniformStack}, \texttt{GPUProgram}, \texttt{UniformValue}, \texttt{AttribBinder} e \texttt{BuiltInUniformBinder}.
 
-Um \texttt{UniformSet} é uma classe que representa um conjunto de valores de uniforme que foram definidos pelo usuário, cada uniform set é responsável por gerenciar instâncias de \texttt{UniformValue}.
+Como foi citado anteriormente, a última etapa da atualização de estados é a sincronização dos parâmetros do shader. Nessa fase, inicialmente, cada um dos \texttt{UniformInfo} gerados durante a compilação do shader é utilizado para buscar um \texttt{UniformValue} dentro da \texttt{UniformStack}, o uniform value encontrado é então associado ao programa através do mecanismo ilustrado no código abaixo:
 
+\begin{verbatim}
+// laço de busca e associação de UniformValue
+GraphicAPI * gfx;
+para cada info em program->uniforms:
+% TODO: revisar esse mecanismo.... Eu lembro que eh mais ou menos assim....
+	UniformValue * value = gfx->search(info);
+	// Se o valor foi encontrado
+	if(value != NULL)
+		value->bindValueOn(program);
+
+// cada um dos tipos de UniformValue tem um método de associação
+// específico no GPUProgram
+// Para o caso do UniformFloat:
+void UniformFloat::bindValueOn(GPUProgram program) {
+	program->bindFloat(this, ....);
+}
+\end{verbatim}
+
+Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \textt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}.
 
 % explicar o uniform set e o uniform stack e os tipos suportados
 % tradução de atributos para o shader
 
 
+% TODO: mover o mapeamento para antes dos parâmetros do shader
 \subsubsection{Mapeamento dos estados}
 
 Para minimizar o número de troca de estados do OpenGL, a Pandora's Box possui a classe \texttt{StateSet}. Essa classe representa quais objetos estão associados ao contexto corrente da API gráfica. % lazy state
