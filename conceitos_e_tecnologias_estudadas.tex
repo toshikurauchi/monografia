@@ -405,7 +405,32 @@ __declspec(dllexport) TipoDeRetorno nome_da_funcao(parametros);
 \end{verbatim}
 
 \subsection{Transformações lineares}
+O conceito de transformações lineares é de importância fundamental para a computação gráfica. Através delas é possível representar translações, rotações e escalas aplicadas sobre os objetos.
 
+\subsubsection{Definição}
+Sejam $U$ e $V$ espaços vetoriais. Uma transformação linear é uma aplicação~\cite{callioli2007algebra} $F: U \rightarrow V$, tal que:
+\begin{enumerate}
+\item $F(u_1 + u_2) = F(u_1) + F(u_2), \forall u_1, u_2 \in U$
+\item $F(\alpha u) = \alpha F(u), \forall \alpha \in \mathbb{R}$ e $\forall u \in U$
+\end{enumerate}
+
+\subsubsection{Aplicação em computação gráfica}
+Em computação gráfica são utilizadas as coordenadas homogêneas~\cite{redbook} de vértices em $\mathbb{R}^3$. Para realizar a translação, rotação e escala de objetos representados em tais coordenadas utiliza-se as seguintes matrizes de transformação linear:
+
+Translação:
+
+\begin{math}
+\left(
+\begin{array}{cccc}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1 
+\end{array}
+\right)
+\end{math}
+
+Onde $t_x, t_y, t_z$ são as translações nos eixos $x, y, z$ respectivamente.
 
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
