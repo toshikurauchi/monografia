@@ -180,8 +180,7 @@ Há diversos outros tipos de algoritmos implementados na STL~\cite{algorithm}
 
 Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida como uma extensão para a STL sob o namespace \texttt{boost}. Os principais módulos dessa biblioteca utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} e \texttt{smart\_ptr}. 
 
-% TODO: O que são functors!
-O módulo \texttt{function} cria functors que são capazes de armazenar tanto funções nativas da linguagem ou quanto outros functors. Essas funções são criadas através da seguinte construção:
+O módulo \texttt{function} cria functors (objetos de função) que são capazes de armazenar tanto funções nativas da linguagem quanto outros functors. Essas funções são criadas através da seguinte construção:
 
 \begin{verbatim}
 void f (int i, int j, int k) {
@@ -266,7 +265,6 @@ if(glewIsSupported("GL_ARB_vertex_program")) {
 \end{verbatim}
 
 \subsection{Windows API}
-%Citar anteriormente...
 Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho foi utilizada apenas a API do sistema operacional Windows.
 
 %TODO: Não esquecer de explicar a ideia do contexto na parte de OpenGL
@@ -573,8 +571,7 @@ Imagens de ressonância magnética de difusão são uma das formas de obter informaç
 
 Para representar tais coeficientes são utilizados tensores, que são abstrações de escalares, vetores e matrizes utilizados em diversas aplicações. Em imagens de ressonância magnética de difusão, tais tensores são comumente representados por matrizes $ 3 \times 3 $ simétricas.
 
-% Pensar melhor nesse nome
-\subsection{Representação elipsoidal de tensores}
+\subsection{Representação elipsoidal de tensores de difusão}
 Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfera, pois o movimento das moléculas se distribui igualmente para todas as direções em um determinado período de tempo. Já em meios anisotrópicos, como o movimento depende da direção, o coeficiente é modelado como um elipsóide, sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor ($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores $\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
 
 \subsection{Anisotropia Fracionada}
