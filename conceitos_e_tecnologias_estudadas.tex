@@ -172,7 +172,9 @@ Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória a
 
 \subsection{OpenGL}
 
-O OpenGL é uma especificação de uma interface de software para o hardware gráfico.
+O OpenGL é uma especificação aberta e extensível de uma interface de software para o hardware gráfico.
+
+%todo: falar sobre a extensibilidade é importante!!!
 
 \subsubsection{O que ele não faz}
 
@@ -188,6 +190,28 @@ Tais primitivas são projetadas em um plano e transformadas em conjuntos de pixel
 
 \subsection{O pipeline}
 %TODO
+
+\subsection{GLEW}
+
+A \texttt{OpenGL Extension Wrangler Library}  \cite{glew}, conhecida como \texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. Ela é capaz de obter as funções definidas por extensões do OpenGL e além disso, fornece constantes definidas em tempo de execução que contém as extensões do OpenGL que o sistema do usuário suporta.
+
+O uso da \texttt{GLEW} é ilustrado no código abaixo:
+
+\begin{verbatim}
+#include <GL/glew.h>
+// Após a inicialização do contexto do OpenGL
+glewInit();
+// após a inicialização as funções definidas através de extensões estão disponíveis
+
+// verificar se a extensão GL_ARB_vertex_program está disponível
+if(GLEW_ARB_vertex_program) {
+    ...
+}
+// ou
+if(glewIsSupported("GL_ARB_vertex_program")) {
+
+}
+\end{verbatim}
 
 \subsection{Windows API}
 %Citar anteriormente...
