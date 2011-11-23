@@ -172,7 +172,50 @@ O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da tela com
 
 \subsubsection{Algoritmos de pós-processamento customizados}
 
-Foram desenvolvidos alguns algoritmos de pós-processamento customizados como exemplo. Eles estão disponíveis na aplicação de visualização de campos tensoriais. % Explicar direito e listar os exemplos
+Foram desenvolvidos alguns algoritmos de pós-processamento customizados como exemplo. Eles estão disponíveis na aplicação de visualização de campos tensoriais. A implementação de cada algoritmo se resume a um fragment shader utilizado para instanciar um \texttt{FramebufferImageProcessor}. Esse fragment shader recebe a posição do fragmento e uma textura contendo a imagem a ser renderizada.
+
+\begin{itemize}
+\item \textbf{Inversor de cores:} O algoritmo de inversão de cores cria um vetor com os componentes \texttt{r,g,b}, calcula seu complemento e utiliza o resultado como a cor do fragmento:
+\begin{verbatim}
+pbge::FramebufferImageProcessor * colorInversor() {
+    return new pbge::FramebufferImageProcessor(
+        "uniform sampler2D color;\n"
+        "varying vec2 position;\n"
+        "void main() {\n"
+        "   vec3 color = (texture2D(color, position.xy)).rgb;\n"
+        "   color = 1 - color;\n"
+        "   gl_FragColor = vec4(color, 1);\n"
+        "}\n"
+    );
+}
+\end{verbatim}
+\item \textbf{Filtro de vermelho:} O filtro lê o componente veremelho da cor enviada pelo vertex shader e a utiliza no fragmento, sendo todos os outros componentes iguais a zero:
+\begin{verbatim}
+pbge::FramebufferImageProcessor * chooseRed() {
+    return new pbge::FramebufferImageProcessor(
+        "uniform sampler2D color;\n"
+        "varying vec2 position;\n"
+        "void main() {\n"
+        "   float r = (texture2D(color, position.xy)).r;\n"
+        "   gl_FragColor = vec4(r, 0, 0, 1);\n"
+        "}\n"
+    );
+}
+\end{verbatim}
+\item \textbf{Lente senoidal:} A posição $(x_0, y_0)$ recebida é tal que $0 \leq x_0, y_0 \leq 1$. Ela é então mapeada para $(x_1, y_1)$, onde $-1 \leq x_0, y_0 \leq 1$. É calculado então o seno das componentes $x,y$ da posição multiplicadas por um fator que aumenta o efeito da lente. O resultado pertence ao intervalo $[-1,1]$, entretanto as coordenadas de textura estão no intervalo $[0,1]$. Por esse motivo o seno é multiplicado por $0.5$ e somado a $0.5$ resultando em um valor no mesmo intervalo das coordenadas de textura. Esse valor é utilizado para ler uma posição com um pequeno deslocamento da posição do fragmento atual, com isso é gerada uma leve deformação que simula o efeito de uma lente:
+\begin{verbatim}
+pbge::FramebufferImageProcessor * senoidalLens() {
+    return new pbge::FramebufferImageProcessor(
+        "varying vec2 position;\n"
+        "uniform sampler2D color;\n"
+        "void main(){\n"
+        "   vec2 x = 2 * position - 1.0;\n"
+        "   gl_FragColor = texture2D(color, 0.5 + 0.5 * sin(1.5 * x));\n"
+        "}"
+    );
+}
+\end{verbatim}
+\end{itemize}
 
 \subsection{Mecanismos da Engine}
 
