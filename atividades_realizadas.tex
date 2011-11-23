@@ -196,27 +196,31 @@ glVertexAttrib1f(location, valor);
 
 Dentro da Pandora's Box, o mecanismo de passagem de parâmetros para o shader é implementado através do \texttt{UniformSet}, \texttt{UniformStack}, \texttt{GPUProgram}, \texttt{UniformValue}, \texttt{AttribBinder} e \texttt{BuiltInUniformBinder}.
 
-Como foi citado anteriormente, a última etapa da atualização de estados é a sincronização dos parâmetros do shader. Nessa fase, inicialmente, cada um dos \texttt{UniformInfo} gerados durante a compilação do shader é utilizado para buscar um \texttt{UniformValue} dentro da \texttt{UniformStack}, o uniform value encontrado é então associado ao programa através do mecanismo ilustrado no código abaixo:
+Como foi citado anteriormente, a última etapa da atualização de estados é a sincronização dos parâmetros do shader. Nessa fase, inicialmente, cada um dos \texttt{UniformInfo} gerados durante a compilação do shader é utilizado para buscar um \texttt{UniformValue} dentro da \texttt{UniformStack}, o uniform value encontrado é então associado ao programa através do mecanismo ilustrado no código abaixo para o caso do GPUProgram implementado para OpenGL:
 
 \begin{verbatim}
-// laço de busca e associação de UniformValue
-GraphicAPI * gfx;
-para cada info em program->uniforms:
-% TODO: revisar esse mecanismo.... Eu lembro que eh mais ou menos assim....
-	UniformValue * value = gfx->search(info);
-	// Se o valor foi encontrado
-	if(value != NULL)
-		value->bindValueOn(program);
+void GLProgram::updateUniforms(GraphicAPI * gfx) {
+    std::vector<UniformBindAndInfo>::iterator it;
+    for(it = uniforms.begin(); it != uniforms.end(); it++) {
+        UniformValue * value = gfx->searchUniform(it->getInfo());
+        if(it->shouldUpdate(value)) {
+            it->update(value);
+            value->bindValueOn(this, it->getInfo(), gfx);
+        }
+    }
+    
 
 // cada um dos tipos de UniformValue tem um método de associação
 // específico no GPUProgram
 // Para o caso do UniformFloat:
-void UniformFloat::bindValueOn(GPUProgram program) {
-	program->bindFloat(this, ....);
+void UniformFloat::bindValueOn(GPUProgram *p, const UniformInfo & info, GraphicAPI *ogl) {
+    float * values = static_cast<float *>(getValueAt(0));
+    p->bindFloat(info, ogl, values, std::min(getNumberOfElements(), info.getNumberOfElements()));
 }
 \end{verbatim}
 
-Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \textt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}.
+Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado). 
+
 
 % explicar o uniform set e o uniform stack e os tipos suportados
 % tradução de atributos para o shader
