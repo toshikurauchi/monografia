@@ -61,3 +61,94 @@ A execução sem nenhum argumento permitirá ao usuário escolher entre os dois camp
 \end{center}
 
 Além da interação com o teclado é possível rotacionar o campo utilizando o mouse. O movimento se inicia com o clique do botão esquerdo do mouse e termina quando o botão é solto.
+
+\subsection{Exemplo de código}
+
+A seguir será explicada a utilização básica da Pandora's Box. O exemplo desenvolvido utiliza um modelo de uma esfera que é transformada em um elipsóide no vertex shader. Inicialmente é incluído o header da engine:
+
+\begin{verbatim}
+#include "pbge/pbge.h"
+\end{verbatim}
+
+Na função \texttt{main} são definidas as configurações da janela (título e dimensões), associado um inicializador de cena customizado ao gerenciador de janelas e então é enviado o sinal para a engine iniciar a renderização das imagens na janela. É necessário que o usuário implemente um \texttt{SceneInitializer} que definirá a estrutura do grafo de cena.
+
+\begin{verbatim}
+int main() {
+    pbge::Manager manager;
+    MySceneInitializer sceneInitializer;
+    manager.setWindowTitle("Ellipsoid demo");
+    manager.setWindowDimensions(1024, 768);
+    manager.setSceneInitializer(&sceneInitializer);
+    manager.displayGraphics();
+    return 0;
+}
+\end{verbatim}
+
+O inicializador de cena deve herdar de \texttt{SceneInitializer} e implementar o operador \texttt{()}. É possível ter acesso ao renderizador através da instância de \texttt{Window} recebida como argumento. São então adicionados no renderizador os processadores de cena (\texttt{RenderPassProcessor}  e \texttt{BlitToFramebuffer}). Em seguida é criado o grafo de cena com um nó de transformação identidade como raíz. O grafo é então preenchido com outros nós e devolvido.
+
+\begin{verbatim}
+class MySceneInitializer : public pbge::SceneInitializer {
+public:
+    pbge::SceneGraph * operator () (pbge::GraphicAPI * gfx, pbge::Window * window) {
+        pbge::Renderer * renderer = window->getRenderer();
+        renderer->addSceneProcessor(new pbge::RenderPassProcessor);
+        renderer->addPostProcessor(new pbge::BlitToFramebuffer);
+        pbge::Node * root = new pbge::TransformationNode;
+        pbge::SceneGraph * graph = new pbge::SceneGraph(root);
+        
+        configureCamera(root, gfx);
+        createModel(root, gfx);
+
+        return graph;
+    }
+
+private:
+    void configureCamera(pbge::Node * parent, pbge::GraphicAPI * gfx) {...}
+    void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {...}
+};
+\end{verbatim}
+
+Para definir a posição da câmera utiliza-se um nó de transformação linear que é adicionado como filho da raíz. A câmera é instanciada, configurada (direção e perspectiva) e adicionada aos filhos da transformação.
+
+\begin{verbatim}
+void configureCamera(pbge::Node * parent, pbge::GraphicAPI * gfx) {
+    pbge::TransformationNode * cameraParent = 
+                      pbge::TransformationNode::translation(0, 0, 10);
+    pbge::CameraNode * camera = new pbge::CameraNode;
+    camera->lookAt(math3d::vector4(0,1,0), math3d::vector4(0, 0, -1));
+    camera->setPerspective(90, 1.0f, 2.0f, 30.0f);
+    cameraParent->addChild(camera);
+    parent->addChild(cameraParent);
+}
+\end{verbatim}
+
+A esfera utilizada possui raio 2 e 100 subdivisões. O nó de modelo (\texttt{ModelInstance}) é criado a partir do modelo da esfera. O shader criado é adicionado ao nó, que é então adicionado ao grafo.
+
+\begin{verbatim}
+void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
+    pbge::VBOModel * sphere = pbge::Geometrics::createSphere(2,100,gfx);
+    pbge::ModelInstance * model = new pbge::ModelInstance(sphere);
+    pbge::GPUProgram * shader = gfx->getFactory()->createProgramFromString(
+        "#version 150\n"
+        "in vec4 pbge_Vertex;\n"
+        "out vec4 color\n;"
+        "uniform mat4 pbge_ModelViewProjectionMatrix;\n"
+        "void main() {\n"
+        "   mat4 scale = mat4(1,0,0,0,\n"
+        "                     0,2,0,0,\n"
+        "                     0,0,1,0,\n"
+        "                     0,0,0,1);\n"
+        "   gl_Position = pbge_ModelViewProjectionMatrix*scale*pbge_Vertex;\n"
+        "   color = vec4(pbge_Vertex.xyz, 1);\n"
+        "}",
+        "in vec4 color;\n"
+        "void main() {\n"
+        "   gl_FragColor = color;\n"
+        "}"
+        );
+    model->setRenderPassProgram(shader);
+    parent->addChild(model);
+}
+\end{verbatim}
+
+O método \texttt{createProgramFromString} recebe duas strings, sendo a primeira o código do vertex shader e a segunda do fragment shader. Nesse exemplo o vertex shader definido recebe o vértice e a matriz ModelViewProjection e devolve a cor do fragmento. É criada uma matriz de escala que multiplica o vértice e o resultado é por sua vez multiplicado pela ModelViewProjection resultando na posição. A cor definida utiliza as coordenadas \texttt{x,y,z} como componentes \texttt{r,g,b}. O fragment shader define a cor do fragmento como a cor recebida do vertex shader.
