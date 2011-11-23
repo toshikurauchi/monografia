@@ -456,6 +456,64 @@ Translação:
 
 Onde $t_x, t_y, t_z$ são as translações nos eixos $x, y, z$ respectivamente.
 
+Rotação no eixo x:
+
+\begin{math}
+\left(
+\begin{array}{cccc}
+1 & 0 & 0 & 0 \\
+0 & cos\theta & -sen\theta & 0 \\
+0 & sen\theta & cos\theta & 0 \\
+0 & 0 & 0 & 1 
+\end{array}
+\right)
+\end{math}
+
+Rotação no eixo y:
+
+\begin{math}
+\left(
+\begin{array}{cccc}
+cos\theta & 0 & sen\theta & 0 \\
+0 & 1 & 0 & 0 \\
+-sen\theta & 0 & cos\theta & 0 \\
+0 & 0 & 0 & 1 
+\end{array}
+\right)
+\end{math}
+
+Rotação no eixo z:
+
+\begin{math}
+\left(
+\begin{array}{cccc}
+cos\theta & -sen\theta & 0 & 0 \\
+sen\theta & cos\theta & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 
+\end{array}
+\right)
+\end{math}
+
+Onde $\theta$ é o ângulo de rotação.
+
+Escala:
+
+\begin{math}
+\left(
+\begin{array}{cccc}
+s_x & 0 & 0 & 0 \\
+0 & s_y & 0 & 0 \\
+0 & 0 & s_z & 0 \\
+0 & 0 & 0 & 1 
+\end{array}
+\right)
+\end{math}
+
+Onde $s_x, s_y, s_z$ são as escalas aplicadas nos eixos $x, y, z$ respectivamente.
+
+As transformações podem ser compostas através de multiplicações das matrizes.
+
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
 
