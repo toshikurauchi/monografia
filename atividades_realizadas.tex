@@ -219,10 +219,11 @@ void UniformFloat::bindValueOn(GPUProgram *p, const UniformInfo & info, GraphicA
 }
 \end{verbatim}
 
-Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado). 
+Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
 
+% TODO: explicar os built-ins
 
-% explicar o uniform set e o uniform stack e os tipos suportados
+O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada um dos tipos de atributo definidos na \texttt{enum} \texttt{pbge::VertexAttrib::Type} tem uma classe especializada em associar o atributo ao shader.
 % tradução de atributos para o shader
 
 
