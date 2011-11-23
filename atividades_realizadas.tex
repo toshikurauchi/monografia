@@ -10,6 +10,26 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 
 \subsubsection {Bufer}
 
+Um \texttt{Buffer} é uma região de memória controlado pelo driver gráfico. O conceito de \texttt{Buffer} foi criado para resolver o gargalo da comunicação entre Memória Principal e Memória de Vídeo.
+
+No OpenGL, buffers são criados através da função glGenBuffers. Depois de criado, o buffer deve ser associado ao contexto do OpenGL, para isso utiliza-se o comando glBindBuffer, esse comando, além de informar ao OpenGL que o buffer deve ser associado ao contexto, faz com que os dados presentes no buffer sejam interpretados de forma diferente. Por exemplo, para informar que o buffer será utilizado para fornecer vértices ao pipeline, utiliza-se:
+
+\begin{verbatim}
+glBindBuffer(GL_ARRAY_BUFFER);
+\end{verbatim}
+
+Com o buffer associado ao contexto, é necessário inicializar os dados do buffer. Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
+
+Uma das características mais importantes do \texttt{buffer} é a possibilidade de mapeá-lo em uma região de memória que pode ser acessada pela aplicação. 
+% explicar os hints
+
+O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinto código:
+
+\begin{verbatim}
+glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+void * mappedBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+\end{verbatim}
+
 \subsubsection {Shader}
 
 Como já foi explicado, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Até a versão 1.5, esse pipeline tinha funcionalidade fixa. 
