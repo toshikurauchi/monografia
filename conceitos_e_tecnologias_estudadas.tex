@@ -73,7 +73,59 @@ nome::n
 \end{verbatim}
 
 \subsubsection{Templates}
-Possibilitam programação genérica
+O template é um recurso da linguagem C++ que permite programação genérica. É utilizado para a implementação de funções ou classes cujas funcionalidades podem ser adaptadas para tipos diferentes com o mesmo código. Para isso é utilizada a palavra reservada \texttt{template} seguida por um parâmetro de template, que é um tipo especial de parâmetro que pode ser utilizado para enviar tipos como argumento.
+
+Uma função \texttt{maximo} poderia ser definida da seguinte maneira:
+
+\begin{verbatim}
+template <class T>
+T maximo(T a, T b) {
+    T resultado;
+    resultado = (a > b) ? a : b;
+    return resultado;
+}
+\end{verbatim}
+
+Para utilizá-la deve ser enviado o tipo dos argumentos utilizados:
+
+\begin{verbatim}
+int c = 4, d = 5;
+maximo<int>(c,d);
+\end{verbatim}
+
+Um nó de uma lista ligada genérica poderia ser implementado de maneira análoga:
+
+\begin{verbatim}
+template <class T>
+class No {
+public:
+    No(T valorInicial) {
+        valor = valorInicial;
+        proximo = NULL;
+    }
+    T getValor() {
+        return valor;
+    }
+    void setValor(T novoValor) {
+        valor = novoValor;
+    }
+    No<T> * getProximo() {
+        return proximo;
+    }
+    void setProximo(No<T> *novoProximo) {
+        proximo = novoProximo;
+    }
+private:
+    T valor;
+    No<T> *proximo;
+};
+\end{verbatim}
+
+A utilização também é análoga à de funções:
+
+\begin{verbatim}
+No<int> meuNo(5);
+\end{verbatim}
 
 \subsubsection{A Standard Template Library (STL)}
 
