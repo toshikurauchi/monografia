@@ -20,8 +20,14 @@ glBindBuffer(GL_ARRAY_BUFFER);
 
 Com o buffer associado ao contexto, é necessário inicializar os dados do buffer. Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
 
-Uma das características mais importantes do \texttt{buffer} é a possibilidade de mapeá-lo em uma região de memória que pode ser acessada pela aplicação. 
-% explicar os hints
+Uma das características mais importantes do \texttt{buffer} é a possibilidade de mapeá-lo em uma região de memória que pode ser acessada pela aplicação. Esse mapeamento é importante, pois ele permite que a aplicação informe ao OpenGL que política de acesso a aplicação adotará para ler ou escrever na memória mapeada. Por exemplo, se o buffer for mapeado utilizando-se GL\_WRITE\_ONLY, o driver gráfico não precisa copiar os dados da memória do driver para a memória principal, o que diminui a troca de dados entre a memória de vídeo e a memória principal.
+
+As políticas de acesso definidas pelo OpenGL são: 
+\begin{itemize}
+\item GL\_READ\_ONLY: quando a aplicação planeja apenas ler a região de memória
+\item GL\_WRITE\_ONLY: quando a região de memória for utilizada apenas para escrita
+\item GL\_READ\_WRITE: quando a memória mapeada for utilizada para leitura e escrita
+\end{itemize}
 
 O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinto código:
 
@@ -29,6 +35,8 @@ O mapeamento de um vertex buffer que será utilizado somente para escrita pode se
 glBindBuffer(GL_ARRAY_BUFFER, bufferID);
 void * mappedBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 \end{verbatim}
+
+Na \texttt{Pandora's Box}, \texttt{buffer}s são implementações da interface \texttt{Buffer}. 
 
 \subsubsection {Shader}
 
@@ -45,6 +53,8 @@ No OpenGL, programas são grupos de shaders, onde cada fase do pipeline pode ser 
 Na engine, esse mesmo conceito é implementado...
 
 \subsubsection {Texture1D}
+
+Texturas são tabelas de valores. 
 
 \subsubsection {Texture2D}
 
