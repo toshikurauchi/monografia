@@ -52,15 +52,15 @@ buffer->unmap();
 
 \subsubsection {Shader}
 
-Como já foi explicado, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Até a versão 1.5, esse pipeline tinha funcionalidade fixa. 
+Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Até a versão 1.5, esse pipeline tinha funcionalidade fixa. %Versao 1.5 de quem?
 
 A partir da versão 2.0, os \texttt{shaders} foram introduzidos. Um shader é um programa que sobrescreve alguma das funcionalidades fixas do pipeline.
 
-Na Pandora's Box, ....
+Na Pandora's Box, .... %TODO
 
 \subsubsection {GPUProgram}
 
-No OpenGL, programas são grupos de shaders, onde cada fase do pipeline pode ser sobrescrita apenas uma vez, o que implica que os shaders que sobrescrevem um determinado passo do pipeline só podem especificar uma função main.
+No OpenGL, programas são grupos de shaders, nos quais cada fase do pipeline pode ser sobrescrita apenas uma vez, o que implica que os shaders que sobrescrevem um determinado passo do pipeline só podem especificar uma função main.
 
 Na engine, esse mesmo conceito é implementado...
 
@@ -87,7 +87,7 @@ glNormal3f(0.0f, 0.0f, 1.0f);
 glEnd();
 \end{verbatim}
 
-Pode-se observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
+É possível observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
 
 Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura abaixo.
 
@@ -243,7 +243,7 @@ pbge::FramebufferImageProcessor * senoidalLens() {
 
 \subsubsection{Passagem de parâmetros para o GPUProgram}
 
-A customização do pipeline através de shaders gera grande flexibilidade, porém essa customização só é interessante por causa da passagem de diferentes parâmetros para o shader.
+A customização do pipeline através de shaders gera grande flexibilidade, porém essa customização só é interessante devido a possibilidade de passagem de diferentes parâmetros para o shader.
 
 Um programa do OpenGL pode receber dois tipos de parâmetros:
 
