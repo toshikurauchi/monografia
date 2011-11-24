@@ -52,7 +52,7 @@ Na engine, esse mesmo conceito é implementado...
 
 \subsubsection{VertexBuffer}
 % precisa da historinha?
-No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte forma:
+No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
 
 \begin{verbatim}
 glBegin(GL_TRIANGLES);
@@ -65,9 +65,9 @@ glNormal3f(0.0f, 0.0f, 1.0f);
 glEnd();
 \end{verbatim}
 
-pode-se observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
+Pode-se observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
 
-Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é específicado atravez de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura abaixo.
+Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura abaixo.
 
 %todo: colocar uam figura sobre vertex array
 
@@ -319,7 +319,7 @@ A aplicação de visualização de campos tensoriais é dividida em duas etapas:
 
 O formato Analyze\textregistered\space é um formato de armazenamento de informações de imagens de ressonância magnética. A informação é dividida em dois arquivos: um cabeçalho (extensão \texttt{.hdr}) com informações sobre o campo (dimensões, ordenação, identificação e histórico) e o arquivo de imagem (extensão \texttt{.img}) contendo somente os valores da imagem (organizados conforme a descrição do cabeçalho).
 
-Para o desenvolvimento do leitor de arquivos Analyze\textregistered\space foi feita a suposição de que os nomes dos arquivos (\texttt{.hdr} e \texttt{.img}) são iguais visando simplificar a utilização e implementação. % Mudar isso se mudar o código
+Para o desenvolvimento do leitor de arquivos Analyze\textregistered\space foi feita a suposição de que os nomes dos arquivos (\texttt{.hdr} e \texttt{.img}) são iguais visando simplificar a utilização e implementação.
 
 \subsubsection{O formato Compiled Tensor Field (.ctf)}
 
