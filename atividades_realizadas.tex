@@ -36,7 +36,19 @@ glBindBuffer(GL_ARRAY_BUFFER, bufferID);
 void * mappedBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 \end{verbatim}
 
+Após a utilização da região mapeada, é importante cancelar o mapeamento feito. Esse cancelamento é feito através da função \texttt{glUnmapBuffer};
+
 Na \texttt{Pandora's Box}, \texttt{buffer}s são implementações da interface \texttt{Buffer}. 
+
+% falta descrever os detalhes de implementação
+Exemplo de uso de um \texttt{buffer} da \texttt{Pandora's Box}:
+\begin{verbatim}
+GraphicAPI *gfx = ...;
+Buffer *buffer = gfx->getFactory()->createBuffer(size);
+void * mapped = buffer->map(pbge::Buffer::WRITE_ONLY);
+// operar na região mapeada
+buffer->unmap();
+\end{verbatim}
 
 \subsubsection {Shader}
 
