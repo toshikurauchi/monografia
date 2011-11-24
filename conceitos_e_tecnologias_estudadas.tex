@@ -6,19 +6,19 @@ A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C
 
 \subsubsection{Variáveis e funções}
 As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um qualificador seguido de um tipo e de um nome, podendo receber um valor inicial):
-
+% Tirei o qualificador.. o que é isso?
 \begin{verbatim}
 <tipo> <nome>[=<valor inicial>]
 \end{verbatim}
 
-Ou seja, para declarar uma variável inteira chamada \texttt{contador} com valor inicial zero será utilizada a seguinte sintaxe:
+Ou seja, para declarar uma variável inteira chamada \texttt{contador} com valor inicial zero é utilizada a seguinte sintaxe:
 
 \begin{verbatim}
 int contador = 0;
 \end{verbatim}
 
 \subsubsection{Classes e objetos}
-Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores são declarados como funções com o nome da classe. A declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
+Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores são declarados como funções com o nome da classe sem valor e tipo de retorno. A declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
 
 Utilizando \texttt{class}:
 
@@ -215,7 +215,7 @@ boost::function1<void, int> functor2 = boost::bind(functor1, 2, _1);
 
 Os módulos bind e function da boost são utilizados principalmente em conjunto com algoritmos da STL, como o std::for\_each. %TODO: exemplo de código?
 
-Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. Essas classes tem comportamento parecido com o de ponteiros nativos da linguagem, com a diferença de que elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos \texttt{smart\_ptr} definidos:
+Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. Essas classes tem comportamento semelhante ao de ponteiros nativos da linguagem, com a diferença de que elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos \texttt{smart\_ptr} definidos:
 
 \begin{itemize}
 \item \texttt{scoped\_ptr}: representa o conceito de ponteiro não compartilhável, logo não podem ser copiados. Desalocam a memória ao sair de escopo.
@@ -252,7 +252,7 @@ As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (
 
 \subsection{GLEW}
 
-A \texttt{OpenGL Extension Wrangler Library}  \cite{glew}, conhecida como \texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. Ela é capaz de obter as funções definidas por extensões do OpenGL e além disso, fornece constantes definidas em tempo de execução que contém as extensões do OpenGL que o sistema do usuário suporta.
+A \texttt{OpenGL Extension Wrangler Library}  \cite{glew}, conhecida como \texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. Ela é capaz de obter as funções definidas por extensões do OpenGL e além disso, fornece constantes definidas em tempo de execução que contém as extensões do OpenGL que o sistema do usuário suporta. %Muita repetição da palavra extensões
 
 O uso da \texttt{GLEW} é ilustrado no código abaixo:
 
@@ -260,7 +260,8 @@ O uso da \texttt{GLEW} é ilustrado no código abaixo:
 #include <GL/glew.h>
 // Após a inicialização do contexto do OpenGL
 glewInit();
-// após a inicialização as funções definidas através de extensões estão disponíveis
+// após a inicialização as funções definidas através de extensões estão
+// disponíveis
 
 // verificar se a extensão GL_ARB_vertex_program está disponível
 if(GLEW_ARB_vertex_program) {
