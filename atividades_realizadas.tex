@@ -91,11 +91,11 @@ Pode-se observar que o número de chamadas de função cresce linearmente com a qua
 
 Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura abaixo.
 
-%todo: colocar uam figura sobre vertex array
+\includegraphics{vertexbuffer}
 
 Como a especificação desse modelo de dados era flexível e permitia enviar uma grande quantidade de dados para a \texttt{GPU} em um número constante de chamadas de função, ele foi rapidamente adotado pelos programadores.
 
-Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução do problema de tráfego de dados foi colocar o \texttt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
+Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução foi colocar o \texttt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
 
 % como construir com o builder
 
