@@ -244,11 +244,19 @@ Tais primitivas são projetadas em um plano e transformadas em conjuntos de pixel
 
 \subsection{O pipeline}
 
+\begin{wrapfigure}{r}{0.4\textwidth}
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=0.4\textwidth]{pipeline}
+\end{center}
+\vspace{-20pt}
+\caption{Pipeline}
+\vspace{-10pt}
+\end{wrapfigure}
+
 As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (Graphics Processing Unit) onde serão processadas e utilizadas para gerar uma imagem que será mostrada na janela. Esse processo é dividido em 5 estágios principais.
 
 No primeiro são aplicadas as transformações lineares e necessárias nos vértices (vertex shader). Em seguida as primitivas são subdivididas em partículas menores e podem ser gerados novos vértices (tessellation shaders e geometry shader). Por fim os vértices em 3 dimensões são projetados em um plano (rasterização) que representa a tela resultando em pixels que por sua vez passam por um processamento final (fragment shader). Esse processo é conhecido como pipeline.
-
-\includegraphics{pipeline}
 
 No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser modificados. Mais detalhes são apresentados na seção seguinte.
 
@@ -578,7 +586,15 @@ As transformações podem ser compostas através de multiplicações das matrizes.
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
 
-\includegraphics[scale=0.5]{anisotropia}
+\begin{wrapfigure}{r}{0.5\textwidth}
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{anisotropia}
+\end{center}
+\vspace{-20pt}
+\caption{Anisotropia e isotropia}
+\vspace{-10pt}
+\end{wrapfigure}
 
 Imagens de ressonância magnética de difusão são uma das formas de obter informações sobre o coeficiente de difusão de moléculas de água em diferentes direções nesses tipos de tecidos.
 

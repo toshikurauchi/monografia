@@ -1,8 +1,26 @@
 \section{Introdução}
 
-%TODO Separar em introduçãozinha, motivação, objetivos e organização do trabalho
+	O rápido desenvolvimento da tecnologia nas últimas décadas permitiu um avanço significativo na qualidade e velocidade de geração de imagens de computação gráfica. Entretanto ainda existem muitos desafios.
 
-	O desenvolvimento de programas de computação gráfica em tempo real exige a aplicação de um vasto conjunto de técnicas de otimização que são recorrentes em diversos aplicativos. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}. Entretanto, tais engines evoluíram de tal forma que o tempo de aprendizagem é longo. O intuito desse trabalho é desenvolver o Pandora's Box Graphics Engine, uma engine gráfica que implemente técnicas básicas de computação gráfica e que seja fácil de ser aprendida e utilizada.
-%Falar o quais técnicas estão disponíveis na engine e das técnicas utilizadas na implementação
+\begin{wrapfigure}{r}{0.5\textwidth}
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{lizard}
+\end{center}
+\vspace{-20pt}
+\caption{Imagem de computação gráfica~\cite{lizard}}
+\vspace{-10pt}
+\end{wrapfigure}
+
+	A quantidade de informação a ser processada é grande se comparada a capacidade de processamento. Além disso imagens-foto realistas podem levar dias para serem geradas. Por esse motivo é necessária a utilização de diversas técnicas de otimização visando produzir um resultado de melhor aparência de forma eficiente (tanto com relação ao tempo, quanto aos recursos consumidos).
+
+	Nesse contexto a visualização científica pode adicionar complexidade ao problema. Tal aplicação de computação gráfica está muitas vezes associada a uma grande quantidade de dados complexos a serem processados e visualizados. Por outro lado existem informações que podem ser irrelevantes para o usuário desse tipo de aplicação, tais como iluminação (e sombra), textura de materiais, ou até mesmo a profundidade. Sendo assim é possível utilizar outros tipos de técnicas que se adequem melhor a essas restrições.
+
+\subsection{Motivação}
+
+	As técnicas de otimização aplicadas no desenvolvimento de programas de computação gráfica são recorrentes em diversos aplicativos. Por esse motivo são desenvolvidas engines gráficas como OpenSceneGraph~\cite{openscenegraph} e Ogre3D~\cite{ogre3d}, que possibilitam a utilização de diversas técnicas previamente implementadas, assim como disponibilizam maneiras de descrever cenas complexas através de estruturas de dados conhecidas. Entretanto, tais engines evoluíram de tal forma que o tempo de aprendizagem é longo.
+
+\subsection{Objetivos}
+	O intuito desse trabalho é desenvolver o Pandora's Box Graphics Engine, uma engine gráfica que implemente técnicas básicas de computação gráfica e que seja fácil de ser aprendida e utilizada.
 
 	O estudo de tensores e campos tensoriais é de importância fundamental para diversas áreas do conhecimento. São encontradas aplicações no estudo de fenômenos sísmicos~\cite{Engelsma_cwp-655visualization}, estruturas eletrônicas~\cite{electronic-structure} e imagens de ressonância magnética sensíveis a difusão~\cite{citeulike:3787472}. A visualização de tais campos é, portanto, de grande relevância para o avanço do conhecimento. Por esse motivo uma das aplicações desenvolvidas com o auxílio da engine será um programa que permita tais visualizações. Serão utilizados para testes a visualização da representação elipsoidal de campos tensoriais provenientes de imagens de ressonância magnética sensíveis a difusão.
