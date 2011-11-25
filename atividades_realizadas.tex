@@ -437,10 +437,11 @@ private:
 \end{itemize}
 
 % TODO: mover o mapeamento para antes dos parâmetros do shader
-\subsubsection{Mapeamento dos estados}
+\subsubsection{Mapeamento e gerenciamento dos estados}
 
-Para minimizar o número de troca de estados do OpenGL, a Pandora's Box possui a classe \texttt{StateSet}. Essa classe representa quais objetos estão associados ao contexto corrente da API gráfica. % lazy state
-%explicar o state set e os state controller(depthcontroller e blendcontroller)
+Em placas de vídeo modernas, dispositivos altamente paralelos, as trocas de estado podem fazer com que o pipeline gráfico tenha que ser esvaziado, o que pode causar um grande impacto no desempenho da aplicação, por isso, é necessário evitar trocas de estado redundantes, minimizar trocas de estado e agrupar as trocas de estado.
+
+Na Pandora's Box, esse trabalho é delegado à classe \texttt{StateSet} e à algumas classes controladoras menores. A \texttt{StateSet} é uma classe que controla os objetos que estão associados ao contexto gráfico.
 
 \subsubsection{Desenho de modelos}
 
