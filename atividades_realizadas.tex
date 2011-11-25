@@ -310,9 +310,66 @@ void UniformFloat::bindValueOn(GPUProgram *p, const UniformInfo & info, GraphicA
 }
 \end{verbatim}
 
-Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
+Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ProjectionMatrix, gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
 
-% TODO: explicar os built-ins
+Os \texttt{BuiltInUniformBinder} implementados na Pandora's Box são de dois tipos:
+
+\begin{itemize}
+
+\item \texttt{binder} de variável obsoleta: são classes que enviam para o shader uniformes que foram extintas por versões novas do OpenGL (gl\_ProjectionMatrix, gl\_ModelViewMatrix e gl\_ModelViewProjectionMatrix). Esses \texttt{binder}s utilizam-se das funções obsoletas \texttt{glMatrixMode} e \texttt{glLoadMatrix} para enviar valores ao shader. Por exemplo, no caso da DeprModelViewProjectionBinder que envia o valor da matriz gl\_ModelViewProjection:
+\begin{verbatim}
+void DeprModelViewProjectionBinder::bind(pbge::GraphicAPI *gfx) {
+    math3d::matrix44 projection = gfx->getProjectionMatrix()->get().transpose();
+    math3d::matrix44 modelView = (gfx->getViewMatrix()->get() * gfx->getModelMatrix()->get()).transpose();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(modelView);
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(projection);
+}
+\end{verbatim}
+
+\item \texttt{binder} de \texttt{built-in} da Pandora's Box: são classes que enviam para o shader variáveis que tem significado especial para a engine desenvolvida (pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix e pbge\_ModelViewProjectionMatrix). Esses binders utilizam-se da função glUniformMatrix4fv, que tem a mesma funcionalidade glUniform1f, porém para matrizes. Os \texttt{binder}s dessa categoria são implementados pelo template texttt{MatrixBinder}:
+\begin{verbatim}
+template<typename MatrixGetter>
+class MatrixBinder : public BuiltInUniformBinder {
+public:
+    MatrixBinder(GLint _location) : location(_location) {}
+
+    void bind(GraphicAPI * gfx) {
+        if(getter.shouldChange(gfx)) {
+            math3d::matrix44 m = getter(gfx);
+            glUniformMatrix4fv(location, 1, GL_TRUE, m);
+        }
+    }
+private:
+    MatrixGetter getter;
+    
+    GLint location;
+};
+\end{verbatim}
+Esse template envia uma matriz para a uniforme localizada identificada por \_location e utiliza-se de um MatrixGetter para conseguir o valor que deve ser enviado. Por exemplo, para o caso do pbge\_ModelViewProjectionMatrix, temos o \texttt{MatrixGetter}:
+\begin{verbatim}
+class ModelViewProjectionMatrixGetter {
+public:
+    const math3d::matrix44 operator() (GraphicAPI* gfx) {
+        viewStamp = gfx->getViewMatrix()->getStamp();
+        modelStamp = gfx->getModelMatrix()->getStamp();
+        projStamp = gfx->getProjectionMatrix()->getStamp();
+        math3d::matrix44 view = gfx->getViewMatrix()->get();
+        math3d::matrix44 model = gfx->getModelMatrix()->get();
+        math3d::matrix44 projection = gfx->getProjectionMatrix()->get();
+        return projection * view * model;
+    }
+    bool shouldChange(GraphicAPI * gfx) {
+        return viewStamp != gfx->getViewMatrix()->getStamp() ||
+               modelStamp != gfx->getModelMatrix()->getStamp() ||
+               projStamp != gfx->getProjectionMatrix()->getStamp();
+    }
+private:
+    unsigned long viewStamp, modelStamp, projStamp;
+};
+\end{verbatim}
+\end{itemize}
 
 O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada um dos tipos de atributo definidos na \texttt{enum} \texttt{pbge::VertexAttrib::Type} tem uma classe especializada em associar o atributo ao shader.
 % tradução de atributos para o shader
