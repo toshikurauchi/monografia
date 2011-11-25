@@ -43,7 +43,7 @@ Na \texttt{Pandora's Box}, \texttt{buffer}s são implementações da interface \tex
 Exemplo de uso de um \texttt{buffer} da \texttt{Pandora's Box}:
 \begin{verbatim}
 GraphicAPI *gfx = ...;
-Buffer *buffer = gfx->getFactory()->createBuffer(size);
+Buffer *buffer = gfx->getFactory()->createBuffer(size, pbge::Buffer::STATIC_DRAW);
 void * mapped = buffer->map(pbge::Buffer::WRITE_ONLY);
 // operar na região mapeada
 buffer->unmap();
