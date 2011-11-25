@@ -6,6 +6,7 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 \subsection{Objetos da API gráfica}
 
 Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos definidos pela API gráfica.
+% TODO: O que é a API gráfica
 
 \subsubsection {Bufer}
 
@@ -72,6 +73,7 @@ Texturas são tabelas de valores.
 \subsubsection {BufferTexture}
 
 \subsubsection{VertexBuffer}
+% precisa da historinha?
 No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
 
 \begin{verbatim}
@@ -87,17 +89,9 @@ glEnd();
 
 É possível observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
 
-\begin{wrapfigure}{r}{0.6\textwidth}
-\vspace{-20pt}
-\begin{center}
-\includegraphics[width=0.6\textwidth]{vertexbuffer}
-\end{center}
-\vspace{-20pt}
-\caption{O vertex buffer\label{vertexbuffer}}
-\vspace{-10pt}
-\end{wrapfigure}
+Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura abaixo.
 
-Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura ao lado.
+\includegraphics{vertexbuffer}
 
 Como a especificação desse modelo de dados era flexível e permitia enviar uma grande quantidade de dados para a \texttt{GPU} em um número constante de chamadas de função, ele foi rapidamente adotado pelos programadores.
 
@@ -105,7 +99,7 @@ Mas esse modelo não solucionava o problema de tráfego de dados entre a memória p
 
 % como construir com o builder
 
-Na Pandora's Box, \texttt{Vertex Buffers} são especificados através da classe VertexBuffer, sua estrutura interna é semelhante à apresentada na Figura~\ref{vertexbuffer}.
+Na Pandora's Box, \texttt{Vertex Buffers} são especificados através da classe VertexBuffer, sua estrutura interna é semelhante à apresentada na figura X. % não esquecer de referenciar o nome da figura dos vertex buffer
 Cada vértice é específicado através da classe VertexAttrib que guarda informações sobre o primeiro índice do atributo dentro o buffer, seu significado, número de componentes e qual a distância entre valores consecutivos do atributo.
 
 A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}. % falar mais sobre o vertexbufferbuilder
@@ -371,9 +365,36 @@ private:
 \end{verbatim}
 \end{itemize}
 
-O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada um dos tipos de atributo definidos na \texttt{enum} \texttt{pbge::VertexAttrib::Type} tem uma classe especializada em associar o atributo ao shader.
-% tradução de atributos para o shader
+O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada um dos tipos de atributo definidos na \texttt{enum} \texttt{pbge::VertexAttrib::Type} tem uma classe (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
 
+Os \texttt{AttrBinder}s pertencem à uma das três categorias abaixo:
+
+\begin{itemize}
+
+\item binder de atributo obsoleto: Atributos obsoletos são aqueles que existiam na linguagem de shader GLSL mas que foram removidos em versões mais recentes. A Pandora's Box oferece suporte aos seguintes atributos obsoletos: gl\_Vertex, gl\_Normal, gl\_Color e gl\_SecondaryColor.
+
+No caso do atributo gl\_Vertex, temos o seguinte binder:
+
+\begin{verbatim}
+class DeprVertexBinder : public AttrBinder {
+public:
+    void bind(VertexBuffer * attrs) {
+        VertexAttrib * attr = attrs->findByType(VertexAttrib::VERTEX);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(attr->getNCoord(), GL_FLOAT, attr->getStride(), ATTRIB_POINTER_OFFSET(attr->getOffset()));
+    }
+
+    void unbind() {
+        glDisableClientState(GL_VERTEX_ARRAY);
+    }
+};
+\end{verbatim}
+
+\item binder de atributo definido pela engine:
+
+\item binder de atributo definido pelo usuário da engine:
+
+\end{itemize}
 
 % TODO: mover o mapeamento para antes dos parâmetros do shader
 \subsubsection{Mapeamento dos estados}
