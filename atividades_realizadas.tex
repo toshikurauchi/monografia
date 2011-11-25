@@ -390,9 +390,49 @@ public:
 };
 \end{verbatim}
 
-\item binder de atributo definido pela engine:
+\item binder de atributo definido pela engine: A Pandora's Box define os seguintes atributos: pbge\_Vertex, pbge\_Normal, pbge\_Color e pbge\_SecondaryColor, sendo que todos esses atributos enviados para o shader através da classe \texttt{SemanticAttribBinder}:
 
-\item binder de atributo definido pelo usuário da engine:
+\begin{verbatim}
+class SemanticAttribBinder : public AttrBinder {
+public:
+    SemanticAttribBinder(const VertexAttrib::Type attrType, GLint attrLocation): type(attrType), location(attrLocation){}
+
+    void bind(VertexBuffer * attrs) {
+        VertexAttrib * attr = attrs->findByType(type);
+        glVertexAttribPointer(location, attr->getNCoord(), GL_FLOAT, GL_FALSE, attr->getStride(), ATTRIB_POINTER_OFFSET(attr->getOffset()));
+        glEnableVertexAttribArray(location);
+    }
+
+    void unbind() {
+        glDisableVertexAttribArray(location);
+    }
+private:
+    VertexAttrib::Type type;
+    GLint location;
+};
+\end{verbatim}
+
+\item binder de atributo definido pelo usuário da engine: Esses atributos são mapeados para o shader através do \texttt{CustomAttrBinder}:
+
+\begin{verbatim}
+class CustomAttrBinder : public AttrBinder {
+public:
+    CustomAttrBinder(std::string attrName, GLint attrLocation) : name(attrName), location(attrLocation) {}
+
+    void bind(VertexBuffer * attrs) {
+        VertexAttrib * attr = attrs->findByName(name);
+        glVertexAttribPointer(location, attr->getNCoord(), GL_FLOAT, GL_FALSE, attr->getStride(), ATTRIB_POINTER_OFFSET(attr->getOffset()));
+        glEnableVertexAttribArray(location);
+    }
+
+    void unbind() {
+        glDisableVertexAttribArray(location);
+    }
+private:
+    std::string name;
+    GLint location;
+};
+\end{verbatim}
 
 \end{itemize}
 
