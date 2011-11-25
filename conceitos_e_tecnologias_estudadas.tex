@@ -5,10 +5,10 @@ A seguir serão apresentados os conceitos e tecnologias utilizadas na implementaç
 A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C. Por esse motivo a sintaxe de ambas é semelhante e um código escrito em C é válido em C++. É uma linguagem estruturada que, entre outras características, adiciona o paradigma de orientação a objetos ao C.
 
 \subsubsection{Variáveis e funções}
-As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um qualificador seguido de um tipo e de um nome, podendo receber um valor inicial):
-% Tirei o qualificador.. o que é isso?
+As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um tipo seguido de um nome, podendo receber um valor inicial):
+
 \begin{verbatim}
-<tipo> <nome>[=<valor inicial>]
+<tipo> <nome> [= <valor inicial>]
 \end{verbatim}
 
 Ou seja, para declarar uma variável inteira chamada \texttt{contador} com valor inicial zero é utilizada a seguinte sintaxe:
@@ -228,9 +228,7 @@ Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória a
 
 \subsection{OpenGL}
 
-O OpenGL é uma especificação aberta e extensível de uma interface de software para o hardware gráfico.
-
-%todo: falar sobre a extensibilidade é importante!!!
+O OpenGL é uma API gráfica amplamente adotada no mercado. Ele é uma especificação aberta e extensível~\cite{openglregistry} de uma interface de software para o hardware gráfico.
 
 \subsubsection{O que ele não faz}
 
