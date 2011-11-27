@@ -6,7 +6,7 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 
 \subsection{Objetos da API gráfica}
 
-Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos definidos pela API gráfica.
+Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos mais comuns definidos pelo OpenGL. Todos os mapeamentos foram projetados de forma que os objetos pudessem ser utilizados fora de um contexto inicializado e, além disso, os o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
 % TODO: O que é a API gráfica
 
 \subsubsection {Bufer}
@@ -56,6 +56,8 @@ buffer->unmap();
 Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Até a versão 1.5, esse pipeline tinha funcionalidade fixa. %Versao 1.5 de quem?
 
 A partir da versão 2.0, os \texttt{shaders} foram introduzidos. Um shader é um programa que sobrescreve alguma das funcionalidades fixas do pipeline.
+
+No OpenGL, \texttt{shader}s são criados 
 
 Na Pandora's Box, .... %TODO
 
