@@ -44,5 +44,16 @@ Minha principal frustração foi não ter conseguido desenvolver a tempo, como outr
 \end{itemize}
 
 \section{Trabalhos futuros}
+Existem muitas possibilidades a serem exploradas no futuro do trabalho. Atualmente a engine dá suporte somente ao Windows. Seria interessante estudar as APIs de gerenciamento de janelas e eventos do Linux e Mac para suportar também esses dois sistemas (provavelmente seriam necessárias outras modificações no projeto além do gerenciamento de janelas e eventos).
+
+Além disso o sistema de shaders se mostrou muito simples de usar, mas ainda é possível aprimorá-lo para permitir composição de shaders e injeção de dependências por exemplo. Como o código de cada shader é guardado em strings a realização de tais tarefas exigiria um processo automatizado de análise e possível geração de código. Para isso talvez seja necessário um maior estudo sobre compiladores e linguagens de programação.
+
+Quanto à visualização dos campos tensoriais, também existem diversas melhorias necessárias. Tanto as cores quanto a opacidade atualmente são utilizadas como indicadores de níveis de anisotropia. Seria interessante explorar novos usos para tais informações. 
+
+Mesmo descartando os tensores mais isotrópicos ainda existe muita poluição visual, o que dificulta a obtenção de informações. Para melhorar isso pode-se desenvolver outras heurísticas buscando facilitar a visualização de informações mais relevantes (para isso é necessário estudar o que é considerado como relevante).
+
+Ainda sobre a melhoria da visualização, existe um conceito chamado tractografia, que consiste em buscar fibras (estruturas) a partir da imagem de ressonância magnética. Como o campo é discretizado existe uma perda de precisão, o que dificulta a busca por estruturas. A aplicação desenvolvida poderia implementar técnicas já conhecidas, assim como buscar novas soluções para esse problema.
+
+Por fim, a Pandora's Box ainda possui poucos casos de uso. Para aprimorar a engine é essencial a detecção de bugs, necessidade de funcionalidades novas, gargalos, problemas de arquitetura, entre outros. Para isso é necessário desenvolver mais aplicações com o seu auxílio aplicando novas técnicas em diferentes contextos.
 
 \end{document}
