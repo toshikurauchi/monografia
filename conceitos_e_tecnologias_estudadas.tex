@@ -315,8 +315,8 @@ Onde:
 \item \texttt{dwStyle}: conjunto de flags que definem como a janela será exibida\cite{docwindowstyle}: com bordas, maximizada, minimizada, \ldots
 \item \texttt{x, y}: posição inicial da janela.
 \item \texttt{nWidth, nHeight}: dimensões iniciais da janela.
-\item \texttt{hWndParent}: se a janela que está sendo criada é uma subjanela de uma já existente, passa-se o handle da janela pai nesse argumento, caso contrário, passa-se \texttt{NULL}. Para a engine gráfica, esse argumento sempre recebe o valor \texttt{NULL}.
-\item \texttt{hMenu}: se for necessário criar uma menu, deve-se passar o handle do menu nesse argumento, caso contrário, passa-se \texttt{NULL}. %Falar o que é um handler
+\item \texttt{hWndParent}: se a janela que está sendo criada é uma subjanela de uma já existente, passa-se o handle (tipo especial de ponteiro inteligente) da janela pai nesse argumento, caso contrário, passa-se \texttt{NULL}. Para a engine gráfica, esse argumento sempre recebe o valor \texttt{NULL}.
+\item \texttt{hMenu}: se for necessário criar uma menu, deve-se passar o handle do menu nesse argumento, caso contrário, passa-se \texttt{NULL}.
 \item \texttt{hInstance}: o handle da instância do programa que está sendo executado, esse parâmetro é utilizado dentro do sistema na criação de um identificador único para a janela.
 \item \texttt{lpParam}: dados do usuário. Esse parâmetro recebe um ponteiro para qualquer tipo de dado que o usuário necessite. Na engine esse argumento recebe o ponteiro para uma instância de uma classe interna que representa a janela do sistema.
 \end{itemize}
@@ -339,7 +339,6 @@ BOOL WINAPI ShowWindow(
 );
 \end{verbatim}
 
-%TODO: Explicar em algum lugar o que são handlers (por mais simples que isso soe)
 Onde \texttt{hWnd} é o handle devolvido pela função \texttt{CreateWindow} e \texttt{nCmdShow} controla como a janela deve ser exibida (maximizada, minimizada, simplesmente exibida, \ldots)
 
 % TODO: Em nenhum lugar foi citado que o trabalho é dividido em threads
@@ -395,7 +394,7 @@ LRESULT CALLBACK WindowProc(
 );
 \end{verbatim}
 
-Nessa função, o argumento hwnd é o handler da janela corrente, uMsg é um inteiro sem sinal que códifica a mensagem recebida e os argumentos wParam e lParam são os parâmetros da mensagem.
+Nessa função, o argumento hwnd é o handle da janela corrente, uMsg é um inteiro sem sinal que códifica a mensagem recebida e os argumentos wParam e lParam são os parâmetros da mensagem.
 
 Por exemplo:
 % falar sobre window resize...
@@ -441,7 +440,7 @@ A criação do contexto é gerenciada pela API do wgl (também conhecido como Wiggle
 % assinatura da wglCreateContext
 \end{verbatim}
 
-Essa função tem como argumento o handler para o dispositivo utilizado pela janela. Tal handler pode ser obtido através da função GetDC \cite{getdcdoc}: %TODO essa citação está como [?]
+Essa função tem como argumento o handle para o dispositivo utilizado pela janela. Tal handle pode ser obtido através da função GetDC \cite{getdcdoc}: %TODO essa citação está como [?]
 
 % outro prototipo
 
@@ -466,7 +465,7 @@ Para se executar código presente em uma dll, é necessário carregá-la durante a e
 % protótipo da load library
 \end{verbatim}
 
-essa função retorna o handler para a biblioteca carregada ou NULL caso tenha ocorrido um erro. Caso o carregamento seja bem sucedido, pode-se utilizar o handler obtido para procurar ponteiro de funções.
+essa função retorna o handle para a biblioteca carregada ou NULL caso tenha ocorrido um erro. Caso o carregamento seja bem sucedido, pode-se utilizar o handle obtido para procurar ponteiro de funções.
 
 Na windows API, a função que cuida da busca de ponteiros de função é a GetProcAddress
 
