@@ -242,8 +242,6 @@ O OpenGL é capaz de representar vértices em três dimensões combinados em pontos,
 
 Tais primitivas são projetadas em um plano e transformadas em conjuntos de pixels. Essa transformação, conhecida como rasterização é parte do processo descrito a seguir.
 
-\subsection{O pipeline}
-
 \begin{wrapfigure}{r}{0.4\textwidth}
 \vspace{-20pt}
 \begin{center}
@@ -251,14 +249,20 @@ Tais primitivas são projetadas em um plano e transformadas em conjuntos de pixel
 \end{center}
 \vspace{-20pt}
 \caption{Pipeline}
-\vspace{-10pt}
+\vspace{-40pt}
 \end{wrapfigure}
+
+\subsubsection{O pipeline}
 
 As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (Graphics Processing Unit) onde serão processadas e utilizadas para gerar uma imagem que será mostrada na janela. Esse processo é dividido em 5 estágios principais.
 
 No primeiro são aplicadas as transformações lineares e necessárias nos vértices (vertex shader). Em seguida as primitivas são subdivididas em partículas menores e podem ser gerados novos vértices (tessellation shaders e geometry shader). Por fim os vértices em 3 dimensões são projetados em um plano (rasterização) que representa a tela resultando em pixels que por sua vez passam por um processamento final (fragment shader). Esse processo é conhecido como pipeline.
 
-No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser modificados. Mais detalhes são apresentados na seção seguinte.
+No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser modificados. Mais detalhes são apresentados na seção~\ref{atividades}.
+
+\subsubsection{O contexto do OpenGL}
+
+O OpenGL é implementado internamente como uma máquina de estados. Tais estados, assim como outras informações, como a janela e texturas são guardados em um contexto, que deve ser criado e inicializado para o funcionamento da aplicação. Essa criação é dependente da plataforma e por esse motivo não está definida na API do OpenGL.
 
 \subsection{GLEW}
 
@@ -286,7 +290,6 @@ if(glewIsSupported("GL_ARB_vertex_program")) {
 \subsection{Windows API}
 Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho foi utilizada apenas a API do sistema operacional Windows.
 
-%TODO: Não esquecer de explicar a ideia do contexto na parte de OpenGL
 Para se inicializar um contexto para a execução de programas em OpenGL é necessário criar uma janela, para isso usa-se a seguinte função\cite{doccreatewindow}:
 
 \begin{verbatim}
