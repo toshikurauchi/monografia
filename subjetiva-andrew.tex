@@ -1,0 +1,48 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage{setspace}
+\usepackage{boxedminipage}
+\usepackage[latin1]{inputenc}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+
+\setlength{\paperheight}{29.7cm}
+\setlength{\footskip}{1.0cm}
+\setlength{\textheight}{20.0cm}
+\setlength{\textwidth}{16.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\topmargin}{0.0cm}
+
+\begin{document}
+\title{Monografia - PARTE SUBJETIVA}
+\author{Andrew Toshiaki Nakayama Kurauchi}
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\setcounter{page}{1}
+
+\section{Desafios e frustrações encontrados}
+
+O trabalho se mostrou maior e mais complexo do que o imaginado inicialmente. Muitos dos detalhes necessários para a implementação estavam além do meu conhecimento na área e por isso tive uma grande dificuldade em boa parte do projeto. A maneira como as novas aplicações de computação gráfica são desenvolvidas (com um foco grande no pipeline customizável) é diferente da que eu conhecia e por esse motivo foi necessário entender essa nova forma.
+
+Além disso, foi necessário retomar o estudo sobre tensores e imagens de ressonância magnética que eu havia iniciado há alguns anos, o que demandou mais tempo e dedicação.
+
+Minha principal frustração foi não ter conseguido desenvolver a tempo, como outro exemplo de aplicação da engine, uma nova versão do jogo criado na disciplina de Computação Gráfica. A aplicação de visualização de campos tensoriais exigiu mais ajustes do que o esperado na fase final do projeto e foi gasto um tempo muito maior do que o previsto para realizar a leitura e compilação do arquivo do campo tensorial. Os arquivos (.hdr e .img) utilizados inicialmente eram representados de maneira diferente da esperada e devido a problemas com a documentação do formato foi necessário um tempo grande para detectar a diferença (que causava uma geração inconsistente).
+
+\section{Disciplinas cursadas mais relevantes}
+
+\begin{itemize}
+\item \textbf{MAC0110 - Introdução à Computação} - Essa disciplina foi meu primeiro contato com programação, consequentemente foi de importância fundamental para a realização do projeto
+\item \textbf{MAT0121 - Cálculo Diferencial e Integral II} - O conhecimento sobre coordenadas esféricas e derivadas foi fundamental para a criação de geometrias (dentre as quais os elipsóides utilizados no campo tensorial) e cálculo de vetores normais aos planos (utilização do conceito de gradiente)
+\item \textbf{MAT0139 - Álgebra Linear para Computação} - A álgebra linear é aplicada em muitos aspectos da computação gráfica. Transformações lineares, mudanças de coordenadas e transformações afins estão entre os conceitos mais relevantes para o entendimento do processo do pipeline
+\item \textbf{MAC0211 - Laboratório de Programação I} - Nessa disciplina foi ensinada a utilização do \LaTeX além de apresentado o conceito de controle de versão, fundamental para o desenvolvimento em grupo
+\item \textbf{MAC0323 - Estruturas de Dados e MAC0328 - Algoritmos em Grafos} - A principal colaboração dessas disciplinas para o projeto foram os algoritmos de buscas em grafos, utilizados para percorrer o grafo de cena
+\item \textbf{MAC0338 - Análise de Algoritmos} - Essa disciplina foi fundamental para a detecção da origem de um problema de performance na compilação do campo tensorial.
+\item \textbf{MAC0420 - Introdução a Computação Gráfica} - Nessa disciplina foram apresentados os conceitos básicos de computação gráfica como as aplicações de álgebra linear e o funcionamento do pipeline. Além disso instigou meu desejo de aprender mais sobre essa área que se tornou a base para esse trabalho.
+\item \textbf{MAC0441 - Programação Orientada a Objetos e MAC0434 - Tópicos de Sistemas de Computação (Programação Funcional Contemporânea)} - Essas disciplinas apresentaram muitas das ideias utilizadas no código da engine, tais como padrões de projeto e conceitos básicos de programação funcional
+\end{itemize}
+
+\section{Trabalhos futuros}
+
+\end{document}
