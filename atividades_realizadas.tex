@@ -217,10 +217,125 @@ Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através de 
 
 A partir da versão 2.0, os \texttt{shaders} foram introduzidos. Um shader é um programa que sobrescreve alguma das funcionalidades fixas do pipeline.
 
-No OpenGL, \texttt{shader}s são criados 
+No OpenGL, \texttt{shader}s são criados através da função \texttt{glCreateShader}, que retorna o handler do shader criado. Após a criação do shader, o código fonte do programa a ser executado deve ser associado ao handler criado, isso é feito por \texttt{glShaderSource}, após a definição do código fonte do shader, ele é compilado por \texttt{glCompileShader}, após a compilação o shader está pronto para ser associado a um programa.
 
-Na Pandora's Box, .... %TODO
+Na Pandora's Box, a implementação padrão do shader é dada pela classe GLShader:
 
+\begin{verbatim}
+// GLShader.h
+#ifndef PBGE_GFX_OPENGL_GLSHADER_H
+#define PBGE_GFX_OPENGL_GLSHADER_H
+#include <string>
+
+#include "pbge/gfx/Shader.h"
+
+namespace pbge {
+    class FileReader;
+    class GraphicAPI;
+
+    class GLShader : public Shader{
+    public:
+        GLShader() { 
+            shaderID = 0;
+            source = NULL;
+            compiled = false;
+        }
+
+        static GLShader * loadSourceFromFile(FileReader * file, const ShaderType type);
+
+        static GLShader * loadSource(const std::string & source, const ShaderType type);
+
+        bool isCompiled() {
+            return compiled;
+        }
+
+        bool compile(GraphicAPI * ogl);
+
+        const std::string & getInfoLog() {
+            return infoLog;
+        }
+
+        const ShaderType getType() {
+            return type;
+        }
+
+        unsigned getID() { 
+            return shaderID; 
+        }
+
+    private:
+
+        void extractInfolog(GraphicAPI * ogl);
+
+        std::string infoLog;
+
+        GLuint shaderID;
+
+        ShaderType type;
+
+        char * source;
+
+        bool compiled;
+    };
+}
+
+#endif
+\end{verbatim}
+\begin{verbatim}
+// GLShader.cpp
+#include "OpenGLAPI/gfx/GLShader.h"
+#include "pbge/core/File.h"
+
+using namespace pbge;
+
+GLShader * GLShader::loadSourceFromFile(FileReader * file, const ShaderType _type) {
+    if(!file->is_open())
+        return false;
+    GLShader * shader = new GLShader;
+    shader->type = _type;
+    shader->source = new char[file->getSize() + 1];
+    strcpy(shader->source, file->getData());
+    file->close();
+    return shader;
+}
+
+GLShader * GLShader::loadSource(const std::string & source, const ShaderType _type) {
+    GLShader * shader = new GLShader;
+    shader->type = _type;
+    shader->source = new char[source.size() + 1];
+    strcpy(shader->source, source.c_str());
+    return shader;
+}
+
+bool GLShader::compile(GraphicAPI * gfx) {
+    GLint status;
+    if(shaderID == 0) { 
+        if(type == VERTEX_SHADER)
+            shaderID = glCreateShader(GL_VERTEX_SHADER);
+        else if(type == FRAGMENT_SHADER)
+            shaderID = glCreateShader(GL_FRAGMENT_SHADER);
+        else 
+            return false;
+    }
+    const GLchar * strPtr = const_cast<GLchar*>(source);
+    glShaderSource(shaderID, 1, &strPtr, NULL);
+    glCompileShader(shaderID);
+    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+    compiled = (status == GL_TRUE);
+    extractInfolog(gfx);
+    return compiled;
+}
+
+void GLShader::extractInfolog(GraphicAPI * gfx) {
+    GLint infoLogLength;
+    GLchar * _infolog;
+    glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
+    _infolog = new GLchar[infoLogLength];
+    glGetShaderInfoLog(shaderID, infoLogLength, NULL, _infolog);
+    this->infoLog = std::string(_infolog);
+    delete [] _infolog;
+}
+\end{verbatim}
 \subsubsection {GPUProgram}
 
 No OpenGL, programas são grupos de shaders, nos quais cada fase do pipeline pode ser sobrescrita apenas uma vez, o que implica que os shaders que sobrescrevem um determinado passo do pipeline só podem especificar uma função main.
