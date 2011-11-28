@@ -418,22 +418,28 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 Como foi explicado, o grafo de cena é um grafo enraizado, direcionado e sem circuitos, um \texttt{Node Visitor} é uma classe que dado a raíz do grafo de cena, consegue percorrer os nós do grafo obedecendo as seguintes regras:
 
 \begin{itemize}
-\item Todos os caminhos do grafo devem ser percorridos.
+\item Todos os caminhos do grafo devem ser percorridos, se possível.
 \item O estado do \texttt{visitor} ao visitar um dado nó A, deve depender apenas das modificações feitas por nós dentro do caminho da raíz do grafo até A.
 \end{itemize}
 
 O segundo item da lista acima, faz com que o grafo de cena represente uma estrutura hierárquica.
 
-%TODO: O que é um visitor (referencia pro GOF só?)
-Todos os \texttt{Visitors} padrão da engine herdam da classe abstrata \texttt{VisitorTrait}, que encapsula o algoritmo de busca em profundidade para grafos direcionados. 
-Cada \texttt{visitor} é responsável por executar um determinado conjunto de métodos durante sua travessia no grafo de cena.
+Dentro da engine, existem duas implementações concretas do \texttt{visitor} descrito: UpdaterVisitor e ColorPassVisitor.
 
-%checar os nomes dos visitors pq eu realmente não me lembro....
-Os \texttt{visitors} definidos pela engine são: \texttt{UpdatePassVisitor} e \texttt{ColorPassVisitor}.
+O UpdaterVisitor é um \texttt{visitor} encarregado de passar por cada nó do grafo de cena e chamar o método updatePass, visitar todos os nós filhos do nó atual, chamar o método postUpdatePass e por fim atualizar o bounding box do nó atual, como exemplificado no código abaixo:
 
-% O que é o UpdatePass do renderizador? Vai estar explicado antes?
-% É executado o updatePass do nó?
-O \texttt{UpdatePassVisitor} é responsável por fazer a travessia dentro do \texttt{UpdatePass} do renderizador. Durante a travessia esse visitor executa o método \texttt{updatePass} e em seguida continua a busca em profundidade e, por fim, executa o método \texttt{postUpdatePass}.
+\begin{verbatim}
+void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
+    node->updatePass(this, gfx);
+    std::vector<Node*>::iterator child;
+    for(child = node->getChildren().begin(); child != node->getChildren().end(); child++)
+        dfsVisit(*child, gfx);
+    node->postUpdatePass(this, gfx);
+    if(node->getBoundingVolume() != NULL) {
+        node->getBoundingVolume()->update(getCurrentTransformation());
+    }
+}
+\end{verbatim}
 
 % Pensar melhor nesse nome
 % Citar artigo da NVidia
