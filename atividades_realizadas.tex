@@ -7,7 +7,6 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 \subsection{Objetos da API gráfica}
 
 Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos mais comuns definidos pelo OpenGL. Todos os mapeamentos foram projetados de forma que os objetos pudessem ser utilizados fora de um contexto inicializado e, além disso, os o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
-% TODO: O que é a API gráfica
 
 \subsubsection {Bufer}
 
@@ -382,12 +381,30 @@ Como a especificação desse modelo de dados era flexível e permitia enviar uma gr
 
 Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução foi colocar o \texttt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
 
-% como construir com o builder
-
 Na Pandora's Box, \texttt{Vertex Buffers} são especificados através da classe VertexBuffer, sua estrutura interna é semelhante à apresentada na Figura~\ref{vertexbuffer}.
 Cada vértice é específicado através da classe VertexAttrib que guarda informações sobre o primeiro índice do atributo dentro o buffer, seu significado, número de componentes e qual a distância entre valores consecutivos do atributo.
 
 A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}. % falar mais sobre o vertexbufferbuilder
+
+% como construir com o builder: texto explicando?
+\begin{verbatim}
+pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
+    int nVertices = ...; // Inicializa com o número de vértices desejado
+    pbge::VertexBufferBuilder builder(nVertices);
+    pbge::VertexAttribBuilder vertex = builder.addAttrib(4, VertexAttrib::VERTEX);
+    pbge::VertexAttribBuilder color = builder.addAttrib(4, VertexAttrib::COLOR);
+    for(int i = 0; i < nVertices; i++) {
+        float x, y, z, w; // Inicializados com os valores desejados
+        float r, g, b, a; // Inicializados com os valores desejados
+        builder.on(vertex).pushValue(x, y, z, w);
+        builder.on(color).pushValue(r, g, b, a);
+    }
+    return builder.done(Buffer::STATIC_DRAW, gfx);
+}
+\end{verbatim}
+
+% Esse código é suficiente?
+% Talvez valha a pena comentar sobre o VBOModel...
 
 \subsubsection {FrameBufferObject}
 
