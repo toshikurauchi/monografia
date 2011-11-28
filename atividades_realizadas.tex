@@ -804,3 +804,17 @@ Depth peeling~\cite{everitt} é uma técnica iterativa que consiste de remoções de
 Para a realização da técnica completa são necessárias $N$ iterações, onde $N$ é o número máximo de fragmentos sobrepostos na cena. Entretanto foi fixado um número de iterações para diminuir a complexidade da técnica.
 
 Na aplicação de exemplo o depth peeling foi implementado como um processador de cena sendo que a cada iteração o grafo de cena é percorrido uma vez.
+
+As imagens abaixo exemplificam essa técnica com duas esferas acompanhadas do resultado da iteração.
+
+\begin{wrapfigure}{l}{\textwidth}
+\vspace{-20pt}
+\begin{center}
+\subfigure[Primeira iteração]{\includegraphics[width=0.49\textwidth]{depthpeeling1}}
+\subfigure[Segunda iteração]{\includegraphics[width=0.49\textwidth]{depthpeeling2}}
+\subfigure[Terceira iteração]{\includegraphics[width=0.49\textwidth]{depthpeeling3}}
+\end{center}
+\vspace{-20pt}
+\caption{Campo de grama}
+\vspace{-10pt}
+\end{wrapfigure}
