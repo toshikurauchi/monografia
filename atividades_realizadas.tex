@@ -441,9 +441,21 @@ void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
 }
 \end{verbatim}
 
-% Pensar melhor nesse nome
-% Citar artigo da NVidia
-Geometry instancing
+O \texttt{ColorPassVisitor} é uma implementação concreta da classe abstrata \texttt{RenderVisitor} que tem a função de chamar os métodos \texttt{renderPass} e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} e \texttt{postVisitAction}, respectivamente, do \texttt{RenderVisitor}:
+
+\begin{verbatim}
+class ColorPassVisitor : public RenderVisitor {
+public:
+    void visitAction(Node * node, GraphicAPI * gfx) {
+        node->renderPass(this, gfx);
+    }
+    void postVisitAction(Node * node, GraphicAPI * gfx) {
+        node->postRenderPass(this, gfx);
+    }
+};
+\end{verbatim}
+
+O \texttt{RenderVisitor} é a classe abstrata que deve ser implementada por todos os \texttt{visitors} que fazem renderização, ele é importante, pois implementa o conceito de \texttt{frustum culling}
 
 \subsection{Renderizador}
 
