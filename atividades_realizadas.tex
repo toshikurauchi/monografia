@@ -415,6 +415,15 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 
 \subsubsection{Node Visitors}
 
+Como foi explicado, o grafo de cena é um grafo enraizado, direcionado e sem circuitos, um \texttt{Node Visitor} é uma classe que dado a raíz do grafo de cena, consegue percorrer os nós do grafo obedecendo as seguintes regras:
+
+\begin{itemize}
+\item Todos os caminhos do grafo devem ser percorridos.
+\item O estado do \texttt{visitor} ao visitar um dado nó A, deve depender apenas das modificações feitas por nós dentro do caminho da raíz do grafo até A.
+\end{itemize}
+
+O segundo item da lista acima, faz com que o grafo de cena represente uma estrutura hierárquica.
+
 %TODO: O que é um visitor (referencia pro GOF só?)
 Todos os \texttt{Visitors} padrão da engine herdam da classe abstrata \texttt{VisitorTrait}, que encapsula o algoritmo de busca em profundidade para grafos direcionados. 
 Cada \texttt{visitor} é responsável por executar um determinado conjunto de métodos durante sua travessia no grafo de cena.
