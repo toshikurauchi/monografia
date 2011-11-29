@@ -455,7 +455,21 @@ public:
 };
 \end{verbatim}
 
-O \texttt{RenderVisitor} é a classe abstrata que deve ser implementada por todos os \texttt{visitors} que fazem renderização, ele é importante, pois implementa o conceito de \texttt{frustum culling}
+O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem renderização. Para extendê-la, a classe filha deve implementar dois métodos: \texttt{visitAction} e \texttt{postVisitAction}. Esse é importante, pois implementa o conceito de \texttt{frustum culling}.
+
+\texttt{Frustum Culling} é o processo de renderizar apenas objetos que são visíveis para a câmera atual. Na \texttt{Pandora's Box}, um nó é considerado não visível se ele não colide com o \texttt{frustum} da câmera corrente e ao ser considerado não visível, ele e seus nós filhos não são visitados pelo \texttt{RenderVisitor}. Esse teste de visibilidade é executado dentro do método \texttt{dfsVisit} do \texttt{RenderVisitor}:
+
+\begin{verbatim}
+void dfsVisit(Node * node, GraphicAPI * gfx) {
+    if(node->getBoundingVolume() == NULL || node->getBoundingVolume()->frustumCullingTest(boundingFrustum)) {
+        visitAction(node, gfx);
+        std::vector<Node*>::iterator child;
+        for(child = node->getChildren().begin(); child != node->getChildren().end(); child++)
+            dfsVisit(*child, gfx);
+        postVisitAction(node, gfx);
+    }
+}
+\end{verbatim}
 
 \subsection{Renderizador}
 
