@@ -1,4 +1,4 @@
-
+% tem um algorirtimo em algum lugar aqui
 
 \section{Atividades realizadas}
 \label{atividades}
@@ -20,6 +20,7 @@ glBindBuffer(GL_ARRAY_BUFFER);
 
 Com o buffer associado ao contexto, é necessário inicializar os dados do buffer. Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
 
+% Colocar \texttt nos GL_WRITE_ONLY e outras constantes
 Uma das características mais importantes do \texttt{buffer} é a possibilidade de mapeá-lo em uma região de memória que pode ser acessada pela aplicação. Esse mapeamento é importante, pois ele permite que a aplicação informe ao OpenGL que política de acesso a aplicação adotará para ler ou escrever na memória mapeada. Por exemplo, se o buffer for mapeado utilizando-se GL\_WRITE\_ONLY, o driver gráfico não precisa copiar os dados da memória do driver para a memória principal, o que diminui a troca de dados entre a memória de vídeo e a memória principal.
 
 As políticas de acesso definidas pelo OpenGL são: 
@@ -38,6 +39,7 @@ void * mappedBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 
 Após a utilização da região mapeada, é importante cancelar o mapeamento feito. Esse cancelamento é feito através da função \texttt{glUnmapBuffer};
 
+% Precisa desses texttt?
 Na \texttt{Pandora's Box}, \texttt{buffer}s são implementações da interface \texttt{Buffer}. O buffer padrão do OpenGL é implementado pela classe GLBuffer:
 \begin{verbatim}
 // GLBuffer.h
@@ -682,11 +684,15 @@ void UniformFloat::bindValueOn(GPUProgram *p, const UniformInfo & info, GraphicA
 }
 \end{verbatim}
 
+% Talvez não citar todas as matrizes. Colocar referencias.
+
 Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ProjectionMatrix, gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
 
 Os \texttt{BuiltInUniformBinder} implementados na Pandora's Box são de dois tipos:
 
 \begin{itemize}
+
+% Verificar a palavra "binder". Tem lugares que esta com texttt e outros não.
 
 \item \texttt{binder} de variável obsoleta: são classes que enviam para o shader uniformes que foram extintas por versões novas do OpenGL (gl\_ProjectionMatrix, gl\_ModelViewMatrix e gl\_ModelViewProjectionMatrix). Esses \texttt{binder}s utilizam-se das funções obsoletas \texttt{glMatrixMode} e \texttt{glLoadMatrix} para enviar valores ao shader. Por exemplo, no caso da DeprModelViewProjectionBinder que envia o valor da matriz gl\_ModelViewProjection:
 \begin{verbatim}
@@ -835,6 +841,8 @@ A implementação dessa classe utilizando OpenGL
 
 A aplicação de visualização de campos tensoriais é dividida em duas etapas:
 
+% Tirar o textregistered e colocar uma referencia para o formato
+
 \begin{itemize}
 \item Compilação do formato Analyze\textregistered  para o formato \texttt{.ctf} (Compiled Tensor Field)
 \item Apresentação do campo contido no arquivo \texttt{.ctg}
@@ -850,9 +858,9 @@ Para o desenvolvimento do leitor de arquivos Analyze\textregistered\space foi fe
 
 O formato Compiled Tensor Field (\texttt{.ctf}) foi desenvolvido para armazenamento de informações sobre o campo tensorial a ser mostrado na aplicação de visualização de campos tensoriais. É um formato binário que contém o número de elipsóides (representação visual do tensor) no arquivo seguido por um conjunto de matrizes de transformação linear. Cada matriz será aplicada a uma esfera para obter um elipsóide na posição correta no campo. Por esse motivo ela contém uma escala (proporcional aos autovalores do tensor aplicados nos eixos cartesianos), uma rotação (dos eixos cartesianos para os eixos definidos pelos autovetores do tensor) e uma translação (para posicionar o elipsóide corretamente no campo).
 
-\subsubsection{Compilação da imagem de ressonância magnética}
-
 Na etapa de compilação a imagem de ressonância magnética é lida e os tensores armazenados em um vetor. Dada a seguinte definição para um tensor $A$ $3 \times 3$ nulo (para um dado $\varepsilon > 0$) para $1 \leq i, j \leq 3$, $i, j \in \mathbb{I}$:
+
+% Explicar melhor essa definição. Usar "Um tensor A sera considerado nulo quando ... for valido" por exemplo
 
 \begin{math}
 |A_{i,j}| < \varepsilon
@@ -867,6 +875,9 @@ As matrizes são então reorganizadas em blocos de proximidade para otimizar a uti
 \subsubsection{Apresentação do campo compilado}
 
 O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. A política de transparência (alfa) dos elipsóides é escolhida pelo usuário, sendo o valor de alfa algum dos quatro resultados das equações de anisotropia fracionada. A cor aplicada a cada elipsóide é calculada a partir do valor de alfa em uma rampa de cores também definida pelo usuário.
+
+% Tentar colocar o caption aqui
+% Mandar essa imagem pros resultados obtidos
 
 \begin{center}
 \begin{longtable}{cc}
