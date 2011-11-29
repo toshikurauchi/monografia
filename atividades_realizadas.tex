@@ -529,7 +529,7 @@ A engine atualmente define apenas um algoritmo de processamento padrão, o \textt
  
 Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes: \texttt{FramebufferImageProcessor} e \texttt{BlitToFramebuffer}.
 
-O \texttt{FramebufferImageProcessor} é utilizado para fazer o pós-processamento da imagem que estiver no buffer chamado color dentro do \texttt{FramebufferObject} atual. O algorirtmo executado por esse objeto é descrito pelo algoritmo abaixo:
+O \texttt{FramebufferImageProcessor} é utilizado para fazer o pós-processamento da imagem que estiver no buffer chamado color dentro do \texttt{FramebufferObject} atual. O algoritmo executado por esse objeto é descrito pelo código abaixo:
 
 \begin{verbatim}
 void FramebufferImageProcessor::process(GraphicAPI *gfx, Renderer *renderer) {
