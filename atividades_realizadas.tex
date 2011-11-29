@@ -365,7 +365,7 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 
 \subsection{Grafo de cena}
 %TODO: Tudo bem falar que é uma árvore? Geral sobre o que é o grafo de cena, como é percorrido, etc.
-A Pandora's Box utiliza uma árvore (um grafo direcionado, sem circuitos e com uma raíz), conhecida como grafo de cena, para representar a estrutura de uma cena. As mudanças realizadas por cada nó são aplicadas somente a si mesmo e aos seus filhos.
+A Pandora's Box utiliza um grafo enraizado, direcionado, sem circuitos, conhecido como grafo de cena, para representar a estrutura de uma cena. As mudanças realizadas por cada nó são aplicadas somente a si mesmo e aos seus filhos.
 
 Para realizar a renderização da cena são realizadas buscas em profundidade no grafo até que todas as informações necessárias tenham sido obtidas. Esse processo será melhor explicado em ~\ref{visitors}.
 
