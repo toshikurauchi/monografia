@@ -8,7 +8,7 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 
 Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos mais comuns definidos pelo OpenGL. Todos os mapeamentos foram projetados de forma que os objetos pudessem ser utilizados fora de um contexto inicializado e, além disso, os o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
 
-\subsubsection {Bufer}
+\subsubsection {Buffer}
 
 Um \texttt{Buffer} é uma região de memória controlado pelo driver gráfico. O conceito de \texttt{Buffer} foi criado para resolver o gargalo da comunicação entre Memória Principal e Memória de Vídeo.
 
@@ -29,7 +29,7 @@ As políticas de acesso definidas pelo OpenGL são:
 \item GL\_READ\_WRITE: quando a memória mapeada for utilizada para leitura e escrita
 \end{itemize}
 
-O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinto código:
+O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinte código:
 
 \begin{verbatim}
 glBindBuffer(GL_ARRAY_BUFFER, bufferID);
@@ -382,7 +382,7 @@ Como a especificação desse modelo de dados era flexível e permitia enviar uma gr
 Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução foi colocar o \texttt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
 
 Na Pandora's Box, \texttt{Vertex Buffers} são especificados através da classe VertexBuffer, sua estrutura interna é semelhante à apresentada na Figura~\ref{vertexbuffer}.
-Cada vértice é específicado através da classe VertexAttrib que guarda informações sobre o primeiro índice do atributo dentro o buffer, seu significado, número de componentes e qual a distância entre valores consecutivos do atributo.
+Cada vértice é especificado através da classe VertexAttrib que guarda informações sobre o primeiro índice do atributo dentro o buffer, seu significado, número de componentes e qual a distância entre valores consecutivos do atributo.
 
 A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}. % falar mais sobre o vertexbufferbuilder
 
@@ -424,7 +424,7 @@ Para implementar nós com comportamentos customizados basta criar uma nova classe
 Os métodos de atualização são chamados para preparar a cena para a renderização (inicialização de variáveis ou atualização de valores, por exemplo).
 
 \begin{itemize}
-\item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuida à matriz corrente.
+\item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuída à matriz corrente.
 % Explicar os outros tipos de nó
 \end{itemize}
 
