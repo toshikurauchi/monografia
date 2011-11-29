@@ -409,11 +409,27 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 \subsubsection {FrameBufferObject}
 
 \subsection{Grafo de cena}
-%TODO: Geral sobre o que é o grafo de cena, como é percorrido, etc.
+%TODO: Tudo bem falar que é uma árvore? Geral sobre o que é o grafo de cena, como é percorrido, etc.
+A Pandora's Box utiliza uma árvore (um grafo direcionado, sem circuitos e com uma raíz), conhecida como grafo de cena, para representar a estrutura de uma cena. As mudanças realizadas por cada nó são aplicadas somente a si mesmo e aos seus filhos.
+
+Para realizar a renderização da cena são realizadas buscas em profundidade no grafo até que todas as informações necessárias tenham sido obtidas. Esse processo será melhor explicado em ~\ref{visitors}.
 
 \subsubsection{Tipos de nós}
 
+%TODO: Verificar se falta informação
+A engine define quatro tipos de nós padrão: \texttt{TransformationNode}, \texttt{CameraNode}, \texttt{ModelInstance} e \texttt{ModelCollection} (transformação, câmera, modelo e coleção de modelos respectivamente). 
+
+Para implementar nós com comportamentos customizados basta criar uma nova classe filha de Node ou de algum de seus descendentes. A classe Node define essencialmente os métodos de atualização (\texttt{updatePass} e \texttt{postUpdatePass}) e renderização (\texttt{renderPass} e \texttt{postRenderPass}) que devem ser implementados por seus filhos, além de outros métodos específicos da estrutura do grafo.
+
+Os métodos de atualização são chamados para preparar a cena para a renderização (inicialização de variáveis ou atualização de valores, por exemplo).
+
+\begin{itemize}
+\item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuida à matriz corrente.
+% Explicar os outros tipos de nó
+\end{itemize}
+
 \subsubsection{Node Visitors}
+\label{visitors}
 
 Como foi explicado, o grafo de cena é um grafo enraizado, direcionado e sem circuitos, um \texttt{Node Visitor} é uma classe que dado a raíz do grafo de cena, consegue percorrer os nós do grafo obedecendo as seguintes regras:
 
@@ -852,6 +868,8 @@ O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{u
 \epsfig{file=brain6.eps, width=0.5\linewidth,clip=} \\
 \end{longtable}
 \end{center}
+
+As imagens acima foram extraídas da aplicação de visualização de campos tensoriais. Cada imagem mostra o campo tensorial de um cérebro humano sendo descartados alguns tensores de acordo com o valor de anisotropia fracionada.
 
 Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação.
 
