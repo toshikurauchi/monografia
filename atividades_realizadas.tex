@@ -343,13 +343,25 @@ No OpenGL, programas são grupos de shaders, nos quais cada fase do pipeline pode
 
 Na engine, esse mesmo conceito é implementado...
 
-\subsubsection {Texture1D}
 
-Texturas são tabelas de valores. 
+\subsubsection{Texturas}
 
-\subsubsection {Texture2D}
+Texturas no OpenGL são simplesmente tabelas de valores. Em aplicações mais antigas, as texturas eram utilizadas quase exclusivamente para o armazenamento de imagens que seriam mapeadas nos objetos da cena ou máscaras em técnicas avançadas, porém com o surgimento da computação genérica em GPU (GPGPU), as texturas passaram a ser utilizadas de forma análoga aos vetores e matrizes de linguagens como C++.
 
-\subsubsection {BufferTexture}
+No OpenGL as texturas são criadas com o comando \texttt{glGenTextures}, que gera um handler para o objeto vazio criado, em seguida para é necessário associar o objeto criado ao contexto do OpenGL, o que é feito pelo comando \texttt{glBindBuffer}. Com a textura vazia associada ao contexto, é possível inicializar seus dados através de um comando da família \texttt{glTexImage}.
+
+Na Pandora's Box, texturas são implementações da interface \texttt{Texture}. Como a inicialização e uso de uma textura dependem da API gráfica utilizada, sua construção fica a cargo da \texttt{GraphicObjectsFactory}. A inicialização de uma textura 2D é demonstrada no código abaixo:
+
+\begin{verbatim}
+GraphicAPI * gfx = ...;
+// image é uma interface que representa uma fonte de dados para uma textura 2D.
+Image * image = ...;
+Texture2D * texture = gfx->getFactory()->create2DTexture();
+// especifica a imagem e como os dados devem ser representados na GPU
+texture->setImageData(image, pbge::Texture::RGBA);
+\end{verbatim}
+
+Com o aumento da quantidade de dados enviados à GPU através de texturas, surge um problema, as texturas padrão das APIs gráficas conseguem indexar apenas um pequeno número de pixels na textura.
 
 \subsubsection{VertexBuffer}
 No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
