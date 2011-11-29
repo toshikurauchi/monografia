@@ -812,9 +812,22 @@ Existem 2 modos de se enviar vértices para serem processados pelo pipeline, atra
 
 O \texttt{DrawController} é responsável por enviar corretamente ao pipeline modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais modelos são instâncias de \texttt{VBOModel}) assim como instâncias de modelos que utilizam as funções obsoletas. Além de gerenciar a renderização de um modelo, o \texttt{DrawController} é responsável por implementar o instanced draw.
 
+Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBOModel}, ou seja, utilizando-se as funções específicas do OpenGL que implementam a técnica, e de forma simulada se o modelo não for instância de VBOModel. A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. Essa técnica pode ser ilustrada pelo código abaixo:
 
-A implementação dessa classe utilizando OpenGL 
-% explicar a implementação do render instanced
+\begin{verbatim}
+GraphicAPI * gfx = ...;
+Model * model = ...;
+// prepara o modelo para a renderização
+model->beforeRender(gfx);
+for(int i = 0; i < number_of_instances; i++) {
+    int instanceID = i;
+    // renderiza a instância instanceID
+    // a variável instanceID fica disponível no vertex shader
+    model->render(gfx)
+}
+model->afterRender(gfx);
+instanceID = 0;
+\end{verbatim}
 
 \subsection{Visualização de campos tensoriais}
 
