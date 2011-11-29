@@ -368,7 +368,24 @@ O framebuffer é o destino dos pixels gerados através do pipeline. Existem dois t
 \item framebuffer virtual: é o framebuffer utilizado para renderização direta em texturas.
 \end{itemize}
 
-Os framebuffer objects encapsulam o segundo tipo.
+Os framebuffer objects encapsulam o segundo tipo. No OpenGL, framebuffer objects são criados pela função \texttt{glGenFramebuffersEXT}, que gera um handler que representa o objeto criado. Para associar uma textura ao framebuffer object criado utiliza-se a função \texttt{glFramebufferTexture2DEXT} e, por fim, para adicionar um buffer de profundidade, para permitir testes de profundidade, usa-se \texttt{glFramebufferTexture2DEXT}.
+
+Para utilizar o framebuffer object criado, é necessário associá-lo ao contexto do OpenGL com o comando \texttt{glBindFramebufferEXT} e em seguida redirecionar os pixels gerados pelo pipeline através do comando \texttt{glDrawBuffers}.
+
+Na engine desenvolvida, framebuffer objects são implementações da interface \texttt{FramebufferObject} e devem ser instanciados através da \texttt{GraphicObjectsFactory}. A criação e uso de framebuffer objects dentro da Pandora's Box é exemplificado abaixo:
+
+\begin{verbatim}
+GraphicAPI * gfx = ...;
+Texture2D * color = ...;
+Texture2D * depth = ...;
+FramebufferObject * fbo = gfx->getFactory()->createFramebuffer(width, height);
+// associa os valores escritos pelo shader na variável color_out à textura color
+fbo->addRenderable(color, "color_out");
+// usa depth como buffer de profundidade
+fbo->setDepthRenderable(depth);
+// associa o framebuffer object ao contexto
+gfx->bindFramebufferObject(fbo);
+\end{verbatim}
 
 
 
