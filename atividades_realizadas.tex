@@ -361,7 +361,35 @@ Texture2D * texture = gfx->getFactory()->create2DTexture();
 texture->setImageData(image, pbge::Texture::RGBA);
 \end{verbatim}
 
-Com o aumento da quantidade de dados enviados à GPU através de texturas, surge um problema, as texturas padrão das APIs gráficas conseguem indexar apenas um pequeno número de pixels na textura.
+Com o aumento da quantidade de dados enviados à GPU através de texturas, surge um problema, as texturas padrão das APIs gráficas conseguem indexar apenas um pequeno número de pixels na textura, cerca de 2048 em placas recentes. Para resolver esse problema, o OpenGL introduziu o conceito de texture buffer, uma textura de uma dimensão que utiliza um buffer para armazenar dados, essa nova textura consegue indexar no mínimo 65536 pixels, segundo a especificação do OpenGL 4.2.
+
+A criação de um buffer texture é feita de forma ligeiramente diferente de uma textura convencional. Após a criação do handler, a textura deve ser associada ao contexto através da chamada \texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}, após a associação, o buffer que será utilizado pela textura é definido pelo comando \texttt{glTexBuffer}.
+
+Na engine, os texture buffer são texturas que implementam a interface \texttt{TextureBuffer} e que também devem ser construídas através da \texttt{GraphicObjectsFactory}. Um exemplo de criação de texture buffer é dado no código abaixo:
+
+\begin{verbatim}
+GraphicAPI *gfx = ...
+TextureBuffer * texture = gfx->getFactory()->createTextureBuffer(size);
+// a textura será representada como um conjunto de 4 floats
+// por texel (elemento da textura)
+texture->setInternalFormat(pbge::Texture::FLOAT, pbge::Texture::RGBA);
+// recupera o buffer associado à textura
+Buffer *buffer = texture->getBuffer();
+float * data = (float*) buffer->map(pbge::Buffer::WRITE_ONLY);
+// inicialização dos dados do buffer
+buffer->unmap();
+\end{verbatim}
+
+Após a criação das texturas, elas são enviadas ao shader através dos \texttt{UniformSet}, como demonstrado abaixo no caso de uma textura 2D:
+\begin{verbatim}
+GraphicAPI *gfx = ...;
+Texture2D * texture = ...;
+UniformSet uniforms;
+// associa a textura texture à variável do shader do tipo sampler2D
+// chamada shader_texture
+uniforms->getSampler2D("shader_texture")->setValue(texture);
+gfx->pushUniforms(&uniforms);
+\end{verbatim}
 
 \subsubsection{VertexBuffer}
 No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
