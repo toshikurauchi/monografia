@@ -842,6 +842,17 @@ As matrizes são então reorganizadas em blocos de proximidade para otimizar a uti
 
 O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. A política de transparência (alfa) dos elipsóides é escolhida pelo usuário, sendo o valor de alfa algum dos quatro resultados das equações de anisotropia fracionada. A cor aplicada a cada elipsóide é calculada a partir do valor de alfa em uma rampa de cores também definida pelo usuário.
 
+\begin{center}
+\begin{longtable}{cc}
+\epsfig{file=brain1.eps, width=0.5\linewidth,clip=} &
+\epsfig{file=brain2.eps, width=0.5\linewidth,clip=} \\
+\epsfig{file=brain3.eps, width=0.5\linewidth,clip=} &
+\epsfig{file=brain4.eps, width=0.5\linewidth,clip=} \\
+\epsfig{file=brain5.eps, width=0.5\linewidth,clip=} &
+\epsfig{file=brain6.eps, width=0.5\linewidth,clip=} \\
+\end{longtable}
+\end{center}
+
 Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação.
 
 \subsection{Técnicas aplicadas}
