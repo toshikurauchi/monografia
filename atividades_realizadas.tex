@@ -424,8 +424,11 @@ Para implementar nós com comportamentos customizados basta criar uma nova classe
 Os métodos de atualização são chamados para preparar a cena para a renderização (inicialização de variáveis ou atualização de valores, por exemplo).
 
 \begin{itemize}
+% Isso esta suficiente?
 \item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuída à matriz corrente.
-% Explicar os outros tipos de nó
+\item \textbf{CameraNode}: O nó possui uma instância da classe Camera que é responsável por receber os parâmetros de câmera (configurações de posição e campo de visão), calcular a matriz de transformação a partir dessas informações e atualizar o estado do OpenGL para utilizá-la. Todas essas ações são realizadas no \texttt{updatePass}.
+\item \textbf{ModelInstance}: O método \texttt{renderPass} é responsável por adicionar os shaders e suas uniformes e então solicitar a renderização do modelo pela API gráfica. O método \texttt{postRenderPass} retira as uniformes adicionadas.
+\item \textbf{ModelCollection}: A implementação desse nó é análoga à do \texttt{ModelInstance}, com a diferença de que a quantidade de instâncias a serem renderizadas é recebida no construtor e enviada na solicitação da renderização do modelo pela API gráfica.
 \end{itemize}
 
 \subsubsection{Node Visitors}
