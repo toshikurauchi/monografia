@@ -808,12 +808,12 @@ Na Pandora's Box, esse trabalho é delegado à classe \texttt{StateSet} e à alguma
 
 \subsubsection{Desenho de modelos}
 
-Para lidar com a variedade de tipos de modelos e com as diferentes técnicas de renderização, foi desenvolvido um controlador de desenho.
+Existem 2 modos de se enviar vértices para serem processados pelo pipeline, através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja renderizado diversas vezes em um loop (instanced draw). Para lidar com essas situações, a Pandora's Box utiliza a classe \texttt{DrawController}.
+
+O \texttt{DrawController} é responsável por enviar corretamente ao pipeline modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais modelos são instâncias de \texttt{VBOModel}) assim como instâncias de modelos que utilizam as funções obsoletas. Além de gerenciar a renderização de um modelo, o \texttt{DrawController} é responsável por implementar o instanced draw.
+
 
 A implementação dessa classe utilizando OpenGL 
-% introdução ao drawcontroller
-%explicar a implementação para um model generico
-% explicar a implementação para VBOModel
 % explicar a implementação do render instanced
 
 \subsection{Visualização de campos tensoriais}
