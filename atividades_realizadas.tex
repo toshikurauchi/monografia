@@ -460,7 +460,7 @@ O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem
 \texttt{Frustum Culling} é o processo de renderizar apenas objetos que são visíveis para a câmera atual. Na \texttt{Pandora's Box}, um nó é considerado não visível se ele não colide com o \texttt{frustum} da câmera corrente e ao ser considerado não visível, ele e seus nós filhos não são visitados pelo \texttt{RenderVisitor}. Esse teste de visibilidade é executado dentro do método \texttt{dfsVisit} do \texttt{RenderVisitor}:
 
 \begin{verbatim}
-void dfsVisit(Node * node, GraphicAPI * gfx) {
+void RenderVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
     if(node->getBoundingVolume() == NULL || node->getBoundingVolume()->frustumCullingTest(boundingFrustum)) {
         visitAction(node, gfx);
         std::vector<Node*>::iterator child;
@@ -482,12 +482,8 @@ O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 \end{itemize}
 
 \subsubsection {Fase de atualização}
-% Acho que essa explicação precisa acontecer antes da explicação sobre os NodeVisitors
 
-Nessa fase cada nó do grafo de cena é atualizado através de uma chamada ao método updatePass da interface Node.
-
-Para a implementação dessa fase foi utilizado o \texttt{Visitor}, % não esquecer de colocar referencia para o GOF aqui
-que implementa uma busca em profundidade no grafo de cena. Essa é a única parte do algoritmo de renderização que não pode ser customizada.
+Nessa fase, um \texttt{UpdaterVisitor} é utilizado para visitar e atualizar todos os nós do grafo de cena. É a única fase não customizável do algoritmo do renderizador.
 
 \subsubsection {Fase de processamento do grafo de cena}
 
