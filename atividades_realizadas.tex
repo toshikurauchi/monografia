@@ -361,6 +361,15 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 
 \subsubsection {FrameBufferObject}
 
+O framebuffer é o destino dos pixels gerados através do pipeline. Existem dois tipos de framebuffer:
+
+\begin{itemize}
+\item O framebuffer do sistema de janelas: é o framebuffer que deve ser utilizado quando os pixels devem ser enviados para a janela da aplicação.
+\item framebuffer virtual: é o framebuffer utilizado para renderização direta em texturas.
+\end{itemize}
+
+Os framebuffer objects encapsulam o segundo tipo.
+
 
 
 \subsection{Grafo de cena}
