@@ -866,19 +866,18 @@ As matrizes são então reorganizadas em blocos de proximidade para otimizar a uti
 
 O arquivo \texttt{.ctf} é lido e cada bloco de matrizes é enviado como \texttt{uniform} para o \texttt{shader} que as aplica a esferas. A política de transparência (alfa) dos elipsóides é escolhida pelo usuário, sendo o valor de alfa algum dos quatro resultados das equações de anisotropia fracionada. A cor aplicada a cada elipsóide é calculada a partir do valor de alfa em uma rampa de cores também definida pelo usuário.
 
-% Tentar colocar o caption aqui
 % Mandar essa imagem pros resultados obtidos
 
 \begin{center}
 \begin{longtable}{cc}
-\epsfig{file=brain1.eps, width=0.5\linewidth,clip=} &
-\epsfig{file=brain2.eps, width=0.5\linewidth,clip=} \\
-\epsfig{file=brain3.eps, width=0.5\linewidth,clip=} &
-\epsfig{file=brain4.eps, width=0.5\linewidth,clip=} \\
-\epsfig{file=brain5.eps, width=0.5\linewidth,clip=} &
-\epsfig{file=brain6.eps, width=0.5\linewidth,clip=} \\
+\epsfig{file=cerebro1.eps, width=0.47\textwidth,clip=} &
+\epsfig{file=cerebro2.eps, width=0.47\textwidth,clip=}
 \end{longtable}
-\captionof{figure}{As imagens acima foram extraídas da aplicação de visualização de campos tensoriais. Cada imagem mostra o campo tensorial de um cérebro humano sendo descartados alguns tensores de acordo com o valor de anisotropia fracionada.}
+\vspace{-15pt}
+\parbox{0.98\textwidth}{\captionof{figure}{Imagens da
+visualização do campo tensorial de um cérebro humano. As cores são aplicadas a partir do valor de
+anisotropia fracionada em uma rampa de cores que varia do azul (menor
+anisotropia) para o amarelo (maior anisotropia).}}
 \end{center}
 
 Para a translação e rotação do campo foram implementados um \texttt{KeyboardEventHandler} e um \texttt{MouseEventHandler} respectivamente que atualizam os nós de transformação.
