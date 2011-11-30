@@ -12,6 +12,9 @@
 \usepackage{subfigure}
 \usepackage{epsfig}
 \usepackage[font=small, textfont=it, labelfont=bf]{caption}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{color}
 
 \setlength{\paperheight}{29.7cm}
 \setlength{\footskip}{1.0cm}
@@ -19,6 +22,15 @@
 \setlength{\textwidth}{16.0cm}
 \setlength{\oddsidemargin}{0.0cm}
 \setlength{\topmargin}{0.0cm}
+
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{backgroundcolor=\color{lbcolor},rulecolor=}
+\lstset{language=C++}
+\lstset{basicstyle=\footnotesize}
+
+\lstnewenvironment{codigo}
+{\lstset{frame=single}}
+{}
 
 \begin{document}
 \title{Pandora's Box Graphic Engine - Uma Engine Gráfica com Aplicação em Visualização de Campos Tensoriais}

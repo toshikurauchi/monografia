@@ -1,7 +1,4 @@
-\section{Conceitos e tecnologias estudadas}
-A seguir serão apresentados os conceitos e tecnologias utilizadas na implementação da engine, assim como na aplicação de exemplo (visualização de campos tensoriais).
 
-% Separar em \section{Conceitos} e \section{} 
 % Codigos indentados \minipage 
 % site springer templates -> caixa cinza no fundo
 % Verificar as referencias (tem algumas com ? ainda)
@@ -19,35 +16,42 @@ A seguir serão apresentados os conceitos e tecnologias utilizadas na implementaç
 % Bibliografia -> atencao para padronizacao e letras maiusculas tem um truquezinho (abre e fecha alguma coisa)
 % Terminar todos os captions com .
 
+
+
+\section{Tecnologias estudadas}
+
+Nessa seção serão apresentadas as tecnologias que foram estudadas para o desenvolvimento da engine gráfica Pandora's Box.
+
+
 \subsection{Linguagem C++98}
 A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C. Por esse motivo a sintaxe de ambas é semelhante e um código escrito em C é válido em C++. É uma linguagem estruturada que, entre outras características, adiciona o paradigma de orientação a objetos ao C.
 
 \subsubsection{Variáveis e funções}
 As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um tipo seguido de um nome, podendo receber um valor inicial):
 
-\begin{verbatim}
+\begin{codigo}
 <tipo> <nome> [= <valor inicial>]
-\end{verbatim}
+\end{codigo}
 
 Ou seja, para declarar uma variável inteira chamada \texttt{contador} com valor inicial zero é utilizada a seguinte sintaxe:
 
-\begin{verbatim}
+\begin{codigo}
 int contador = 0;
-\end{verbatim}
+\end{codigo}
 
 \subsubsection{Classes e objetos}
 Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores são declarados como funções com o nome da classe sem valor e tipo de retorno. A declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
 
 Utilizando \texttt{class}:
-
-\begin{verbatim}
+\begin{codigo}
 class Coordenada2d {
 public:
     Coordenada2d(double x, double y);
 private:
     double x,y;
 };
-\end{verbatim}
+
+\end{codigo}
 
 Utilizando \texttt{struct}:
 
@@ -520,6 +524,12 @@ Outro detalhe específico do compilador da Microsoft, que foi utilizado nesse tra
 \begin{verbatim}
 __declspec(dllexport) TipoDeRetorno nome_da_funcao(parametros);
 \end{verbatim}
+
+
+
+\section{Conceitos estudados}
+
+A seguir serão apresentados os conceitos que foram estudados para a implementação da engine, assim como na aplicação de exemplo (visualização de campos tensoriais)
 
 \subsection{Transformações lineares}
 O conceito de transformações lineares é de importância fundamental para a computação gráfica. Através delas é possível representar translações, rotações e escalas aplicadas sobre os objetos.
