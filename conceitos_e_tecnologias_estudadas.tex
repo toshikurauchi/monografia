@@ -24,11 +24,12 @@ Nessa seção serão apresentadas as tecnologias que foram estudadas para o desenvo
 
 
 \subsection{Linguagem C++98}
-A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C. Por esse motivo a sintaxe de ambas é 
-semelhante e um código escrito em C é válido em C++. É uma linguagem estruturada que, entre outras características, 
-adiciona o paradigma de orientação a objetos ao C.
+A linguagem de programação C++ é uma linguagem multiparadigma, que suporta tanto
+programação estruturada quanto orientada a objetos.Ela foi desenvolvida como uma
+evolução da linguagem C e, por esse motivo, suas sintaxes são semelhantes.
 
-\subsubsection{Variáveis e funções}
+\vsection{Variáveis e funções}
+
 As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um tipo seguido de um nome, podendo receber um valor inicial):
 
 \begin{codigo}
@@ -41,7 +42,8 @@ Ou seja, para declarar uma variável inteira chamada \texttt{contador} com valor 
 int contador = 0;
 \end{codigo}
 
-\subsubsection{Classes e objetos}
+\vsection{Classes e objetos}
+
 Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, 
 sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem 
 privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar 
@@ -72,11 +74,11 @@ struct Coordenada2d {
 \end{codigo}
 
 Para se instanciar um objeto existem duas opções. A primeira consiste em declarar uma 
-variável da classe desejada (da mesma forma como variáveis do tipo \texttt{int} são 
-declaradas, por exemplo). Na declaração da variável a classe será instanciada e inicializada. 
-A segunda maneira é a utilização da palavra reservada \texttt{new} seguida do nome da classe. 
-O valor devolvido é um ponteiro para uma instância da classe desejada. Seguindo o exemplo anterior, 
-a classe Coordenada2d poderia ser instanciada das seguintes formas:
+variável cujo tipo é o nome da classe desejada (da mesma forma como variáveis do
+tipo \texttt{int} são declaradas, por exemplo). Na declaração da variável a classe será instanciada e inicializada. 
+A segunda maneira é a utilização da palavra reservada \texttt{new} seguida do
+nome da classe. O valor devolvido é um ponteiro para uma instância da classe
+desejada. Seguindo o exemplo anterior, a classe Coordenada2d poderia ser instanciada das seguintes formas:
 
 \begin{codigo}
 Coordenada2d coordenada1;
@@ -90,7 +92,8 @@ Coordenada2d coordenada1(1.0, 2.0);
 Coordenada2d * coordenada2 = new Coordenada2d(1.0, 2.0);
 \end{codigo}
 
-\subsubsection{Namespaces}
+\vsection{Namespaces}
+
 Para evitar colisão de identificadores como nomes de classes, variáveis e funções é possível utilizar um \texttt{namespace}:
 
 \begin{codigo}
@@ -114,8 +117,13 @@ Para acessar a variável \texttt{n} do exemplo utiliza-se o seguinte código:
 nome::n
 \end{codigo}
 
-\subsubsection{Templates}
-O template é um recurso da linguagem C++ que permite programação genérica. É utilizado para a implementação de funções ou classes cujas funcionalidades podem ser adaptadas para tipos diferentes com o mesmo código. Para isso é utilizada a palavra reservada \texttt{template} seguida por um parâmetro de template, que é um tipo especial de parâmetro que pode ser utilizado para enviar tipos como argumento.
+\vsection{Templates}
+
+O template é um recurso da linguagem C++ que permite programação genérica. É utilizado 
+para a implementação de funções ou classes cujas funcionalidades podem ser adaptadas para 
+tipos diferentes com o mesmo código. Para isso é utilizada a palavra reservada \texttt{template} 
+seguida por um parâmetro de template, que é um tipo especial de parâmetro que pode ser utilizado 
+para enviar tipos como argumento.
 
 Uma função \texttt{maximo} poderia ser definida da seguinte maneira:
 
@@ -128,11 +136,11 @@ T maximo(T a, T b) {
 }
 \end{codigo}
 
-Para utilizá-la deve ser enviado o tipo dos argumentos utilizados:
+O código acima pode ser utilizado da seguinte maneira:
 
 \begin{codigo}
 int c = 4, d = 5;
-maximo<int>(c,d);
+maximo(c,d);
 \end{codigo}
 
 Um nó de uma lista ligada genérica poderia ser implementado de maneira análoga:
@@ -163,7 +171,8 @@ private:
 };
 \end{codigo}
 
-A utilização também é análoga à de funções:
+A utilização também é análoga à de funções, porém como o compilador
+não consegue deduzir o tipo de T, deve-se declará-lo explicitamente:
 
 \begin{codigo}
 No<int> meuNo(5);
@@ -171,7 +180,8 @@ No<int> meuNo(5);
 
 \subsubsection{A Standard Template Library (STL)}
 
-A Standard Template Library (STL)~\cite{stl}é uma biblioteca C++ baseada em templates que oferece um conjunto de algoritmos e estruturas de dados configuráveis.
+A Standard Template Library (STL)~\cite{stl}é a biblioteca padrão do C++ que
+oferece um conjunto grande de algoritmos e estruturas de dados genéricos.
 
 É possível, por exemplo, aplicar uma função para todos os itens de um vetor de inteiros da seguinte maneira:
 
@@ -194,7 +204,9 @@ int main() {
 }
 \end{codigo}
 
-O método \texttt{for\_each} pode, alternativamente, receber um objeto com a função a ser aplicada a cada item da lista definida na sobrescrita do operador \texttt{()} como a seguir:
+O método \texttt{for\_each} pode, alternativamente, receber no lugar da
+função, uma instância de uma classe que implementa o método
+\texttt{operator()}:
 
 \begin{codigo}
 struct impressor {
@@ -220,9 +232,14 @@ Há diversos outros tipos de algoritmos implementados na STL~\cite{algorithm}
 
 \subsection{Boost C++ Libraries}
 
-Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida como uma extensão para a STL sob o namespace \texttt{boost}. Os principais módulos dessa biblioteca utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} e \texttt{smart\_ptr}. 
+Boost~\cite{boost} é uma biblioteca de C++ de código aberto inicialmente desenvolvida 
+como uma extensão para a STL sob o namespace \texttt{boost}. Os principais módulos dessa 
+biblioteca utilizados no desenvolvimento da engine foram \texttt{bind}, \texttt{function} 
+e \texttt{smart\_ptr}. 
 
-O módulo \texttt{function} cria functors (objetos de função) que são capazes de armazenar tanto funções nativas da linguagem quanto outros functors. Essas funções são criadas através da seguinte construção:
+O módulo \texttt{function} cria functors (instancias de classes que implementam
+ o método \texttt{operator()}) que são capazes de armazenar tanto funções nativas
+ da linguagem quanto outros functors. Essas funções são criadas através da seguinte construção:
 
 \begin{codigo}
 void f (int i, int j, int k) {
@@ -232,7 +249,8 @@ void f (int i, int j, int k) {
 boost::function3<void,int,int,int> funcao = f;
 \end{codigo}
 
-A biblioteca \texttt{bind} cria functors (classes que implementam o método \texttt{operator ()}) a partir de uma função ou outro functor mas com alguns argumentos já posicionados, por exemplo:
+A biblioteca \texttt{bind} cria functors a partir de uma função ou outro functor
+mas com alguns argumentos já definidos, por exemplo:
 
 \begin{codigo}
 boost::bind(f, 1, _1, _2)
@@ -250,14 +268,38 @@ boost::function2<void, int, int> functor1 = boost::bind(f, 1, _1, _2);
 boost::function1<void, int> functor2 = boost::bind(functor1, 2, _1);
 \end{codigo}
 
-Os módulos bind e function da boost são utilizados principalmente em conjunto com algoritmos da STL, como o std::for\_each. %TODO: exemplo de código?
+Os módulos bind e function da boost são utilizados principalmente em conjunto
+com algoritmos da STL, como o std::for\_each:
 
-Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. Essas classes tem comportamento semelhante ao de ponteiros nativos da linguagem, com a diferença de que elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos \texttt{smart\_ptr} definidos:
+\begin{codigo}
+void imprime(int i) {
+    printf("%d ", i);
+}
+
+int main() {
+    std::vector<int> vetor;
+    boost::function1<void, int> impressor = imprime;
+    // Adicionando os valores 1, 2 e 3 no vetor
+    vetor.push_back(1);
+    vetor.push_back(2);
+    vetor.push_back(3);
+
+    for_each(vetor.begin(), vetor.end(), impressor);
+    // Saída: 1 2 3
+
+    return 0;
+}
+\end{codigo}
+
+Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória alocadas dinamicamente. 
+Essas classes tem comportamento semelhante ao de ponteiros nativos da linguagem, com a diferença de que 
+elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos \texttt{smart\_ptr} definidos:
 
 \begin{itemize}
 \item \texttt{scoped\_ptr}: representa o conceito de ponteiro não compartilhável, logo não podem ser copiados. Desalocam a memória ao sair de escopo.
 \item \texttt{scoped\_array}: mesmo que \texttt{scoped\_ptr} mas para um array de objetos.
-\item \texttt{shared\_ptr}: representa um ponteiro que tem diversos donos, pode ser copiado e só é destruído quando todos os donos forem destruídos.
+\item \texttt{shared\_ptr}: representa um ponteiro com diversos donos, pode ser
+copiado e só é destruído quando todos os donos forem destruídos.
 \item \texttt{shared\_array}: mesmo que \texttt{shared\_ptr} mas para arrays.
 \item \texttt{weak\_ptr}: são ponteiros para recursos de um \texttt{shared\_ptr} mas que não são donos do recurso.
 \item \texttt{intrusive\_ptr}: são \texttt{shared\_ptr} que guardam dentro do objeto para o qual apontam o contador de referências utilizado internamente.
@@ -327,8 +369,11 @@ Tais estados, assim como outras informações, como a janela e texturas são
 
 \subsection{GLEW}
 
-A \texttt{OpenGL Extension Wrangler Library}~\cite{glew}, conhecida como
-\texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. Ela define constantes em tempo de execução contendo as extensões suportadas pelo sistema do usuário e, além disso, obtém as novas funções definidas. % Acho que não entendi esse ultimo pedaço
+OpenGL Extension Wrangler Library~\cite{glew}, conhecida como
+\texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. 
+Ela define constantes em tempo de execução contendo as extensões suportadas pelo 
+sistema do usuário e, além disso, obtém os ponteiros das novas funções definidas
+nas extensões.
 
 O uso da \texttt{GLEW} é ilustrado no código abaixo:
 
@@ -350,7 +395,9 @@ if(glewIsSupported("GL_ARB_vertex_program")) {
 \end{codigo}
 
 \subsection{Windows API~\cite{msdn}}
-Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho foi utilizada apenas a API do sistema operacional Windows.
+Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos 
+gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o 
+programa será executado. Nesse trabalho foi utilizada apenas a API do sistema operacional Windows.
 
 Para se inicializar um contexto para a execução de programas em OpenGL é necessário criar uma janela, para isso usa-se a seguinte função:
 
@@ -451,7 +498,7 @@ BOOL WINAPI UnregisterClass(
 
 que recebe como argumentos o nome com o qual a classe foi registrada e a instância do programa que registrou a classe.
 
-\subsubsection{O loop de eventos da janela}
+\vsection{O loop de eventos da janela}
 
 A função registrada na WNDCLASS que tratará os eventos gerados pelo sistema deve ter a seguinte assinatura:
 
