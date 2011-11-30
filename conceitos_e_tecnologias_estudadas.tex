@@ -563,86 +563,77 @@ __declspec(dllexport) TipoDeRetorno nome_da_funcao(parametros);
 A seguir serão apresentados os conceitos que foram estudados para a implementação da engine, assim como na aplicação de exemplo (visualização de campos tensoriais)
 
 \subsection{Transformações lineares}
-O conceito de transformações lineares é de importância fundamental para a computação gráfica. 
-Através delas é possível representar de maneira unificada translações, rotações
-e escalas aplicadas sobre os objetos.
+O conceito de transformações lineares é de importância fundamental para a 
+computação gráfica. As transformações lineares podem ser traduzidas para
+matrizes e a composição de transformações é simplesmente pode ser
+calculada através da multiplicação das matrizes que representam as transformações. 
 
-Em computação gráfica são utilizadas as coordenadas homogêneas~\cite{redbook} de vértices em $\mathbb{R}^3$. Para realizar a translação, rotação e escala de objetos representados em tais coordenadas utiliza-se as seguintes matrizes de transformação linear:
+Em computação gráfica, é comum a utilização de coordenadas homogêneas para
+a representação de vértices~\cite{redbook} e de matrizes de transformação $4x4$.
+As transformações mais utilizadas para transformar modelos geométricos e suas
+respectivas matrizes são:
 
-Translação:
-
-% Fazer isso um item
-
-\begin{math}
-\left(
-\begin{array}{cccc}
-1 & 0 & 0 & t_x \\
-0 & 1 & 0 & t_y \\
-0 & 0 & 1 & t_z \\
-0 & 0 & 0 & 1 
-\end{array}
-\right)
-\end{math}
-
-Onde $t_x, t_y, t_z$ são as translações nos eixos $x, y, z$ respectivamente.
-
-Rotação no eixo x:
-
-\begin{math}
-\left(
-\begin{array}{cccc}
-1 & 0 & 0 & 0 \\
-0 & cos\theta & -sen\theta & 0 \\
-0 & sen\theta & cos\theta & 0 \\
-0 & 0 & 0 & 1 
-\end{array}
-\right)
-\end{math}
-
-Rotação no eixo y:
-
-\begin{math}
-\left(
-\begin{array}{cccc}
-cos\theta & 0 & sen\theta & 0 \\
-0 & 1 & 0 & 0 \\
--sen\theta & 0 & cos\theta & 0 \\
-0 & 0 & 0 & 1 
-\end{array}
-\right)
-\end{math}
-
-Rotação no eixo z:
-
-\begin{math}
-\left(
-\begin{array}{cccc}
-cos\theta & -sen\theta & 0 & 0 \\
-sen\theta & cos\theta & 0 & 0 \\
-0 & 0 & 1 & 0 \\
-0 & 0 & 0 & 1 
-\end{array}
-\right)
-\end{math}
-
-Onde $\theta$ é o ângulo de rotação.
-
-Escala:
-
-\begin{math}
-\left(
-\begin{array}{cccc}
-s_x & 0 & 0 & 0 \\
-0 & s_y & 0 & 0 \\
-0 & 0 & s_z & 0 \\
-0 & 0 & 0 & 1 
-\end{array}
-\right)
-\end{math}
-
-Onde $s_x, s_y, s_z$ são as escalas aplicadas nos eixos $x, y, z$ respectivamente.
-
-As transformações podem ser compostas através de multiplicações das matrizes.
+\begin{itemize}
+  \item Translação:
+  \begin{displaymath}
+    \left(
+    \begin{array}{cccc}
+    1 & 0 & 0 & t_x \\
+    0 & 1 & 0 & t_y \\
+    0 & 0 & 1 & t_z \\
+    0 & 0 & 0 & 1 
+    \end{array}
+    \right)
+  \end{displaymath}
+  Onde $t_x, t_y, t_z$ são as translações nos eixos $x, y, z$ respectivamente.
+  
+  \item Rotação de $\theta$ em torno do eixo x:
+    \begin{displaymath}
+    \left(
+    \begin{array}{cccc}
+    1 & 0 & 0 & 0 \\
+    0 & cos\theta & -sen\theta & 0 \\
+    0 & sen\theta & cos\theta & 0 \\
+    0 & 0 & 0 & 1 
+    \end{array}
+    \right)
+    \end{displaymath}
+  \item Rotação de $\theta$ em torno do eixo y:
+    \begin{displaymath}
+    \left(
+    \begin{array}{cccc}
+    cos\theta & 0 & sen\theta & 0 \\
+    0 & 1 & 0 & 0 \\
+    -sen\theta & 0 & cos\theta & 0 \\
+    0 & 0 & 0 & 1 
+    \end{array}
+    \right)
+    \end{displaymath}
+  \item Rotação de $\theta$ em torno do eixo z:
+    \begin{displaymath}
+    \left(
+    \begin{array}{cccc}
+    cos\theta & -sen\theta & 0 & 0 \\
+    sen\theta & cos\theta & 0 & 0 \\
+    0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 1 
+    \end{array}
+    \right)
+    \end{displaymath}
+  \item Escala:
+    \begin{displaymath}
+    \left(
+    \begin{array}{cccc}
+    s_x & 0 & 0 & 0 \\
+    0 & s_y & 0 & 0 \\
+    0 & 0 & s_z & 0 \\
+    0 & 0 & 0 & 1 
+    \end{array}
+    \right)
+    \end{displaymath}
+    
+    Onde $s_x, s_y, s_z$ são as escalas aplicadas nos eixos $x, y, z$ respectivamente.
+\end{itemize}
 
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 
