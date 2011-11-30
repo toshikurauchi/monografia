@@ -79,13 +79,28 @@ buffer->unmap();
 
 \subsubsection{Shaders}
 
-Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Com exceção da rasterização, todos os estágios podem ser customizados pelo uso de shaders.
+Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através 
+de um pipeline, que tem cinco estágios principais: transformação de vértices, 
+tesselagem, criação de novas primitivas, rasterização e operações por fragmento. 
+Com exceção da rasterização, todos os estágios podem ser customizados pelo uso de shaders.
 
-No OpenGL, shaders são criados através da função \texttt{glCreateShader}, que retorna um handler para o shader criado, com o handler devolvido, é possível especificar o código fonte que será utilizado utilizando-se a função \texttt{glShaderSource}. Após associar um código fonte ao shader, ele pode ser compilado por \texttt{glCompileShader}. Para utilizar o shader criado, ele deve ser associado a um programa.
+No OpenGL, shaders são criados através da função \texttt{glCreateShader}, que 
+retorna um handler para o shader criado, com o handler devolvido, é possível 
+especificar o código fonte que será utilizado utilizando-se a função \texttt{glShaderSource}. 
+Após associar um código fonte ao shader, ele pode ser compilado por \texttt{glCompileShader}. 
+Para utilizar o shader criado, ele deve ser associado a um programa.
 
-Programas, no OpenGL, são criados por \texttt{glCreateProgram}, que retorna o handler para o programa criado. Depois de criado, o programa precisa ser associado a shaders, a associação é feita pela função \texttt{glAttachShader}. Quando todos os shaders necessários estiverem associados ao programa, ele pode ser preparado para execução através do comando \texttt{glLinkProgram}. Para sobrescrever o pipeline com o programa criado utiliza-se a função \texttt{glUseProgram}.
+Programas, no OpenGL, são criados por \texttt{glCreateProgram}, que retorna o 
+handler para o programa criado. Depois de criado, shaders podem ser associado
+ao programa, a associação é feita pela função \texttt{glAttachShader}. Quando
+todos os shaders necessários estiverem associados ao programa, ele pode ser 
+preparado para execução através do comando \texttt{glLinkProgram}. Para sobrescrever 
+o pipeline com o programa criado utiliza-se a função \texttt{glUseProgram}.
 
-Na Pandora's Box, shaders são implementações da classe \texttt{Shader} e podem ser criados através da \texttt{GraphicObjectsFactory}. Para que possam ser utilizados para sobrescrever o pipeline, os shaders devem ser associados a um GPUProgram. A criação de um GPUProgram que sobrescreve tanto a transformação de vértices quanto o processamento de pixels é exemplificada abaixo:
+Na Pandora's Box, shaders são implementações da classe \texttt{Shader}. Para que possam ser 
+utilizados para sobrescrever o pipeline, os shaders devem ser associados a um GPUProgram. 
+A criação de um GPUProgram que sobrescreve tanto a transformação de vértices quanto o 
+processamento de pixels é exemplificada abaixo:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -126,11 +141,19 @@ gfx->getState()->useProgram(program);
 
 \subsubsection{Texturas}
 
-Texturas no OpenGL são simplesmente tabelas de valores. Em aplicações mais antigas, as texturas eram utilizadas quase exclusivamente para o armazenamento de imagens que seriam mapeadas nos objetos da cena ou máscaras em técnicas avançadas, porém com o surgimento da computação genérica em GPU (GPGPU), as texturas passaram a ser utilizadas de forma análoga aos vetores e matrizes de linguagens como C++.
+Texturas no OpenGL são simplesmente tabelas de valores. Em aplicações mais antigas, as 
+texturas eram utilizadas quase exclusivamente para o armazenamento de imagens que seriam 
+mapeadas nos objetos da cena ou máscaras (em técnicas avançadas), porém com o
+surgimento da computação genérica em GPU (GPGPU), as texturas passaram a ser utilizadas 
+de forma análoga aos vetores e matrizes de linguagens como C++.
 
-No OpenGL as texturas são criadas com o comando \texttt{glGenTextures}, que gera um handler para o objeto vazio criado, em seguida para é necessário associar o objeto criado ao contexto do OpenGL, o que é feito pelo comando \texttt{glBindBuffer}. Com a textura vazia associada ao contexto, é possível inicializar seus dados através de um comando da família \texttt{glTexImage}.
+No OpenGL as texturas são criadas com o comando \texttt{glGenTextures}, que gera um handler 
+para o objeto vazio criado, em seguida para é necessário associar o objeto criado ao contexto 
+do OpenGL, o que é feito pelo comando \texttt{glBindTexture}. Com a textura
+vazia associada ao contexto, é possível inicializar seus dados através de um comando da família \texttt{glTexImage}.
 
-Na Pandora's Box, texturas são implementações da interface \texttt{Texture}. Como a inicialização e uso de uma textura dependem da API gráfica utilizada, sua construção fica a cargo da \texttt{GraphicObjectsFactory}. A inicialização de uma textura 2D é demonstrada no código abaixo:
+Na Pandora's Box, texturas são implementações da interface \texttt{Texture}. A inicialização 
+de uma textura 2D é demonstrada no código abaixo:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -145,11 +168,21 @@ Texture2D * texture = gfx->getFactory()->create2DTexture();
 texture->setImageData(image, pbge::Texture::RGBA);
 \end{codigo}
 
-Com o aumento da quantidade de dados enviados à GPU através de texturas, surge um problema, as texturas padrão das APIs gráficas conseguem indexar apenas um pequeno número de pixels na textura, cerca de 2048 em placas recentes. Para resolver esse problema, o OpenGL introduziu o conceito de texture buffer, uma textura de uma dimensão que utiliza um buffer para armazenar dados, essa nova textura consegue indexar no mínimo 65536 pixels, segundo a especificação do OpenGL 4.2.
+Com o aumento da quantidade de dados enviados à GPU através de texturas, 
+surge um problema, as texturas padrão das APIs gráficas conseguem indexar 
+apenas um pequeno número de pixels na textura, cerca de 2048 em placas recentes. 
+Para resolver esse problema, o OpenGL introduziu o conceito de texture buffer, 
+uma textura de uma dimensão que utiliza um buffer para armazenar dados, 
+essa nova textura consegue indexar no mínimo 65536 pixels, segundo a
+especificação do OpenGL 4.1~\cite{opengl41}.
 
-A criação de um buffer texture é feita de forma ligeiramente diferente de uma textura convencional. Após a criação do handler, a textura deve ser associada ao contexto através da chamada \texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}, após a associação, o buffer que será utilizado pela textura é definido pelo comando \texttt{glTexBuffer}.
+A criação de um buffer texture é feita de forma ligeiramente diferente de uma textura convencional. 
+Após a criação do handler, a textura deve ser associada ao contexto através da chamada 
+\texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}, após a associação, o buffer que será utilizado 
+pela textura é definido pelo comando \texttt{glTexBuffer}.
 
-Na engine, os texture buffer são texturas que implementam a interface \texttt{TextureBuffer} e que também devem ser construídas através da \texttt{GraphicObjectsFactory}. Um exemplo de criação de texture buffer é dado no código abaixo:
+Na engine, os texture buffer são texturas que implementam a interface \texttt{TextureBuffer}. 
+Um exemplo de criação de texture buffer é dado no código abaixo:
 
 \begin{codigo}
 GraphicAPI *gfx = ...
@@ -170,7 +203,8 @@ float * data = (float*) buffer->map(pbge::Buffer::WRITE_ONLY);
 buffer->unmap();
 \end{codigo}
 
-Após a criação das texturas, elas são enviadas ao shader através dos \texttt{UniformSet}, como demonstrado abaixo no caso de uma textura 2D:
+Após a criação das texturas, elas são enviadas ao shader através dos 
+\texttt{UniformSet}, como demonstrado abaixo no caso de uma textura 2D:
 
 \begin{codigo}
 GraphicAPI *gfx = ...;
@@ -187,7 +221,8 @@ gfx->pushUniforms(&uniforms);
 
 
 \subsubsection{VertexBuffer}
-No início da computação gráfica, os vértices eram especificados um a um através de chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
+No início da computação gráfica, os vértices eram especificados um a um através de 
+chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
 
 \begin{codigo}
 glBegin(GL_TRIANGLES);
@@ -200,7 +235,9 @@ glNormal3f(0.0f, 0.0f, 1.0f);
 glEnd();
 \end{codigo}
 
-É possível observar que o número de chamadas de função cresce linearmente com a quantidade de vértices do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era especificado através de uma chamada de função diferente.
+É possível observar que o número de chamadas de função cresce linearmente com a quantidade de vértices 
+do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era 
+especificado através de uma chamada de função diferente.
 
 \begin{wrapfigure}{r}{0.6\textwidth}
 \vspace{-20pt}
@@ -212,16 +249,30 @@ glEnd();
 \vspace{-10pt}
 \end{wrapfigure}
 
-Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, com isso foi criado o conceito de \texttt{vertex array}, que é simplesmente um vetor de valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo (double, float, int, short, byte) número de componentes, significado (posição, vetor normal, coordenada de textura, \ldots) e a distância em bytes para o próximo valor desse atributo no vetor. Essa estrutura é exemplificada na figura ao lado.
+Com o aumento da complexidade dos modelos, foi necessário reinventar a API existente, 
+com isso foi criado o conceito de vertex array, que é simplesmente um vetor de 
+valores de tipos variados em que cada atributo é especificado através de seu tipo primitivo 
+(double, float, int, short, byte) número de componentes, significado (posição, vetor normal, 
+coordenada de textura, etc) e a distância em bytes para o próximo valor desse
+atributo no vetor. Essa estrutura é exemplificada na figura ao lado.
 
-Como a especificação desse modelo de dados era flexível e permitia enviar uma grande quantidade de dados para a \texttt{GPU} em um número constante de chamadas de função, ele foi rapidamente adotado pelos programadores.
+Como a especificação desse modelo de dados era flexível e permitia enviar uma grande quantidade 
+de dados para a GPU em um número constante de chamadas de função, ele foi rapidamente 
+adotado pelos programadores.
 
-Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) e a memória de vídeo (VRAM). A solução foi colocar o \texttt{vertex array} dentro de um buffer gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como \texttt{Vertex Buffer}
+Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) 
+e a memória de vídeo (VRAM). A solução foi colocar o vertex array dentro de um buffer 
+gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito 
+utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como Vertex Buffer
 
-Na Pandora's Box, \texttt{Vertex Buffers} são especificados através da classe VertexBuffer, sua estrutura interna é semelhante à apresentada na Figura~\ref{vertexbuffer}.
-Cada vértice é especificado através da classe VertexAttrib que guarda informações sobre o primeiro índice do atributo dentro o buffer, seu significado, número de componentes e qual a distância entre valores consecutivos do atributo.
+Na Pandora's Box, Vertex Buffers são especificados através da classe
+\texttt{VertexBuffer}, sua estrutura interna é semelhante à apresentada na
+Figura~\ref{vertexbuffer}.
+Cada vértice é especificado através da classe \texttt{VertexAttrib} que guarda
+informações sobre o primeiro índice do atributo dentro o buffer, seu significado, 
+número de componentes e qual a distância entre valores consecutivos do atributo.
 
-A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}. % falar mais sobre o vertexbufferbuilder
+A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}.
 
 % como construir com o builder: texto explicando?
 \begin{codigo}
@@ -245,11 +296,6 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
     return builder.done(Buffer::STATIC_DRAW, gfx);
 }
 \end{codigo}
-
-% Esse código é suficiente?
-% Talvez valha a pena comentar sobre o VBOModel...
-
-
 
 
 \subsubsection {FrameBufferObject}
