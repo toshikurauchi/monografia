@@ -4,7 +4,19 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 
 \subsection{Objetos da API gráfica}
 
-Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos mais comuns definidos pelo OpenGL. Todos os mapeamentos foram projetados de forma que os objetos pudessem ser utilizados fora de um contexto inicializado e, além disso, os o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
+Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos mais comuns definidos pelo OpenGL. 
+Todos os mapeamentos foram projetados de forma que os objetos pudessem ser utilizados fora de um contexto inicializado e, 
+além disso, os o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
+
+Como a implementação dos objetos dessa seção é altamente dependente da API
+gráfica, eles devem ser construidos por um componente chamado
+\texttt{GraphicObjectsFactory}. Esse componente pode ser obtido a partir de uma
+instância de GraphicAPI da seguinte forma:
+
+\begin{codigo}
+GraphicAPI * gfx = ...;
+GraphicObjectsFactory * factory = gfx->getFactory();
+\end{codigo}
 
 \subsubsection {Buffer}
 
