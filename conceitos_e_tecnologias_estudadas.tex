@@ -257,7 +257,10 @@ O OpenGL é uma API gráfica amplamente adotada no mercado. Ele é uma especificaçã
 
 O OpenGL não realiza tratamentos que dependam do sistema operacional, ou seja, não gerencia janelas, nem controla eventos de entrada e saída.
 
-Além disso ele não disponibiliza nenhuma forma de leitura de arquivos. Por esse motivo, não é possível visualizar diretamente imagens guardadas em arquivos (como png, jpg, bmp, ou modelos em três dimensões como 3ds\cite{3dsfileformat}, blend\cite{blendfileformat}, ou obj\cite{objfileformat}).
+Além disso ele não disponibiliza nenhuma forma de leitura de arquivos. Por esse
+motivo, não é possível visualizar diretamente imagens guardadas em arquivos
+(como png, jpg, bmp, ou modelos em três dimensões como 3ds~\cite{3dsfileformat},
+blend~\cite{blendfileformat}, ou obj~\cite{objfileformat}).
 
 \subsubsection{O que ele faz}
 
@@ -293,7 +296,8 @@ O OpenGL é implementado internamente como uma máquina de estados. Tais estados, 
 
 \subsection{GLEW}
 
-A \texttt{OpenGL Extension Wrangler Library}  \cite{glew}, conhecida como \texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. Ela define constantes em tempo de execução contendo as extensões suportadas pelo sistema do usuário e, além disso, obtém as novas funções definidas. % Acho que não entendi esse ultimo pedaço
+A \texttt{OpenGL Extension Wrangler Library}~\cite{glew}, conhecida como
+\texttt{GLEW} é uma biblioteca que auxilia no gerenciamento de extensões do OpenGL. Ela define constantes em tempo de execução contendo as extensões suportadas pelo sistema do usuário e, além disso, obtém as novas funções definidas. % Acho que não entendi esse ultimo pedaço
 
 O uso da \texttt{GLEW} é ilustrado no código abaixo:
 
@@ -339,7 +343,8 @@ Onde:
 \begin{itemize}
 \item \texttt{lpClassName}: representa uma classe registrada anteriormente no sistema.
 \item \texttt{lpWindowName}: representa o título da janela.
-\item \texttt{dwStyle}: conjunto de flags que definem como a janela será exibida\cite{docwindowstyle}: com bordas, maximizada, minimizada, etc.
+\item \texttt{dwStyle}: conjunto de flags que definem como a janela será
+exibida~\cite{docwindowstyle}: com bordas, maximizada, minimizada, etc.
 \item \texttt{x, y}: posição inicial da janela.
 \item \texttt{nWidth, nHeight}: dimensões iniciais da janela.
 \item \texttt{hWndParent}: se a janela que está sendo criada é uma subjanela de uma já existente, passa-se o handle (tipo especial de ponteiro inteligente) da janela pai nesse argumento, caso contrário, passa-se \texttt{NULL}. Para a engine gráfica, esse argumento sempre recebe o valor \texttt{NULL}.
@@ -348,14 +353,18 @@ Onde:
 \item \texttt{lpParam}: dados do usuário. Esse parâmetro recebe um ponteiro para qualquer tipo de dado que o usuário necessite. Na engine esse argumento recebe o ponteiro para uma instância de uma classe interna que representa a janela do sistema.
 \end{itemize}
 
-Para se registrar uma classe no sistema deve-se chamar a função\cite{docregisterclass}:
+Para se registrar uma classe no sistema deve-se chamar a
+função~\cite{docregisterclass}:
 \begin{verbatim}
 ATOM WINAPI RegisterClass(
   __in  const WNDCLASS *lpWndClass
 );
 \end{verbatim}
 
-O argumento \texttt{lpWndClass} um ponteiro para uma instância de \texttt{WNDCLASS}\cite{docwndclass}, uma estrutura que guarda, entre outras coisas, o nome da classe que está sendo registrada, o ponteiro para a função que irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo\cite{docdevicecontext} pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo. %TODO: Por que isso?
+O argumento \texttt{lpWndClass} um ponteiro para uma instância de
+\texttt{WNDCLASS}~\cite{docwndclass}, uma estrutura que guarda, entre outras
+coisas, o nome da classe que está sendo registrada, o ponteiro para a função que
+irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo~\cite{docdevicecontext} pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo. %TODO: Por que isso?
 
 Após criada, deve-se avisar o sistema que a janela é visível, para isso, executa-se:
 
@@ -380,7 +389,8 @@ BOOL WINAPI GetMessage(
 );
 \end{verbatim}
 
-Que recebe como parâmetros um ponteiro para uma estrutura do tipo \texttt{MSG}\cite{docmsg}, o handle devolvido pela função \texttt{CreateWindow}, \texttt{wMsgFilterMin} e \texttt{wMsgFilterMax} são constantes que podem ser passadas para indicar que tipo de mensagem deve ser retornada. O valor de retorno dessa função é um inteiro que indica qual o tipo de mensagem foi retornada ou se ocorreu um erro durante a execução da função.
+Que recebe como parâmetros um ponteiro para uma estrutura do tipo
+\texttt{MSG}~\cite{docmsg}, o handle devolvido pela função \texttt{CreateWindow}, \texttt{wMsgFilterMin} e \texttt{wMsgFilterMax} são constantes que podem ser passadas para indicar que tipo de mensagem deve ser retornada. O valor de retorno dessa função é um inteiro que indica qual o tipo de mensagem foi retornada ou se ocorreu um erro durante a execução da função.
 
 Após recuperar a mensagem ela precisa ser traduzida e em seguida enviada para o seu destino final. A função responsável pela tradução da mensagem é:
 
@@ -648,14 +658,16 @@ Para representar tais coeficientes são utilizados tensores, que são abstrações d
 Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfera, pois o movimento das moléculas se distribui igualmente para todas as direções em um determinado período de tempo. Já em meios anisotrópicos, como o movimento depende da direção, o coeficiente é modelado como um elipsóide, sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor ($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores $\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
 
 \subsection{Anisotropia Fracionada}
-A anisotropia fracionada é um valor no intervalo $ [0,1] $ que descreve o grau de anisotropia de um processo de difusão. Sejam $\lambda_{1}, \lambda_{2}, \lambda_{3}$ os autovalores do tensor. A anisotropia fracionada ($AF$) pode ser calculada a partir da seguinte fórmula\cite{hagmann}:
+A anisotropia fracionada é um valor no intervalo $ [0,1] $ que descreve o grau
+de anisotropia de um processo de difusão. Sejam $\lambda_{1}, \lambda_{2}, \lambda_{3}$ os autovalores do tensor. A anisotropia fracionada ($AF$) pode ser calculada a partir da seguinte fórmula~\cite{hagmann}:
 
 \begin{equation}
 AF = \sqrt{\frac{1}{2}}\frac{\sqrt{(\lambda_{1}-\lambda_{2})^{2} + (\lambda_{1}-\lambda_{3})^{2} + (\lambda_{2}-\lambda_{3})^{2}}}{\sqrt{\lambda_{1}^{2} + \lambda_{2}^{2} + \lambda_{3}^{2}}}
 \label{af}
 \end{equation}
 
-A anisotropia fracionada pode também ser dividida em três medidas (linear, planar e esférica) que indicam a forma da difusão\cite{westinISMRM97}. Sejam $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \geq 0$:
+A anisotropia fracionada pode também ser dividida em três medidas (linear,
+planar e esférica) que indicam a forma da difusão~\cite{westinISMRM97}. Sejam $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \geq 0$:
 
 Caso linear:
 \begin{equation}
