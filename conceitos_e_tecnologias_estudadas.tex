@@ -24,7 +24,9 @@ Nessa seção serão apresentadas as tecnologias que foram estudadas para o desenvo
 
 
 \subsection{Linguagem C++98}
-A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C. Por esse motivo a sintaxe de ambas é semelhante e um código escrito em C é válido em C++. É uma linguagem estruturada que, entre outras características, adiciona o paradigma de orientação a objetos ao C.
+A linguagem de programação C++ foi desenvolvida como uma evolução da linguagem C. Por esse motivo a sintaxe de ambas é 
+semelhante e um código escrito em C é válido em C++. É uma linguagem estruturada que, entre outras características, 
+adiciona o paradigma de orientação a objetos ao C.
 
 \subsubsection{Variáveis e funções}
 As variáveis e funções são declaradas com a mesma sintaxe utilizada na linguagem C (um tipo seguido de um nome, podendo receber um valor inicial):
@@ -40,7 +42,14 @@ int contador = 0;
 \end{codigo}
 
 \subsubsection{Classes e objetos}
-Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar modificadores de acesso através das palavras \texttt{public}, \texttt{private} e \texttt{protected} que definem acesso livre em todos os escopos, acesso restrito à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores são declarados como funções com o nome da classe sem valor e tipo de retorno. A declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
+Classes são definidas pelas palavras reservadas \texttt{class} ou \texttt{struct}, 
+sendo que a diferença entre elas é o fato de atributos de uma \texttt{class} serem 
+privados por padrão e os de uma \texttt{struct}, públicos. É possível adicionar 
+modificadores de acesso através das palavras \texttt{public}, \texttt{private} e 
+\texttt{protected} que definem acesso livre em todos os escopos, acesso restrito 
+à classe e acesso restrito à classe e suas subclasses respectivamente. Construtores 
+são declarados como funções com o nome da classe sem valor e tipo de retorno. A 
+declaração de uma classe \texttt{Coordenada2d} poderia ocorrer das seguintes maneiras:
 
 Utilizando \texttt{class}:
 
@@ -62,7 +71,12 @@ struct Coordenada2d {
 };
 \end{codigo}
 
-Para se instanciar um objeto existem duas opções. A primeira consiste em declarar uma variável da classe desejada (da mesma forma como variáveis do tipo \texttt{int} são declaradas, por exemplo). Na declaração da variável a classe será instanciada e inicializada. A segunda maneira é a utilização da palavra reservada \texttt{new} seguida do nome da classe. O valor devolvido é um ponteiro para uma instância da classe desejada. Seguindo o exemplo anterior, a classe Coordenada2d poderia ser instanciada das seguintes formas:
+Para se instanciar um objeto existem duas opções. A primeira consiste em declarar uma 
+variável da classe desejada (da mesma forma como variáveis do tipo \texttt{int} são 
+declaradas, por exemplo). Na declaração da variável a classe será instanciada e inicializada. 
+A segunda maneira é a utilização da palavra reservada \texttt{new} seguida do nome da classe. 
+O valor devolvido é um ponteiro para uma instância da classe desejada. Seguindo o exemplo anterior, 
+a classe Coordenada2d poderia ser instanciada das seguintes formas:
 
 \begin{codigo}
 Coordenada2d coordenada1;
@@ -354,7 +368,8 @@ exibida~\cite{docwindowstyle}: com bordas, maximizada, minimizada, etc.
 \end{itemize}
 
 Para se registrar uma classe no sistema deve-se chamar a
-função~\cite{docregisterclass}:
+função:
+
 \begin{codigo}
 ATOM WINAPI RegisterClass(
   __in  const WNDCLASS *lpWndClass
@@ -362,9 +377,9 @@ ATOM WINAPI RegisterClass(
 \end{codigo}
 
 O argumento \texttt{lpWndClass} um ponteiro para uma instância de
-\texttt{WNDCLASS}~\cite{docwndclass}, uma estrutura que guarda, entre outras
+\texttt{WNDCLASS}, uma estrutura que guarda, entre outras
 coisas, o nome da classe que está sendo registrada, o ponteiro para a função que
-irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo~\cite{docdevicecontext} pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo. %TODO: Por que isso?
+irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo. %TODO: Por que isso?
 
 Após criada, deve-se avisar o sistema que a janela é visível, para isso, executa-se:
 
@@ -422,6 +437,7 @@ que recebe como argumentos o nome com o qual a classe foi registrada e a instânc
 \subsubsection{O loop de eventos da janela}
 
 A função registrada na WNDCLASS que tratará os eventos gerados pelo sistema deve ter a seguinte assinatura:
+
 \begin{codigo}
 LRESULT CALLBACK WindowProc(
   __in  HWND hwnd,
@@ -443,16 +459,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam){
 	switch(msg) {
 		case WM_CREATE: 
 			// Inicialização do contexto de renderização
-			// no caso da WM_CREATE o valor de lParam é um ponteiro para um struct
-			// do tipo CREATESTRUCT que contém o ponteiro para os dados do usuário
+			// no caso da WM_CREATE o valor de lParam é um 
+			// ponteiro para um struct do tipo CREATESTRUCT
+			// que contém o ponteiro para os dados do usuário
 			// passado na função CreateWindow
 			
 		case WM_DESTROY:
-			// Liberação de recursos gráficos e deleção do contexto criado
+			// Liberação de recursos gráficos e deleção do 
+			// contexto criado
 		case WM_CLOSE:
 			// O usuário clicou no botão de fechamento da janela
-			// Então deve-se avisar para o sistema operacional que a aplicação deve
-			// ser encerrada.
+			// Então deve-se avisar para o sistema operacional 
+			// que a aplicação deve ser encerrada.
 			PostQuitMessage(0);
 			break;
 		case WM_PAINT:
@@ -545,18 +563,10 @@ __declspec(dllexport) TipoDeRetorno nome_da_funcao(parametros);
 A seguir serão apresentados os conceitos que foram estudados para a implementação da engine, assim como na aplicação de exemplo (visualização de campos tensoriais)
 
 \subsection{Transformações lineares}
-O conceito de transformações lineares é de importância fundamental para a computação gráfica. Através delas é possível representar translações, rotações e escalas aplicadas sobre os objetos.
+O conceito de transformações lineares é de importância fundamental para a computação gráfica. 
+Através delas é possível representar de maneira unificada translações, rotações
+e escalas aplicadas sobre os objetos.
 
-% TIrar essa definicao
-\subsubsection{Definição}
-Sejam $U$ e $V$ espaços vetoriais. Uma transformação linear é uma aplicação~\cite{callioli2007algebra} $F: U \rightarrow V$, tal que:
-\begin{enumerate}
-\item $F(u_1 + u_2) = F(u_1) + F(u_2), \forall u_1, u_2 \in U$
-\item $F(\alpha u) = \alpha F(u), \forall \alpha \in \mathbb{R}$ e $\forall u \in U$
-\end{enumerate}
-
-% Tirar o titulo dessa subsecao
-\subsubsection{Aplicação em computação gráfica}
 Em computação gráfica são utilizadas as coordenadas homogêneas~\cite{redbook} de vértices em $\mathbb{R}^3$. Para realizar a translação, rotação e escala de objetos representados em tais coordenadas utiliza-se as seguintes matrizes de transformação linear:
 
 Translação:
