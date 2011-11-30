@@ -45,18 +45,19 @@ Apêndice~\ref{apendiceglbuffer}). A seguir é apresentado um exemplo de uso:
 
 \begin{codigo}
 GraphicAPI *gfx = ...;
-// cria um buffer de tamanho size e com política de uso usage
+
+// cria um buffer de tamanho size e com política de uso 'usage'
 // As políticas de uso permitidas são:
 // STREAM_DRAW, STREAM_READ, STREAM_COPY, STATIC_DRAW, STATIC_READ, 
 // STATIC_COPY, DYNAMIC_DRAW, DYNAMIC_READ e DYNAMIC_COPY
 Buffer *buffer = gfx->getFactory()->createBuffer(size, usage);
-pbge::Buffer::STATIC_DRAW);
 void * mapped = buffer->map(pbge::Buffer::WRITE_ONLY);
+
 // operar na região mapeada
 buffer->unmap();
 \end{codigo}
 
-\subsubsection {Shaders}
+\subsubsection{Shaders}
 
 Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através de um pipeline, que tem cinco estágios principais: transformação de vértices, tesselagem, criação de novas primitivas, rasterização e operações por fragmento. Com exceção da rasterização, todos os estágios podem ser customizados pelo uso de shaders.
 
@@ -68,20 +69,30 @@ Na Pandora's Box, shaders são implementações da classe \texttt{Shader} e podem s
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
-Shader * vertexShader = gfx->createShaderFromString(vertexShaderSource, pbge::Shader::VERTEX_SHADER);
-Shader * fragmentShader = gfx->createShaderFromString(fragmentShaderSource, pbge::Shader::FRAGMENT_SHADER);
+
+Shader * vertexShader = gfx->createShaderFromString(
+				vertexShaderSource,
+				pbge::Shader::VERTEX_SHADER);
+Shader * fragmentShader = gfx->createShaderFromString(
+				fragmentShaderSource,
+				pbge::Shader::FRAGMENT_SHADER);
+
 std::vector<Shader*> vertexShaders;
 std::vector<Shader*> fragmentShaders;
 vertexShaders.push_back(vertexShader);
 fragmentShaders.push_back(fragmentShader);
-GPUProgram * program = gfx->getFactory()->createProgram(vertexShaders, fragmentShaders);
+
+GPUProgram * program = gfx->getFactory()->createProgram(
+				vertexShaders,
+				fragmentShaders);
 \end{codigo}
 
 O código acima pode ainda ser simplificado para:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
-GPUProgram * program = createProgramFromString(vertexShaderSource, fragmentShaderSource);
+GPUProgram * program = createProgramFromString(
+			vertexShaderSource, fragmentShaderSource);
 \end{codigo}
 
 O \texttt{GPUProgram} criado é utilizado para sobrescrever o pipeline através do código:
@@ -103,10 +114,14 @@ Na Pandora's Box, texturas são implementações da interface \texttt{Texture}. Com
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
-// image é uma interface que representa uma fonte de dados para uma textura 2D.
+
+// image é uma interface que representa uma fonte de dados
+// para uma textura 2D.
 Image * image = ...;
 Texture2D * texture = gfx->getFactory()->create2DTexture();
-// especifica a imagem e como os dados devem ser representados na GPU
+
+// especifica a imagem e como os dados devem ser representados
+// na GPU
 texture->setImageData(image, pbge::Texture::RGBA);
 \end{codigo}
 
@@ -118,13 +133,19 @@ Na engine, os texture buffer são texturas que implementam a interface \texttt{Te
 
 \begin{codigo}
 GraphicAPI *gfx = ...
-TextureBuffer * texture = gfx->getFactory()->createTextureBuffer(size);
+
+TextureBuffer * texture = 
+		gfx->getFactory()->createTextureBuffer(size);
+				
 // a textura será representada como um conjunto de 4 floats
 // por texel (elemento da textura)
-texture->setInternalFormat(pbge::Texture::FLOAT, pbge::Texture::RGBA);
+texture->setInternalFormat(pbge::Texture::FLOAT, 
+			   pbge::Texture::RGBA);
+
 // recupera o buffer associado à textura
 Buffer *buffer = texture->getBuffer();
 float * data = (float*) buffer->map(pbge::Buffer::WRITE_ONLY);
+
 // inicialização dos dados do buffer
 buffer->unmap();
 \end{codigo}
@@ -135,6 +156,7 @@ Após a criação das texturas, elas são enviadas ao shader através dos \texttt{Uni
 GraphicAPI *gfx = ...;
 Texture2D * texture = ...;
 UniformSet uniforms;
+
 // associa a textura texture à variável do shader do tipo sampler2D
 // chamada shader_texture
 uniforms->getSampler2D("shader_texture")->setValue(texture);
@@ -184,13 +206,19 @@ A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{Ve
 % como construir com o builder: texto explicando?
 \begin{codigo}
 pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
-    int nVertices = ...; // Inicializa com o número de vértices desejado
+	// Inicializa com o número de vértices desejado
+    int nVertices = ...;
+    
     pbge::VertexBufferBuilder builder(nVertices);
-    pbge::VertexAttribBuilder vertex = builder.addAttrib(4, VertexAttrib::VERTEX);
-    pbge::VertexAttribBuilder color = builder.addAttrib(4, VertexAttrib::COLOR);
+    pbge::VertexAttribBuilder vertex = 
+		builder.addAttrib(4, VertexAttrib::VERTEX);
+    pbge::VertexAttribBuilder color = 
+		builder.addAttrib(4, VertexAttrib::COLOR);
+    				
     for(int i = 0; i < nVertices; i++) {
         float x, y, z, w; // Inicializados com os valores desejados
         float r, g, b, a; // Inicializados com os valores desejados
+        
         builder.on(vertex).pushValue(x, y, z, w);
         builder.on(color).pushValue(r, g, b, a);
     }
@@ -223,11 +251,16 @@ Na engine desenvolvida, framebuffer objects são implementações da interface \tex
 GraphicAPI * gfx = ...;
 Texture2D * color = ...;
 Texture2D * depth = ...;
-FramebufferObject * fbo = gfx->getFactory()->createFramebuffer(width, height);
-// associa os valores escritos pelo shader na variável color_out à textura color
+FramebufferObject * fbo = 
+		gfx->getFactory()->createFramebuffer(width, height);
+
+// associa os valores escritos pelo shader na variável color_out à
+// textura color
 fbo->addRenderable(color, "color_out");
+
 // usa depth como buffer de profundidade
 fbo->setDepthRenderable(depth);
+
 // associa o framebuffer object ao contexto
 gfx->bindFramebufferObject(fbo);
 \end{codigo}
@@ -275,12 +308,14 @@ O UpdaterVisitor é um \texttt{visitor} encarregado de passar por cada nó do graf
 \begin{codigo}
 void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
     node->updatePass(this, gfx);
-    std::vector<Node*>::iterator child;
-    for(child = node->getChildren().begin(); child != node->getChildren().end(); child++)
-        dfsVisit(*child, gfx);
+    
+    for(...) // Node * child in node->getChildren()
+        dfsVisit(child, gfx);
+        
     node->postUpdatePass(this, gfx);
     if(node->getBoundingVolume() != NULL) {
-        node->getBoundingVolume()->update(getCurrentTransformation());
+        node->getBoundingVolume()->update(
+					getCurrentTransformation());
     }
 }
 \end{codigo}
@@ -305,11 +340,15 @@ O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem
 
 \begin{codigo}
 void RenderVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
-    if(node->getBoundingVolume() == NULL || node->getBoundingVolume()->frustumCullingTest(boundingFrustum)) {
+    AABB * boundingVolume = node->getBoundingVolume();
+    
+    if(boundingVolume == NULL || 
+       boundingVolume->frustumCullingTest(boundingFrustum)) {
         visitAction(node, gfx);
-        std::vector<Node*>::iterator child;
-        for(child = node->getChildren().begin(); child != node->getChildren().end(); child++)
-            dfsVisit(*child, gfx);
+        
+        for(...) // Node * child in node->getChildren()
+            dfsVisit(child, gfx);
+            
         postVisitAction(node, gfx);
     }
 }
@@ -376,18 +415,26 @@ Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes
 O \texttt{FramebufferImageProcessor} é utilizado para fazer o pós-processamento da imagem que estiver no buffer chamado color dentro do \texttt{FramebufferObject} atual. O algoritmo executado por esse objeto é descrito pelo código abaixo:
 
 \begin{codigo}
-void FramebufferImageProcessor::process(GraphicAPI *gfx, Renderer *renderer) {
-    std::map<std::string, Texture2D*> & renderables = renderer->getRenderables();
+void FramebufferImageProcessor::process(GraphicAPI *gfx,
+					Renderer *renderer) {
+    std::map<std::string, Texture2D*> & renderables;
+    renderables = renderer->getRenderables();
+    
     Texture2D * auxBuffer = renderables["color_aux"];
     Texture2D * colorBuffer = renderables["color"];
+    
     renderables["color"] = auxBuffer;
     renderables["color_aux"] = colorBuffer;
+    
     FramebufferObject * fbo = renderer->getFramebufferObject();
     fbo->removeRenderable("color");
     fbo->addRenderable(auxBuffer, "color");
     fbo->update(gfx);
+    
     UniformSampler2D* sampler = 
-        dynamic_cast<UniformSampler2D*>(gfx->getUniformValue(UniformInfo("color", pbge::SAMPLER_2D)));
+        dynamic_cast<UniformSampler2D*>(gfx->getUniformValue(
+			UniformInfo("color", pbge::SAMPLER_2D)));
+        				
     sampler->setValue(colorBuffer);
     renderer->renderScreenQuad(program.get());
 }
@@ -438,7 +485,8 @@ pbge::FramebufferImageProcessor * senoidalLens() {
         "uniform sampler2D color;\n"
         "void main(){\n"
         "   vec2 x = 2 * position - 1.0;\n"
-        "   gl_FragColor = texture2D(color, 0.5 + 0.5 * sin(1.5 * x));\n"
+        "   gl_FragColor = "
+        "        texture2D(color, 0.5 + 0.5 * sin(1.5 * x));\n"
         "}"
     );
 }
@@ -463,9 +511,12 @@ No OpenGL, as uniformes são enviadas de forma homogênea através da seguinte roti
 \begin{codigo}
 // troca o programa associado ao contexto de renderização
 glUseProgram(programID);
+
 // localização da uniforme dentro do programa
 GLint location = glGetUniformLocation(programID, nome_da_uniforme);
-// Existe uma função da família glUniform* para cada tipo de atributo.
+
+// Existe uma função da família glUniform* para cada tipo de 
+// atributo.
 // Além disso, para o caso de vetores de valores, existem as funções 
 // cujo nome tem o sufixo v, por exemplo, glUniform1fv
 // no caso de um float:
@@ -476,9 +527,12 @@ Para atributos, o processo é semelhante:
 
 \begin{codigo}
 glUseProgram(programID);
+
 // localização do atributo dentro do programa
 GLint location = glGetAttribLocation(programID, nome_do_atributo);
-// Existe uma função da família glVertexAttrib* para cada tipo de atributo.
+
+// Existe uma função da família glVertexAttrib* para cada tipo de
+// atributo.
 // Além disso, para o caso de vetores de valores, existem as funções 
 // cujo nome tem o sufixo v, por exemplo, glVertexAttrib1fv
 // no caso de um float:
@@ -499,14 +553,19 @@ void GLProgram::updateUniforms(GraphicAPI * gfx) {
             value->bindValueOn(this, it->getInfo(), gfx);
         }
     }
-    
+}
 
-// cada um dos tipos de UniformValue tem um método de associação
+// Cada um dos tipos de UniformValue tem um método de associação
 // específico no GPUProgram
 // Para o caso do UniformFloat:
-void UniformFloat::bindValueOn(GPUProgram *p, const UniformInfo & info, GraphicAPI *ogl) {
+void UniformFloat::bindValueOn(GPUProgram *p,
+			   const UniformInfo & info,
+			   GraphicAPI *gfx) {
     float * values = static_cast<float *>(getValueAt(0));
-    p->bindFloat(info, ogl, values, std::min(getNumberOfElements(), info.getNumberOfElements()));
+    
+    unsigned int nElements =
+    	std::min(getNumberOfElements(), info.getNumberOfElements())
+    p->bindFloat(info, gfx, values, nElements);
 }
 \end{codigo}
 
@@ -524,10 +583,15 @@ Os \texttt{BuiltInUniformBinder} implementados na Pandora's Box são de dois tipo
 
 \begin{codigo}
 void DeprModelViewProjectionBinder::bind(pbge::GraphicAPI *gfx) {
-    math3d::matrix44 projection = gfx->getProjectionMatrix()->get().transpose();
-    math3d::matrix44 modelView = (gfx->getViewMatrix()->get() * gfx->getModelMatrix()->get()).transpose();
+    math3d::matrix44 projection = 
+    	gfx->getProjectionMatrix()->get().transpose();
+    math3d::matrix44 modelView = 
+    	(gfx->getViewMatrix()->get() * 
+    	gfx->getModelMatrix()->get()).transpose();
+    	
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(modelView);
+    
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(projection);
 }
@@ -562,16 +626,21 @@ public:
         viewStamp = gfx->getViewMatrix()->getStamp();
         modelStamp = gfx->getModelMatrix()->getStamp();
         projStamp = gfx->getProjectionMatrix()->getStamp();
+        
         math3d::matrix44 view = gfx->getViewMatrix()->get();
         math3d::matrix44 model = gfx->getModelMatrix()->get();
-        math3d::matrix44 projection = gfx->getProjectionMatrix()->get();
+        math3d::matrix44 projection = 
+			gfx->getProjectionMatrix()->get();
+        
         return projection * view * model;
     }
+    
     bool shouldChange(GraphicAPI * gfx) {
         return viewStamp != gfx->getViewMatrix()->getStamp() ||
                modelStamp != gfx->getModelMatrix()->getStamp() ||
                projStamp != gfx->getProjectionMatrix()->getStamp();
     }
+    
 private:
     unsigned long viewStamp, modelStamp, projStamp;
 };
@@ -592,9 +661,14 @@ No caso do atributo gl\_Vertex, temos o seguinte binder:
 class DeprVertexBinder : public AttrBinder {
 public:
     void bind(VertexBuffer * attrs) {
-        VertexAttrib * attr = attrs->findByType(VertexAttrib::VERTEX);
+        VertexAttrib * attr = 
+			attrs->findByType(VertexAttrib::VERTEX);
+        				
         glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(attr->getNCoord(), GL_FLOAT, attr->getStride(), ATTRIB_POINTER_OFFSET(attr->getOffset()));
+        glVertexPointer(attr->getNCoord(), 
+			GL_FLOAT, 
+			attr->getStride(), 
+			ATTRIB_POINTER_OFFSET(attr->getOffset()));
     }
 
     void unbind() {
@@ -608,11 +682,16 @@ public:
 \begin{codigo}
 class SemanticAttribBinder : public AttrBinder {
 public:
-    SemanticAttribBinder(const VertexAttrib::Type attrType, GLint attrLocation): type(attrType), location(attrLocation){}
+    SemanticAttribBinder(const VertexAttrib::Type attrType, 
+			 GLint attrLocation): type(attrType), 
+			 location(attrLocation){}
 
     void bind(VertexBuffer * attrs) {
         VertexAttrib * attr = attrs->findByType(type);
-        glVertexAttribPointer(location, attr->getNCoord(), GL_FLOAT, GL_FALSE, attr->getStride(), ATTRIB_POINTER_OFFSET(attr->getOffset()));
+        
+        glVertexAttribPointer(location, attr->getNCoord(), 
+			  GL_FLOAT, GL_FALSE, attr->getStride(),
+        ATTRIB_POINTER_OFFSET(attr->getOffset()));
         glEnableVertexAttribArray(location);
     }
 
@@ -630,11 +709,15 @@ private:
 \begin{codigo}
 class CustomAttrBinder : public AttrBinder {
 public:
-    CustomAttrBinder(std::string attrName, GLint attrLocation) : name(attrName), location(attrLocation) {}
+    CustomAttrBinder(std::string attrName, GLint attrLocation) : 
+			name(attrName), location(attrLocation) {}
 
     void bind(VertexBuffer * attrs) {
         VertexAttrib * attr = attrs->findByName(name);
-        glVertexAttribPointer(location, attr->getNCoord(), GL_FLOAT, GL_FALSE, attr->getStride(), ATTRIB_POINTER_OFFSET(attr->getOffset()));
+        
+        glVertexAttribPointer(location, attr->getNCoord(), GL_FLOAT, 
+			  GL_FALSE, attr->getStride(),
+			  ATTRIB_POINTER_OFFSET(attr->getOffset()));
         glEnableVertexAttribArray(location);
     }
 
@@ -667,14 +750,18 @@ Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBO
 \begin{codigo}
 GraphicAPI * gfx = ...;
 Model * model = ...;
+
 // prepara o modelo para a renderização
 model->beforeRender(gfx);
+
 for(int i = 0; i < number_of_instances; i++) {
     int instanceID = i;
+    
     // renderiza a instância instanceID
     // a variável instanceID fica disponível no vertex shader
     model->render(gfx)
 }
+
 model->afterRender(gfx);
 instanceID = 0;
 \end{codigo}
