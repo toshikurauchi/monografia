@@ -265,7 +265,9 @@ Os \texttt{smart\_ptr} são classes que guardam ponteiros para áreas de memória a
 
 \subsection{OpenGL}
 
-O OpenGL é uma API gráfica amplamente adotada no mercado. Ele é uma especificação aberta e extensível~\cite{openglregistry} de uma interface de software para o hardware gráfico.
+O OpenGL é uma especificação aberta, extensível~\cite{openglregistry},
+amplamente adotada no mercado e independente do sistema operacional de uma
+interface de software para o hardware gráfico.
 
 \subsubsection{O que ele não faz}
 
@@ -637,7 +639,13 @@ respectivas matrizes são:
 
 \subsection{Tensores de imagens de ressonância magnética de difusão}
 
-Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido ou gasoso). Denomina-se coeficiente de difusão a facilidade com que uma molécula se move no meio. Em fluidos homogêneos, como a água, o coeficiente de difusão é o mesmo em todas as direções. A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os tecidos biológicos.
+Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido
+ou gasoso) e denomina-se coeficiente de difusão a facilidade com que uma
+molécula se desloca em determinado meio. Em fluidos homogêneos, como a água, o
+coeficiente de difusão é o mesmo em todas as direções.
+A esse tipo de meio dá-se o nome de isotrópico. Em fluidos heterogêneos o coeficiente pode variar 
+dependendo da direção. Esses são os meios anisotrópicos. Um exemplo de meio anisotrópico são os 
+tecidos biológicos.
 
 \begin{figure}[h!]
 \vspace{-20pt}
@@ -651,16 +659,29 @@ Difusão é o nome dado ao movimento aleatório de moléculas em um fluido (líquido 
 \vspace{-10pt}
 \end{figure}
 
-Imagens de ressonância magnética de difusão são uma das formas de obter informações sobre o coeficiente de difusão de moléculas de água em diferentes direções nesses tipos de tecidos.
+Imagens de ressonância magnética de difusão são uma das formas de se obter 
+informações sobre o coeficiente de difusão de moléculas de água em diferentes 
+direções em tecido biológicos.
 
-Para representar tais coeficientes são utilizados tensores, que são abstrações de escalares, vetores e matrizes utilizados em diversas aplicações. Em imagens de ressonância magnética de difusão, tais tensores são comumente representados por matrizes $ 3 \times 3 $ simétricas.
+Para representar tais coeficientes são utilizados tensores, que são abstrações
+de escalares, vetores e matrizes com diversas aplicações na ciência e
+matemática. Em imagens de ressonância magnética de difusão, tais tensores são
+comumente representados por matrizes $ 3 \times 3 $ simétricas.
 
 \subsection{Representação elipsoidal de tensores de difusão}
-Em meios isotrópicos o coeficiente de difusão pode ser representado por uma esfera, pois o movimento das moléculas se distribui igualmente para todas as direções em um determinado período de tempo. Já em meios anisotrópicos, como o movimento depende da direção, o coeficiente é modelado como um elipsóide, sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor ($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores $\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
+Em meios isotrópicos o coeficiente de difusão pode ser representado por uma
+esfera, pois o movimento das moléculas se distribui igualmente para todas as 
+direções em um determinado período de tempo. Já em meios anisotrópicos, como 
+o movimento depende da direção, o coeficiente é modelado como um elipsóide, 
+sendo que os semi-eixos têm comprimento proporcional aos autovalores do tensor 
+($\lambda_{1} > \lambda_{2} > \lambda_{3}$) ao longo dos seus autovetores 
+$\epsilon_{1}, \epsilon_{2}, \epsilon_{3}$.
 
 \subsection{Anisotropia Fracionada}
 A anisotropia fracionada é um valor no intervalo $ [0,1] $ que descreve o grau
-de anisotropia de um processo de difusão. Sejam $\lambda_{1}, \lambda_{2}, \lambda_{3}$ os autovalores do tensor. A anisotropia fracionada ($AF$) pode ser calculada a partir da seguinte fórmula~\cite{hagmann}:
+de anisotropia de um processo de difusão. Sejam $\lambda_{1}, \lambda_{2}, \lambda_{3}$ 
+os autovalores do tensor. A anisotropia fracionada ($AF$) pode ser calculada a partir 
+da seguinte fórmula~\cite{hagmann}:
 
 \begin{equation}
 AF = \sqrt{\frac{1}{2}}\frac{\sqrt{(\lambda_{1}-\lambda_{2})^{2} + (\lambda_{1}-\lambda_{3})^{2} + (\lambda_{2}-\lambda_{3})^{2}}}{\sqrt{\lambda_{1}^{2} + \lambda_{2}^{2} + \lambda_{3}^{2}}}
@@ -668,7 +689,8 @@ AF = \sqrt{\frac{1}{2}}\frac{\sqrt{(\lambda_{1}-\lambda_{2})^{2} + (\lambda_{1}-
 \end{equation}
 
 A anisotropia fracionada pode também ser dividida em três medidas (linear,
-planar e esférica) que indicam a forma da difusão~\cite{westinISMRM97}. Sejam $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \geq 0$:
+planar e esférica) que indicam a forma da difusão~\cite{westinISMRM97}. 
+Sejam $\lambda_{1} \geq \lambda_{2} \geq \lambda_{3} \geq 0$:
 
 Caso linear:
 \begin{equation}
@@ -688,4 +710,5 @@ C_{s} = \frac{3\lambda_{3}}{\lambda_{1} + \lambda_{2} + \lambda_{3}}
 \label{sphericalCase}
 \end{equation}
 
-Tais medidas também pertencem ao intervalo $ [0,1] $. Quanto mais próximo de 1, em cada caso, mais o tensor se assemelha à forma referente.
+Tais medidas também pertencem ao intervalo $ [0,1] $. Quanto mais próximo de 1, em cada caso, 
+mais o tensor se assemelha à forma referente.
