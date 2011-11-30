@@ -269,46 +269,62 @@ O OpenGL é uma especificação aberta, extensível~\cite{openglregistry},
 amplamente adotada no mercado e independente do sistema operacional de uma
 interface de software para o hardware gráfico.
 
-\subsubsection{O que ele não faz}
+Para se manter minimalista, o OpenGL não especifica nada
+que dependa do sistema operacional, como gerenciamento de janelas ou controle de
+entrada e saída de dados, assim como também não suporta nenhum tipo de formato
+de arquivo como imagens (png, jpg, bmp) e modelos (3ds~\cite{3dsfileformat},
+blend~\cite{blendfileformat}, ou obj~\cite{objfileformat}), ele apenas oferece
+formas de se combinar diferentes vértices para se formar primitivas e de fazer
+com que essas primitivas sejam transformadas em pixels. Essa transformação de
+uma primitiva para um pixel ocorre em um processo conhecido como pipeline.
 
-O OpenGL não realiza tratamentos que dependam do sistema operacional, ou seja, não gerencia janelas, nem controla eventos de entrada e saída.
+As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (Graphics 
+Processing Unit) onde serão processadas e utilizadas para gerar uma imagem que será mostrada 
+na janela. Esse processo é dividido em 5 estágios principais:
 
-Além disso ele não disponibiliza nenhuma forma de leitura de arquivos. Por esse
-motivo, não é possível visualizar diretamente imagens guardadas em arquivos
-(como png, jpg, bmp, ou modelos em três dimensões como 3ds~\cite{3dsfileformat},
-blend~\cite{blendfileformat}, ou obj~\cite{objfileformat}).
+\begin{itemize}
+  \item vertex shader: cada vértice é transformado para a sua coordenada final.
+  \item tesselation shaders: as primitivas formadas após a execução do vertex
+  shader podem ser opcionalmente quebradas em primitivas menores.
+  \item geometry shader: a partir das primitivas geradas nos passos anteriores,
+  o geometry shader decide se novas primitivas devem ser geradas.
+  \item rasterização: Nessa etapa as primitivas de 3 dimensões são projetadas em
+  um plano, que representa a janela do usuário. Essa projeção gera fragmentos,
+  que são possíveis pixels.
+  \item fragment shader: cada fragmento gerado no processo de rasterização é
+  processado pelo fragment shader e, após a execução do shader, eles passam por
+  um teste de profundidade, que determina se o fragmento é visível, se ele passar no
+  teste, o fragmento é escrito no framebuffer e se torna um pixel visível,
+  senão, o fragmento é descartado.
+\end{itemize}
 
-\subsubsection{O que ele faz}
+O processo descrito acima é conhecido como pipeline.
 
-O OpenGL é capaz de representar vértices em três dimensões combinados em pontos, retas, triângulos e quadriláteros, chamados de primitivas.
-
-Tais primitivas são projetadas em um plano e transformadas em conjuntos de pixels. Essa transformação, conhecida como rasterização é parte do processo descrito a seguir.
+No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, 
+entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser 
+modificados. Mais detalhes são apresentados na seção~\ref{atividades}.
 
 % O caption da imagem esta cobrindo o texto (diminuir a imagem)
 
 \begin{wrapfigure}{r}{0.3\textwidth}
-\vspace{-20pt}
+%\vspace{-20pt}
 \begin{center}
 \includegraphics[width=0.3\textwidth]{pipeline}
 \end{center}
-\vspace{-20pt}
+%\vspace{-20pt}
 \captionsetup{margin=15pt}
 \caption{Na GPU as primitivas do OpenGL passam pelos 5 estágios do pipeline
 representados acima.}
-\vspace{-10pt}
+%\vspace{-10pt}
 \end{wrapfigure}
-
-\subsubsection{O pipeline}
-
-As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (Graphics Processing Unit) onde serão processadas e utilizadas para gerar uma imagem que será mostrada na janela. Esse processo é dividido em 5 estágios principais.
-
-No primeiro são aplicadas as transformações lineares e necessárias nos vértices (vertex shader). Em seguida as primitivas são subdivididas em partículas menores e podem ser gerados novos vértices (tessellation shaders e geometry shader). Por fim os vértices em 3 dimensões são projetados em um plano (rasterização) que representa a tela resultando em pixels que por sua vez passam por um processamento final (fragment shader), após a execução do fragment shader, os pixels passam pelo teste de profundidade, onde é determinado se o pixel é visível, se o pixel passar no teste, o valor de sua profundidade é gravado no depth buffer e o pixel é escrito no framebuffer, senão, os valores gerados pelo fragment shader são descartados. Esse processo é conhecido como pipeline.
-
-No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser modificados. Mais detalhes são apresentados na seção~\ref{atividades}.
 
 \subsubsection{O contexto do OpenGL}
 
-O OpenGL é implementado internamente como uma máquina de estados. Tais estados, assim como outras informações, como a janela e texturas são guardados em um contexto, que deve ser criado e inicializado para o funcionamento da aplicação. Essa criação é dependente da plataforma e por esse motivo não está definida na API do OpenGL.
+O OpenGL é implementado internamente como uma máquina de estados. 
+Tais estados, assim como outras informações, como a janela e texturas são
+ guardados em um contexto, que deve ser criado e inicializado para o 
+ funcionamento da aplicação. Essa criação é dependente da plataforma e por 
+ esse motivo não está definida na API do OpenGL.
 
 \subsection{GLEW}
 
