@@ -278,9 +278,22 @@ formas de se combinar diferentes vértices para se formar primitivas e de fazer
 com que essas primitivas sejam transformadas em pixels. Essa transformação de
 uma primitiva para um pixel ocorre em um processo conhecido como pipeline.
 
+\begin{wrapfigure}{r}{0.3\textwidth}
+\vspace{-20pt}
+\begin{center}
+\includegraphics[width=0.3\textwidth]{pipeline}
+\end{center}
+\vspace{-20pt}
+\captionsetup{margin=15pt}
+\caption{Na GPU as primitivas do OpenGL passam pelos 5 estágios do pipeline
+representados acima.}
+\vspace{-40pt}
+\end{wrapfigure}
+
 As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (Graphics 
 Processing Unit) onde serão processadas e utilizadas para gerar uma imagem que será mostrada 
-na janela. Esse processo é dividido em 5 estágios principais:
+na janela. Esse processo é conhecido como pipeline e é dividido em 5 estágios
+principais:
 
 \begin{itemize}
   \item vertex shader: cada vértice é transformado para a sua coordenada final.
@@ -298,27 +311,13 @@ na janela. Esse processo é dividido em 5 estágios principais:
   senão, o fragmento é descartado.
 \end{itemize}
 
-O processo descrito acima é conhecido como pipeline.
-
 No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, 
 entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser 
 modificados. Mais detalhes são apresentados na seção~\ref{atividades}.
 
 % O caption da imagem esta cobrindo o texto (diminuir a imagem)
 
-\begin{wrapfigure}{r}{0.3\textwidth}
-%\vspace{-20pt}
-\begin{center}
-\includegraphics[width=0.3\textwidth]{pipeline}
-\end{center}
-%\vspace{-20pt}
-\captionsetup{margin=15pt}
-\caption{Na GPU as primitivas do OpenGL passam pelos 5 estágios do pipeline
-representados acima.}
-%\vspace{-10pt}
-\end{wrapfigure}
-
-\subsubsection{O contexto do OpenGL}
+\vsection{O contexto do OpenGL}
 
 O OpenGL é implementado internamente como uma máquina de estados. 
 Tais estados, assim como outras informações, como a janela e texturas são
