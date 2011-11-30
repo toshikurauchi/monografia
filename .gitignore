@@ -6,4 +6,6 @@
 *.dvi
 *.out
 *.toc
+.project
+.texlipse
 poster.html
