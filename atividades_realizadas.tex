@@ -8,24 +8,32 @@ Nessa seção serão descritos os mapeamentos utilizados pela engine para os objeto
 
 \subsubsection {Buffer}
 
-Um \texttt{Buffer} é uma região de memória controlado pelo driver gráfico. O conceito de \texttt{Buffer} foi criado para resolver o gargalo da comunicação entre Memória Principal e Memória de Vídeo.
+Um buffer é uma região de memória controlado pelo driver gráfico. O conceito de
+Buffer foi criado para resolver o gargalo da comunicação entre Memória Principal e Memória de Vídeo.
 
-No OpenGL, buffers são criados através da função glGenBuffers. Depois de criado, o buffer deve ser associado ao contexto do OpenGL, para isso utiliza-se o comando glBindBuffer, esse comando, além de informar ao OpenGL que o buffer deve ser associado ao contexto, faz com que os dados presentes no buffer sejam interpretados de forma diferente. Por exemplo, para informar que o buffer será utilizado para fornecer vértices ao pipeline, utiliza-se:
+No OpenGL, buffers são criados através da função \texttt{glGenBuffers}. Depois
+de criado, o buffer deve ser associado ao contexto do OpenGL, para isso
+utiliza-se o comando \texttt{glBindBuffer}, esse comando, além de informar ao
+OpenGL que o buffer deve ser associado ao contexto, faz com que os dados presentes no buffer sejam interpretados de forma diferente. Por exemplo, para informar que o buffer será utilizado para fornecer vértices ao pipeline, utiliza-se:
 
 \begin{codigo}
 glBindBuffer(GL_ARRAY_BUFFER);
 \end{codigo}
 
-Com o buffer associado ao contexto, é necessário inicializar os dados do buffer. Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
+Com o buffer associado ao contexto, é necessário inicializar seus dados.
+Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
 
 % Colocar \texttt nos GL_WRITE_ONLY e outras constantes
 Uma das características mais importantes do \texttt{buffer} é a possibilidade de mapeá-lo em uma região de memória que pode ser acessada pela aplicação. Esse mapeamento é importante, pois ele permite que a aplicação informe ao OpenGL que política de acesso a aplicação adotará para ler ou escrever na memória mapeada. Por exemplo, se o buffer for mapeado utilizando-se GL\_WRITE\_ONLY, o driver gráfico não precisa copiar os dados da memória do driver para a memória principal, o que diminui a troca de dados entre a memória de vídeo e a memória principal.
 
 As políticas de acesso definidas pelo OpenGL são: 
 \begin{itemize}
-\item GL\_READ\_ONLY: quando a aplicação planeja apenas ler a região de memória
-\item GL\_WRITE\_ONLY: quando a região de memória for utilizada apenas para escrita
-\item GL\_READ\_WRITE: quando a memória mapeada for utilizada para leitura e escrita
+\item \texttt{GL\_READ\_ONLY}: quando a aplicação planeja apenas ler a região de
+memória
+\item \texttt{GL\_WRITE\_ONLY}: quando a região de memória for utilizada apenas
+para escrita
+\item \texttt{GL\_READ\_WRITE}: quando a memória mapeada for utilizada para
+leitura e escrita
 \end{itemize}
 
 O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinte código:
