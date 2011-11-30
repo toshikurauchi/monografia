@@ -306,10 +306,10 @@ if(glewIsSupported("GL_ARB_vertex_program")) {
 }
 \end{verbatim}
 
-\subsection{Windows API}
+\subsection{Windows API~\cite{msdn}}
 Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o programa será executado. Nesse trabalho foi utilizada apenas a API do sistema operacional Windows.
 
-Para se inicializar um contexto para a execução de programas em OpenGL é necessário criar uma janela, para isso usa-se a seguinte função\cite{doccreatewindow}:
+Para se inicializar um contexto para a execução de programas em OpenGL é necessário criar uma janela, para isso usa-se a seguinte função:
 
 \begin{verbatim}
 HWND WINAPI CreateWindow(
@@ -349,7 +349,7 @@ ATOM WINAPI RegisterClass(
 
 O argumento \texttt{lpWndClass} um ponteiro para uma instância de \texttt{WNDCLASS}\cite{docwndclass}, uma estrutura que guarda, entre outras coisas, o nome da classe que está sendo registrada, o ponteiro para a função que irá tratar os eventos gerados pelo sistema e uma flag que indica se o contexto do dispositivo\cite{docdevicecontext} pode ser compartilhado. Quando se cria um contexto do OpenGL é importante sempre registrar a classe como dona do contexto do dispositivo. %TODO: Por que isso?
 
-Após criada, deve-se avisar o sistema que a janela é visível, para isso, executa-se\cite{docshowwindow}:
+Após criada, deve-se avisar o sistema que a janela é visível, para isso, executa-se:
 
 \begin{verbatim}
 BOOL WINAPI ShowWindow(
@@ -358,10 +358,10 @@ BOOL WINAPI ShowWindow(
 );
 \end{verbatim}
 
-Onde \texttt{hWnd} é o handle devolvido pela função \texttt{CreateWindow} e \texttt{nCmdShow} controla como a janela deve ser exibida (maximizada, minimizada, simplesmente exibida, \ldots)
+Onde \texttt{hWnd} é o handle devolvido pela função \texttt{CreateWindow} e \texttt{nCmdShow} controla como a janela deve ser exibida (maximizada, minimizada, simplesmente exibida, etc)
 
 % TODO: Em nenhum lugar foi citado que o trabalho é dividido em threads
-Depois de criar a janela, a thread mãe começa a receber os eventos da janela criada em sua fila de mensagens. Para se recuperar uma mensagem da fila, utiliza-se a função\cite{docgetmessage}:
+Depois de criar a janela, a thread mãe começa a receber os eventos da janela criada em sua fila de mensagens. Para se recuperar uma mensagem da fila, utiliza-se a função:
 
 \begin{verbatim}
 BOOL WINAPI GetMessage(
@@ -374,7 +374,7 @@ BOOL WINAPI GetMessage(
 
 Que recebe como parâmetros um ponteiro para uma estrutura do tipo \texttt{MSG}\cite{docmsg}, o handle devolvido pela função \texttt{CreateWindow}, \texttt{wMsgFilterMin} e \texttt{wMsgFilterMax} são constantes que podem ser passadas para indicar que tipo de mensagem deve ser retornada. O valor de retorno dessa função é um inteiro que indica qual o tipo de mensagem foi retornada ou se ocorreu um erro durante a execução da função.
 
-Após recuperar a mensagem ela precisa ser traduzida e em seguida enviada para o seu destino final~\cite{doctranslatemessage}. A função responsável pela tradução da mensagem é:
+Após recuperar a mensagem ela precisa ser traduzida e em seguida enviada para o seu destino final. A função responsável pela tradução da mensagem é:
 
 \begin{verbatim}
 BOOL WINAPI TranslateMessage(
@@ -382,7 +382,7 @@ BOOL WINAPI TranslateMessage(
 );
 \end{verbatim}
 
-e a função que envia a mensagem para a janela é\cite{docdispatchmessage}:
+e a função que envia a mensagem para a janela é:
 
 \begin{verbatim}
 LRESULT WINAPI DispatchMessage(
@@ -390,7 +390,7 @@ LRESULT WINAPI DispatchMessage(
 );
 \end{verbatim}
 
-Quando a thread principal recebe a mensagem \texttt{WM\_QUIT}, o retorno de \texttt{GetMessage} é \texttt{0}, nesse momento a tradução e envio de mensagens deve parar e o programa deve apagar o registro da classe criada por \texttt{RegisterClass}. O registro é apagado pela função\cite{docunregisterclass}:
+Quando a thread principal recebe a mensagem \texttt{WM\_QUIT}, o retorno de \texttt{GetMessage} é \texttt{0}, nesse momento a tradução e envio de mensagens deve parar e o programa deve apagar o registro da classe criada por \texttt{RegisterClass}. O registro é apagado pela função:
 
 \begin{verbatim}
 BOOL WINAPI UnregisterClass(
@@ -403,7 +403,7 @@ que recebe como argumentos o nome com o qual a classe foi registrada e a instânc
 
 \subsubsection{O loop de eventos da janela}
 
-A função registrada na WNDCLASS que tratará os eventos gerados pelo sistema deve ter a seguinte assinatura\cite{docwindowproc}:
+A função registrada na WNDCLASS que tratará os eventos gerados pelo sistema deve ter a seguinte assinatura:
 \begin{verbatim}
 LRESULT CALLBACK WindowProc(
   __in  HWND hwnd,
@@ -453,13 +453,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam){
 Ao receber \texttt{WM\_CREATE} a aplicação deve inicializar todos os recursos para que a janela possa ser utilizada. No caso da Pandora's Box utilizando OpenGL como API gráfica, deve-se inicializar o contexto de renderização que será utilizado.
 
 % antes de chamarmos wglCreateContext devemos criar o pixel format descriptor
-A criação do contexto é gerenciada pela API do wgl (também conhecido como Wiggle), que é a implementação de OpenGL para o Windows. O contexto que será utilizado pela aplicação deve ser criado através da função wglCreateContext \cite{wglcreatecontextdoc}: %TODO essa citação está como [?]
+A criação do contexto é gerenciada pela API do wgl (também conhecido como Wiggle), que é a implementação de OpenGL para o Windows. O contexto que será utilizado pela aplicação deve ser criado através da função wglCreateContext:
 
 % assinatura da wglCreateContext
 \begin{verbatim}
 \end{verbatim}
 
-Essa função tem como argumento o handle para o dispositivo utilizado pela janela. Tal handle pode ser obtido através da função GetDC \cite{getdcdoc}: %TODO essa citação está como [?]
+Essa função tem como argumento o handle para o dispositivo utilizado pela janela. Tal handle pode ser obtido através da função GetDC:
 
 % outro prototipo
 % Verificar se precisa do prototipo ou tirar o : anterior
@@ -479,7 +479,7 @@ case WM_CREATE:
 
 Para que seja possível suportar diversas implementações independentes de especificações de APIs gráficas, a engine possui um mecanismo de carregamento dinâmico de DLLs.
 
-Para se executar código presente em uma DLL, é necessário carregá-la durante a execução do programa. Através da windows API, pode-se abrir um arquivo DLL com a função LoadLibrary:
+Para se executar código presente em uma DLL, é necessário carregá-la durante a execução do programa. Através da windows API, pode-se abrir um arquivo DLL com a função \texttt{LoadLibrary}:
 
 \begin{verbatim}
 % protótipo da load library
