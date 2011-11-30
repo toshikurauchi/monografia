@@ -18,7 +18,7 @@ GraphicAPI * gfx = ...;
 GraphicObjectsFactory * factory = gfx->getFactory();
 \end{codigo}
 
-\subsubsection {Buffer}
+\vsection {Buffer}
 
 Um buffer é uma região de memória controlado pelo driver gráfico. O conceito de
 Buffer foi criado para resolver o gargalo da comunicação entre Memória Principal e Memória de Vídeo.
@@ -76,7 +76,7 @@ void * mapped = buffer->map(pbge::Buffer::WRITE_ONLY);
 buffer->unmap();
 \end{codigo}
 
-\subsubsection{Shaders}
+\vsection{Shaders}
 
 Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através 
 de um pipeline, que tem cinco estágios principais: transformação de vértices, 
@@ -138,7 +138,7 @@ gfx->getState()->useProgram(program);
 \end{codigo}
 
 
-\subsubsection{Texturas}
+\vsection{Texturas}
 
 Texturas no OpenGL são simplesmente tabelas de valores. Em aplicações mais antigas, as 
 texturas eram utilizadas quase exclusivamente para o armazenamento de imagens que seriam 
@@ -219,7 +219,7 @@ gfx->pushUniforms(&uniforms);
 
 
 
-\subsubsection{VertexBuffer}
+\vsection{VertexBuffer}
 No início da computação gráfica, os vértices eram especificados um a um através de 
 chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
 
@@ -297,7 +297,7 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 \end{codigo}
 
 
-\subsubsection {FrameBufferObject}
+\vsection {FrameBufferObject}
 
 O framebuffer é o destino dos pixels gerados através do pipeline. Existem dois tipos de framebuffer:
 
@@ -357,18 +357,27 @@ Os métodos de atualização são chamados para preparar a cena para a renderização 
 \subsubsection{Node Visitors}
 \label{visitors}
 
-Como foi explicado, o grafo de cena é um grafo enraizado, direcionado e sem circuitos, um \texttt{Node Visitor} é uma classe que dado a raíz do grafo de cena, consegue percorrer os nós do grafo obedecendo as seguintes regras:
+Como foi explicado, o grafo de cena é um grafo enraizado, 
+direcionado e sem circuitos, um Node Visitor é uma classe 
+que dado a raíz do grafo de cena, consegue percorrer os nós 
+do grafo obedecendo as seguintes regras:
 
 \begin{itemize}
 \item Todos os caminhos do grafo devem ser percorridos, se possível.
-\item O estado do \texttt{visitor} ao visitar um dado nó A, deve depender apenas das modificações feitas por nós dentro do caminho da raíz do grafo até A.
+\item O estado do visitor ao visitar um dado nó A, deve 
+depender apenas das modificações feitas por nós dentro do caminho da 
+raíz do grafo até A.
 \end{itemize}
 
 O segundo item da lista acima, faz com que o grafo de cena represente uma estrutura hierárquica.
 
-Dentro da engine, existem duas implementações concretas do \texttt{visitor} descrito: UpdaterVisitor e ColorPassVisitor.
+Dentro da engine, existem duas implementações concretas do visitor descrito:
+\texttt{UpdaterVisitor} e \texttt{ColorPassVisitor}.
 
-O UpdaterVisitor é um \texttt{visitor} encarregado de passar por cada nó do grafo de cena e chamar o método updatePass, visitar todos os nós filhos do nó atual, chamar o método postUpdatePass e por fim atualizar o bounding box do nó atual, como exemplificado no código abaixo:
+O \texttt{UpdaterVisitor} é um visitor encarregado de passar por cada
+nó do grafo de cena e chamar o método \texttt{updatePass}, visitar todos os nós 
+filhos do nó atual, chamar o método \texttt{postUpdatePass} e por fim atualizar
+o bounding box do nó atual, como exemplificado no código abaixo:
 
 \begin{codigo}
 void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
@@ -385,7 +394,10 @@ void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
 }
 \end{codigo}
 
-O \texttt{ColorPassVisitor} é uma implementação concreta da classe abstrata \texttt{RenderVisitor} que tem a função de chamar os métodos \texttt{renderPass} e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} e \texttt{postVisitAction}, respectivamente, do \texttt{RenderVisitor}:
+O \texttt{ColorPassVisitor} é uma implementação concreta da classe abstrata 
+\texttt{RenderVisitor} que tem a função de chamar os métodos \texttt{renderPass} 
+e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} 
+e \texttt{postVisitAction}, respectivamente, do \texttt{RenderVisitor}:
 
 \begin{codigo}
 class ColorPassVisitor : public RenderVisitor {
@@ -399,9 +411,17 @@ public:
 };
 \end{codigo}
 
-O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem renderização. Para extendê-la, a classe filha deve implementar dois métodos: \texttt{visitAction} e \texttt{postVisitAction}. Esse é importante, pois implementa o conceito de \texttt{frustum culling}.
+O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem renderização. 
+Para extendê-la, a classe filha deve implementar dois métodos: \texttt{visitAction} e 
+\texttt{postVisitAction}. Esse visitor é importante, pois implementa uma técnica
+chamada frustum culling.
 
-\texttt{Frustum Culling} é o processo de renderizar apenas objetos que são visíveis para a câmera atual. Na \texttt{Pandora's Box}, um nó é considerado não visível se ele não colide com o \texttt{frustum} da câmera corrente e ao ser considerado não visível, ele e seus nós filhos não são visitados pelo \texttt{RenderVisitor}. Esse teste de visibilidade é executado dentro do método \texttt{dfsVisit} do \texttt{RenderVisitor}:
+Frustum culling é o processo de renderizar apenas objetos que são visíveis para
+a câmera atual. Na Pandora's Box, um nó é considerado não visível se ele não 
+colide com o frustum da câmera corrente e ao ser considerado não
+visível, ele e seus nós filhos não são visitados pelo \texttt{RenderVisitor}. 
+Esse teste de visibilidade é executado dentro do método \texttt{dfsVisit} do 
+\texttt{RenderVisitor}:
 
 \begin{codigo}
 void RenderVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
@@ -439,11 +459,12 @@ O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 \item Pós-Processamento da imagem gerada pela fase de processamento
 \end{itemize}
 
-\subsubsection {Fase de atualização}
+\vsection {Fase de atualização}
 
-Nessa fase, um \texttt{UpdaterVisitor} é utilizado para visitar e atualizar todos os nós do grafo de cena. É a única fase não customizável do algoritmo do renderizador.
+Nessa fase, um \texttt{UpdaterVisitor} é utilizado para visitar e atualizar todos 
+os nós do grafo de cena. É a única fase não customizável do algoritmo do renderizador.
 
-\subsubsection {Fase de processamento do grafo de cena}
+\vsection {Fase de processamento do grafo de cena}
 
 Nessa fase executa-se uma sequência de algoritmos definida pelo usuário da engine, a execução é equivalente ao código:
 
@@ -457,7 +478,8 @@ for(it = processors.begin(); it != processors.end(); it++){
 }
 \end{codigo}
 
-Cada algoritmo deve implementar a interface \texttt{SceneProcessor}, que tem os seguintes métodos:
+Cada algoritmo deve implementar a interface \texttt{SceneProcessor}, 
+que tem os seguintes métodos:
 
 \begin{itemize}
 \item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo já preparou todas as suas dependências
@@ -466,21 +488,27 @@ Cada algoritmo deve implementar a interface \texttt{SceneProcessor}, que tem os 
 \item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado
 \end{itemize}
 
-\subsubsection{Fase de pós-processamento}
+\vsection{Fase de pós-processamento}
 
-Essa fase é semelhante à anterior, porém o teste de profundidade do fragmento não é executado por padrão, a implementação do algoritmo deve ativá-lo manualmente.
+Essa fase é semelhante à anterior, porém o teste de profundidade do fragmento não é executado por padrão, 
+a implementação do algoritmo deve ativá-lo manualmente.
 
-A interface que deve ser implementada é a \texttt{ScenePostProcessor} que define métodos com a mesma semântica dos métodos do \texttt{SceneProcessor}.
+A interface que deve ser implementada é a \texttt{ScenePostProcessor} que define métodos com a mesma 
+semântica dos métodos do \texttt{SceneProcessor}.
 
 \subsubsection{Algoritmos de processamento de cena pré-definidos}
 
-A engine atualmente define apenas um algoritmo de processamento padrão, o \texttt{RenderPassProcessor}. Esse algoritmo utiliza \texttt{ColorPassVisitor} para renderizar os nós do grafo de cena.
+A engine atualmente define apenas um algoritmo de processamento padrão, o \texttt{RenderPassProcessor}. 
+Esse algoritmo utiliza \texttt{ColorPassVisitor} para renderizar os nós do grafo de cena.
 
 \subsubsection{Algoritmos de pós-processamento de cena pré-definidos}
  
-Atualmente existem 2 algoritmos de pós-processamento implementados pelas classes: \texttt{FramebufferImageProcessor} e \texttt{BlitToFramebuffer}.
+Atualmente existem 2 algoritmos de pós-processamento padrão implementados pelas
+classes: \texttt{FramebufferImageProcessor} e \texttt{BlitToFramebuffer}.
 
-O \texttt{FramebufferImageProcessor} é utilizado para fazer o pós-processamento da imagem que estiver no buffer chamado color dentro do \texttt{FramebufferObject} atual. O algoritmo executado por esse objeto é descrito pelo código abaixo:
+O \texttt{FramebufferImageProcessor} é utilizado para fazer o pós-processamento 
+da imagem que estiver no buffer chamado color dentro do \texttt{FramebufferObject} atual. 
+O algoritmo executado por esse objeto é descrito pelo código abaixo:
 
 \begin{codigo}
 void FramebufferImageProcessor::process(GraphicAPI *gfx,
@@ -508,14 +536,23 @@ void FramebufferImageProcessor::process(GraphicAPI *gfx,
 }
 \end{codigo}
 
-O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões da janela com a textura de nome \texttt{"color"} armazenada no renderizador. É utilizado para renderizar a imagem armazenada na textura color para o framebuffer do sistema de janelas.
+O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões 
+da janela com a textura de nome \texttt{"color"} armazenada no renderizador. É utilizado 
+para renderizar a imagem armazenada na textura color para o framebuffer
+do sistema de janelas.
 
 \subsubsection{Algoritmos de pós-processamento customizados}
 
-Foram desenvolvidos alguns algoritmos de pós-processamento customizados como exemplo. Eles estão disponíveis na aplicação de visualização de campos tensoriais. A implementação de cada algoritmo se resume a um fragment shader utilizado para instanciar um \texttt{FramebufferImageProcessor}. Esse fragment shader recebe a posição do fragmento e uma textura contendo a imagem a ser renderizada.
+Foram desenvolvidos alguns algoritmos de pós-processamento customizados como exemplo. 
+Eles estão disponíveis na aplicação de visualização de campos tensoriais. A implementação 
+de cada algoritmo se resume a um fragment shader utilizado para instanciar um 
+\texttt{FramebufferImageProcessor}. Esse fragment shader recebe a posição do fragmento 
+e uma textura contendo a imagem a ser renderizada.
 
 \begin{itemize}
-\item \textbf{Inversor de cores:} O algoritmo de inversão de cores cria um vetor com os componentes \texttt{r,g,b}, calcula seu complemento e utiliza o resultado como a cor do fragmento:
+\item \textbf{Inversor de cores:} O algoritmo de inversão de cores cria um vetor com 
+os componentes \texttt{r,g,b}, calcula seu complemento e utiliza o resultado como 
+a cor do fragmento:
 
 \begin{codigo}
 pbge::FramebufferImageProcessor * colorInversor() {
@@ -530,7 +567,9 @@ pbge::FramebufferImageProcessor * colorInversor() {
     );
 }
 \end{codigo}
-\item \textbf{Filtro de vermelho:} O filtro lê o componente veremelho da cor enviada pelo vertex shader e a utiliza no fragmento, sendo todos os outros componentes iguais a zero:
+\item \textbf{Filtro de vermelho:} O filtro lê o componente veremelho da cor 
+enviada pelo vertex shader e a utiliza no fragmento, sendo todos os outros 
+componentes iguais a zero:
 
 \begin{codigo}
 pbge::FramebufferImageProcessor * chooseRed() {
@@ -544,7 +583,16 @@ pbge::FramebufferImageProcessor * chooseRed() {
     );
 }
 \end{codigo}
-\item \textbf{Lente senoidal:} A posição $(x_0, y_0)$ recebida é tal que $0 \leq x_0, y_0 \leq 1$. Ela é então mapeada para $(x_1, y_1)$, onde $-1 \leq x_0, y_0 \leq 1$. É calculado então o seno das componentes $x,y$ da posição multiplicadas por um fator que aumenta o efeito da lente. O resultado pertence ao intervalo $[-1,1]$, entretanto as coordenadas de textura estão no intervalo $[0,1]$. Por esse motivo o seno é multiplicado por $0.5$ e somado a $0.5$ resultando em um valor no mesmo intervalo das coordenadas de textura. Esse valor é utilizado para ler uma posição com um pequeno deslocamento da posição do fragmento atual, com isso é gerada uma leve deformação que simula o efeito de uma lente:
+\item \textbf{Lente senoidal:} A posição $(x_0, y_0)$ recebida é tal que 
+$0 \leq x_0, y_0 \leq 1$. Ela é então mapeada para $(x_1, y_1)$, onde 
+$-1 \leq x_0, y_0 \leq 1$. É calculado então o seno das componentes $x,y$ 
+da posição multiplicadas por um fator que aumenta o efeito da lente. 
+O resultado pertence ao intervalo $[-1,1]$, entretanto as coordenadas de 
+textura estão no intervalo $[0,1]$. Por esse motivo o seno é multiplicado 
+por $0.5$ e somado a $0.5$ resultando em um valor no mesmo intervalo das 
+coordenadas de textura. Esse valor é utilizado para ler uma posição com um 
+pequeno deslocamento da posição do fragmento atual, com isso é gerada uma 
+leve deformação que simula o efeito de uma lente:
 
 \begin{codigo}
 pbge::FramebufferImageProcessor * senoidalLens() {
