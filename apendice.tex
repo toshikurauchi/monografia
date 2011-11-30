@@ -2,7 +2,7 @@
 \section{Apêndice}
 
 \subsection{A Windows API}
-
+\label{criacaojanela}
 Para se inicializar um contexto para a execução de programas em OpenGL é necessário criar uma janela, para isso usa-se a seguinte função:
 
 \begin{codigo}
@@ -181,6 +181,7 @@ case WM_CREATE:
 
 
 \subsection{Uso dinâmico de DLLs}
+\label{dllload}
 
 Para se executar código presente em uma DLL, é necessário carregá-la durante a execução do 
 programa. Através da windows API, pode-se abrir um arquivo DLL com a função \texttt{LoadLibrary}:

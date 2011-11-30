@@ -396,17 +396,23 @@ if(glewIsSupported("GL_ARB_vertex_program")) {
 }
 \end{codigo}
 
-\subsection{Windows API~\cite{msdn}}
+\subsection{Windows API}
 
 Como citado anteriormente, o OpenGL não é responsável por criar janelas e tratar eventos 
 gerados pelo sistema operacional, esse tratamento é dependente do ambiente no qual o 
 programa será executado. Nesse trabalho foi utilizada apenas a API do sistema
 operacional Windows que está contida no \texttt{windows.h}.
 
-\subsection{Carregamento dinâmico de DLL}
+Um texto detalhado sobre a criação de janelas pode ser encontrado
+no apêndice~\ref{criacaojanela} e a documentação detalhada sobre a windows API
+pode ser encontrada no site da MSDN~\cite{msdn}
+
+\vsection{Carregamento dinâmico de DLL}
 
 Para que seja possível suportar diversas implementações independentes de especificações 
-de APIs gráficas, a engine possui um mecanismo de carregamento dinâmico de DLLs.
+de APIs gráficas, a engine possui um mecanismo de carregamento dinâmico de DLLs
+(os detalhes sobre o carregamento de DLLs podem ser encontrados no
+apêndice~\ref{dllload}).
 
 
 \section{Conceitos estudados}
