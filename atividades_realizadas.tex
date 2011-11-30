@@ -364,9 +364,12 @@ void RenderVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
 
 \begin{center}
 \begin{longtable}{cc}
-\epsfig{file=frustum1.eps, width=0.5\linewidth,clip=}
-\epsfig{file=frustum2.eps, width=0.5\linewidth,clip=}
+\epsfig{file=frustum1.eps, width=0.47\textwidth,clip=} &
+\epsfig{file=frustum2.eps, width=0.47\textwidth,clip=}
 \end{longtable}
+\vspace{-10pt}
+\parbox{0.98\textwidth}{\captionof{figure}{Com o frustum culling os objetos que
+estão fora do campo de visão da câmera não são enviados para o pipeline.}}
 \end{center}
 
 \subsection{Renderizador}
