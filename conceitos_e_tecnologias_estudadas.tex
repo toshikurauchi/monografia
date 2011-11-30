@@ -25,8 +25,8 @@ Nessa seção serão apresentadas as tecnologias que foram estudadas para o desenvo
 
 \subsection{Linguagem C++98}
 A linguagem de programação C++ é uma linguagem multiparadigma, que suporta tanto
-programação estruturada quanto orientada a objetos.Ela foi desenvolvida como uma
-evolução da linguagem C e, por esse motivo, suas sintaxes são semelhantes.
+programação estruturada quanto orientada a objetos. Ela foi desenvolvida como
+uma evolução da linguagem C e, por esse motivo, suas sintaxes são semelhantes.
 
 \vsection{Variáveis e funções}
 
@@ -245,7 +245,10 @@ O módulo \texttt{function} cria functors (instancias de classes que implementam
 void f (int i, int j, int k) {
     // implementação
 }
-// boost::function[numero de argumentos]<tipo de retorno, tipos dos argumentos>
+
+// A boost::function recebe o número n de argumentos, o tipo do valor
+// de retorno e os tipos dos n argumentos
+// boost::function[n]<tipo de retorno, tipos dos argumentos>
 boost::function3<void,int,int,int> funcao = f;
 \end{codigo}
 
@@ -262,9 +265,11 @@ As funcionalidades de bind e function podem ser combinadas:
 
 \begin{codigo}
 // functor sem retorno que recebe dois argumentos inteiros
-boost::function2<void, int, int> functor1 = boost::bind(f, 1, _1, _2);
-// cria um boost::function a partir do resultado do boost::bind de uma 
-// boost::function
+boost::function2<void, int, int> functor1 = 
+				boost::bind(f, 1, _1, _2);
+				
+// cria um boost::function a partir do resultado do boost::bind
+// de uma boost::function
 boost::function1<void, int> functor2 = boost::bind(functor1, 2, _1);
 \end{codigo}
 
@@ -279,6 +284,7 @@ void imprime(int i) {
 int main() {
     std::vector<int> vetor;
     boost::function1<void, int> impressor = imprime;
+    
     // Adicionando os valores 1, 2 e 3 no vetor
     vetor.push_back(1);
     vetor.push_back(2);
@@ -381,8 +387,8 @@ O uso da \texttt{GLEW} é ilustrado no código abaixo:
 #include <GL/glew.h>
 // Após a inicialização do contexto do OpenGL
 glewInit();
-// após a inicialização as funções definidas através de extensões estão
-// disponíveis
+// após a inicialização as funções definidas através de extensões
+// estão disponíveis
 
 // verificar se a extensão GL_ARB_vertex_program está disponível
 if(GLEW_ARB_vertex_program) {
