@@ -831,8 +831,6 @@ instanceID = 0;
 
 A aplicação de visualização de campos tensoriais é dividida em duas etapas:
 
-% Tirar o textregistered e colocar uma referencia para o formato
-
 \begin{itemize}
 \item Compilação do formato Analyze~\cite{Analyze} para o formato \texttt{.ctf}
 (Compiled Tensor Field)
@@ -849,15 +847,22 @@ Para o desenvolvimento do leitor de arquivos Analyze foi feita a suposição de qu
 
 O formato Compiled Tensor Field (\texttt{.ctf}) foi desenvolvido para armazenamento de informações sobre o campo tensorial a ser mostrado na aplicação de visualização de campos tensoriais. É um formato binário que contém o número de elipsóides (representação visual do tensor) no arquivo seguido por um conjunto de matrizes de transformação linear. Cada matriz será aplicada a uma esfera para obter um elipsóide na posição correta no campo. Por esse motivo ela contém uma escala (proporcional aos autovalores do tensor aplicados nos eixos cartesianos), uma rotação (dos eixos cartesianos para os eixos definidos pelos autovetores do tensor) e uma translação (para posicionar o elipsóide corretamente no campo).
 
-Na etapa de compilação a imagem de ressonância magnética é lida e os tensores armazenados em um vetor. Dada a seguinte definição para um tensor $A$ $3 \times 3$ nulo (para um dado $\varepsilon > 0$) para $1 \leq i, j \leq 3$, $i, j \in \mathbb{I}$:
+Na etapa de compilação a imagem de ressonância magnética é lida e os tensores
+armazenados em um vetor. Nessa etapa todos os tensores nulos são ignorados. Um
+tensor $A_{3
+\times 3}$ é considerado nulo quando o módulo de todas as suas entradas é
+maior do que um dado $\varepsilon > 0$. Ou seja, $A$ é nulo quando a seguinte expressão é válida
+para $i, j \in \mathbb{Z}$, $1 \leq i, j \leq 3$:
 
-% Explicar melhor essa definição. Usar "Um tensor A sera considerado nulo quando ... for valido" por exemplo
-
+% Ficou melhor explicado assim?
+\vspace{10pt}
+\hspace{10pt}
 \begin{math}
 |A_{i,j}| < \varepsilon
 \end{math}
+\vspace{10pt}
 
-Todos os tensores nulos são ignorados na compilação. São então calculados os autovalores e autovetores de todos os tensores não nulos, geradas as matrizes de transformação linear que levam uma esfera centralizada na origem para um elipsóide na posição correta no campo e armazenadas em um vetor. 
+São então calculados os autovalores e autovetores de todos os tensores não nulos, geradas as matrizes de transformação linear que levam uma esfera centralizada na origem para um elipsóide na posição correta no campo e armazenadas em um vetor. 
 
 Como tais matrizes são matrizes de transformação homogênea, sabemos que a última linha sempre será $(0,0,0,1)$. Assim é possível ocultar tais dados e enviar outras informações em seu lugar (é necessário substituir os valores dessa linha para realizar quaisquer operações com a matriz). Nessa linha são armazenados os valores das equações (\ref{af}), (\ref{linearCase}), (\ref{planarCase}) e (\ref{sphericalCase}) (definidas na página \pageref{af}) que serão utilizados como diferentes políticas de escolha de nível de transparência (alfa) e cor dos elipsóides.
 
