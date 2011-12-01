@@ -418,8 +418,8 @@ void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
 
 % RenderVisitor ta passando um pouco da margem
 O \texttt{ColorPassVisitor} é uma implementação concreta da classe abstrata 
-\texttt{RenderVisitor} que tem a função de chamar os métodos \texttt{renderPass} 
-e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} 
+\texttt{Render\-Visitor} que tem a função de chamar os métodos
+\texttt{renderPass} e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} 
 e \texttt{postVisitAction}, respectivamente, do \texttt{RenderVisitor}:
 
 \begin{codigo}
@@ -437,8 +437,8 @@ public:
 % postVisitAction ta passando um pouco da margem
 O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem renderização. 
 Para extendê-la, a classe filha deve implementar dois métodos: \texttt{visitAction} e 
-\texttt{postVisitAction}. Esse visitor é importante, pois implementa uma técnica
-chamada frustum culling.
+\texttt{postVisit\-Action}. Esse visitor é importante, pois implementa uma
+técnica chamada frustum culling.
 
 Frustum culling é o processo de renderizar apenas objetos que são visíveis para
 a câmera atual. Na Pandora's Box, um nó é considerado não visível se ele não 
