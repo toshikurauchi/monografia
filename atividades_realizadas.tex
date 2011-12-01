@@ -325,7 +325,9 @@ Os framebuffer objects encapsulam o segundo tipo. No OpenGL, framebuffer objects
 Para utilizar o framebuffer object criado, é necessário associá-lo ao contexto do OpenGL com o comando \texttt{glBindFramebufferEXT} e em seguida redirecionar os pixels gerados pelo pipeline através do comando \texttt{glDrawBuffers}.
 
 % Esse texttt passa a linha da pagina. Descobrir como quebrar
-Na engine desenvolvida, framebuffer objects são implementações da interface \texttt{FramebufferObject} e devem ser instanciados através da \texttt{GraphicObjectsFactory}. A criação e uso de framebuffer objects dentro da Pandora's Box é exemplificado abaixo:
+Na engine desenvolvida, framebuffer objects são implementações da classe
+abstrata \texttt{FramebufferObject}. A criação e uso de framebuffer objects
+dentro da Pandora's Box é exemplificado abaixo:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -355,7 +357,10 @@ Para realizar a renderização da cena são realizadas buscas em profundidade no gr
 \subsubsection{Tipos de nós}
 
 %TODO: Verificar se falta informação
-A engine define quatro tipos de nós padrão: \texttt{TransformationNode}, \texttt{CameraNode}, \texttt{ModelInstance} e \texttt{ModelCollection} (transformação, câmera, modelo e coleção de modelos respectivamente). 
+A engine define quatro tipos de nós padrão:
+\texttt{TransformationNode}, \texttt{ModelInstance},
+\texttt{ModelCollection} e \texttt{CameraNode} 
+(transformação, modelo, coleção de modelos e câmera, respectivamente).
 
 Para implementar nós com comportamentos customizados basta criar uma nova classe
 filha de \texttt{Node} ou de algum de seus descendentes. A classe \texttt{Node}
@@ -377,7 +382,7 @@ que é responsável por receber os parâmetros de câmera (configurações de posição 
 \label{visitors}
 
 Como já explicado, o grafo de cena é um grafo enraizado, 
-direcionado e sem circuitos. Um \texttt{NodeVisitor} é uma classe 
+direcionado e sem circuitos. Um visitor é uma classe 
 que, dada a raíz do grafo de cena, consegue percorrer os nós 
 do grafo obedecendo as seguintes regras:
 
@@ -390,7 +395,7 @@ raíz do grafo até A.
 
 O segundo item da lista acima, faz com que o grafo de cena represente uma estrutura hierárquica.
 
-Dentro da engine, existem duas implementações concretas do visitor descrito:
+Na engine, existem duas duas classes que implementam as regras descritas acima:
 \texttt{UpdaterVisitor} e \texttt{ColorPassVisitor}.
 
 O \texttt{UpdaterVisitor} é um visitor encarregado de passar por cada
