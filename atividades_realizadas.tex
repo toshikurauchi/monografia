@@ -88,14 +88,14 @@ tesselagem, criação de novas primitivas, rasterização e operações por fragmento.
 Com exceção da rasterização, todos os estágios podem ser customizados pelo uso de shaders.
 
 No OpenGL, shaders são criados através da função \texttt{glCreateShader}, que 
-retorna um handler para o shader criado, com o handler devolvido, é possível 
-especificar o código fonte que será utilizado por meio da função
+devolve um identificador para o shader criado, com o qual é
+possível especificar o código fonte que será utilizado por meio da função
 \texttt{glShaderSource}.
 Após associar um código fonte, ele pode ser compilado por \texttt{glCompileShader}. 
 Para utilizar o shader criado, ele deve ser associado a um programa.
 
-Programas, no OpenGL, são criados por \texttt{glCreateProgram}, que retorna o 
-handler para o programa criado. Depois de criados, os shaders podem ser
+Programas, no OpenGL, são criados por \texttt{glCreateProgram}, que devolve o 
+identificador para o programa criado. Depois de criados, os shaders podem ser
 associados ao programa, a associação é feita pela função
 \texttt{glAttachShader}. Quando todos os shaders necessários estiverem associados ao programa, ele pode ser 
 preparado para execução através do comando \texttt{glLinkProgram}. Para sobrescrever 
@@ -152,9 +152,9 @@ mapeadas nos objetos da cena ou máscaras (em técnicas avançadas), porém com o
 surgimento da computação genérica em GPU (GPGPU), as texturas passaram a ser utilizadas 
 de forma análoga aos vetores e matrizes de linguagens como C++.
 
-No OpenGL as texturas são criadas com o comando \texttt{glGenTextures}, que gera um handler 
-para o objeto vazio criado, em seguida é necessário associar o objeto criado ao contexto 
-do OpenGL, o que é feito pelo comando \texttt{glBindTexture}. Com a textura
+No OpenGL as texturas são criadas com o comando \texttt{glGenTextures}, que gera
+um identificador para o objeto vazio criado, em seguida é necessário associar o
+objeto criado ao contexto do OpenGL, o que é feito pelo comando \texttt{glBindTexture}. Com a textura
 vazia associada ao contexto, é possível inicializar seus dados através de um comando da família \texttt{glTexImage}.
 
 Na Pandora's Box, texturas são implementações da interface \texttt{Texture}. A inicialização 
@@ -183,9 +183,9 @@ especificação do OpenGL 4.1~\cite{opengl41}.
 
 A criação de um texture buffer é feita de forma ligeiramente diferente de uma
 textura convencional.
-Após a criação do handler, a textura deve ser associada ao contexto através da
-chamada a \texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}. O buffer a
-ser utilizado pela textura é então definido pelo comando \texttt{glTexBuffer}.
+Após a criação do identificador, a textura deve ser associada ao contexto
+através da chamada a \texttt{glBindTexture(GL\_TEXTURE\_BUFFER, identificador)}.
+O buffer a ser utilizado pela textura é então definido pelo comando \texttt{glTexBuffer}.
 
 Na engine, os texture buffers são texturas que implementam a interface
 \texttt{TextureBuffer}.
@@ -280,7 +280,6 @@ número de componentes e qual a distância entre valores consecutivos do atributo.
 
 A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{VertexBufferBuilder}.
 
-% como construir com o builder: texto explicando?
 \begin{codigo}
 pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
     // Inicializa com o número de vértices desejado
@@ -303,7 +302,6 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 }
 \end{codigo}
 
-
 \vsection {FrameBufferObject}
 
 O framebuffer é o destino dos pixels gerados através do pipeline. Existem dois tipos de framebuffer:
@@ -314,15 +312,14 @@ que os pixels sejam enviados para a janela da aplicação.
 \item Framebuffer virtual: utilizado para renderização direta em texturas.
 \end{itemize}
 
-% É handler mesmo ou handle?
-Os framebuffer objects encapsulam o segundo tipo. No OpenGL, framebuffer objects são criados pela função \texttt{glGenFramebuffersEXT}, que gera um handler que representa o objeto criado. Para associar uma textura ao framebuffer object criado utiliza-se a função \texttt{glFramebufferTexture2DEXT} e, por fim, para adicionar um buffer de profundidade, para permitir testes de profundidade, usa-se \texttt{glFramebufferTexture2DEXT}.
+Os framebuffer objects encapsulam o segundo tipo. No OpenGL, framebuffer objects
+são criados pela função \texttt{glGenFramebuffersEXT}, que gera um identificador
+que representa o objeto criado. Para associar uma textura ao framebuffer object criado ou para adicionar um buffer de profundidade, para permitir testes de profundidade, utiliza-se a função \texttt{glFramebufferTexture2DEXT}.
 
-% Aparentemente as duas últimas funções são a mesma. Está certo isso?
 Para utilizar o framebuffer object criado, é necessário associá-lo ao contexto do OpenGL com o comando \texttt{glBindFramebufferEXT} e em seguida redirecionar os pixels gerados pelo pipeline através do comando \texttt{glDrawBuffers}.
 
-% Esse texttt passa a linha da pagina. Descobrir como quebrar
 Na engine desenvolvida, framebuffer objects são implementações da classe
-abstrata \texttt{FramebufferObject}. A criação e uso de framebuffer objects
+abstrata \texttt{Framebuffer\-Object}. A criação e uso de framebuffer objects
 dentro da Pandora's Box é exemplificado abaixo:
 
 \begin{codigo}
@@ -352,7 +349,6 @@ Para realizar a renderização da cena são realizadas buscas em profundidade no gr
 
 \subsubsection{Tipos de nós}
 
-%TODO: Verificar se falta informação
 A engine define quatro tipos de nós padrão:
 \texttt{TransformationNode}, \texttt{ModelInstance},
 \texttt{ModelCollection} e \texttt{CameraNode} 
