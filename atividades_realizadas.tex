@@ -521,8 +521,9 @@ semântica dos métodos do \texttt{SceneProcessor}.
 \subsubsection{Algoritmos de processamento de cena pré-definidos}
 
 % RenderPassProcessor esta passando da margem
-A engine atualmente define apenas um algoritmo de processamento padrão, o \texttt{RenderPassProcessor}. 
-Esse algoritmo utiliza \texttt{ColorPassVisitor} para renderizar os nós do grafo de cena.
+O \texttt{RenderPassProcessor} é, atualmente, o único algoritmo de processamento
+de cena padrão da engine. Esse algoritmo utiliza \texttt{ColorPassVisitor} para
+renderizar os nós do grafo de cena.
 
 \subsubsection{Algoritmos de pós-processamento de cena pré-definidos}
  
@@ -764,8 +765,8 @@ para cada um dos tipos de valor.
 
 O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar 
 as uniformes \texttt{built-in}. Para cada um dos tipos de atributo definidos na
-\texttt{enum} \texttt{pbge::VertexAttrib::Type} existe uma classe
-(\texttt{AttrBinder}) especializada em associar o atributo ao shader.
+\texttt{enum} \texttt{Type} dentro da classe \texttt{pbge::VertexAttrib}
+existe uma classe (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
 % Um dos texttt esta passando da linha
 
 \subsection{Visualização de campos tensoriais}
