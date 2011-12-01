@@ -35,7 +35,6 @@ glBindBuffer(GL_ARRAY_BUFFER);
 Com o buffer associado ao contexto, é necessário inicializar seus dados.
 Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
 
-% Colocar \texttt nos GL_WRITE_ONLY e outras constantes
 Uma das características mais importantes do buffer é a possibilidade de mapeá-lo
 em uma região de memória que pode ser acessada pela aplicação. Esse mapeamento é
 importante, pois permite que a aplicação informe ao OpenGL que política de
@@ -63,7 +62,6 @@ void * mappedBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 Após a utilização da região mapeada, é importante cancelar o mapeamento feito.
 Esse cancelamento é realizado através da função \texttt{glUnmapBuffer};
 
-% Precisa desses texttt?
 Na Pandora's Box, buffers são implementações da interface
 \texttt{Buffer}. O buffer padrão do OpenGL é implementado pela classe GLBuffer. 
 A seguir é apresentado um exemplo de uso:

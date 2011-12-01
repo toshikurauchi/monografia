@@ -341,7 +341,7 @@ representados acima.}
 As primitivas criadas na CPU (Central Processing Unit) são enviadas para a GPU
 (Graphics Processing Unit) onde serão processadas e utilizadas para gerar os pixels de uma
 imagem que será mostrada na janela. Esse processo é conhecido como pipeline e é dividido em 5 estágios
-principais:
+principais compostos por shaders (programas executados pela GPU):
 
 \begin{itemize}
   \item \textbf{Vertex shader}: cada vértice é transformado para a sua
@@ -363,8 +363,6 @@ principais:
 No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, 
 entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser 
 modificados. Mais detalhes são apresentados na seção~\ref{atividades}.
-
-% O caption da imagem esta cobrindo o texto (diminuir a imagem)
 
 \vsection{O contexto do OpenGL}
 
