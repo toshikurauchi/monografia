@@ -1,0 +1,100 @@
+\documentclass[12pt]{article}
+\usepackage[brazil]{babel}
+\usepackage{setspace}
+\usepackage{boxedminipage}
+\usepackage[latin1]{inputenc}
+\usepackage{latexsym}
+\usepackage{amsfonts}
+
+\setlength{\paperheight}{29.7cm}
+\setlength{\footskip}{1.0cm}
+\setlength{\textheight}{20.0cm}
+\setlength{\textwidth}{16.0cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\topmargin}{0.0cm}
+
+\begin{document}
+\title{Monografia - PARTE SUBJETIVA}
+\author{Victor Kendy Harada}
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\setcounter{page}{1}
+
+\section{Desafios e frustrações encontrados}
+
+O desenvolvimento desse trabalho se mostrou mais complexo do que inicialmente
+imaginado mas também muito interessante, pois foi o meu primeiro contato
+sério com o pipeline gráfico moderno, programação de shaders e visualização
+científica.
+
+Em especial, a visualização científica se mostrou um grande desafio por tratar
+de uma quantidade muito grande de dados, o que acabou guiando o desenvolvimento
+de várias otimizações internas da engine.
+
+Outro grande desafio foi o OpenGL. As novas versões da API quebraram a
+compatibilidade com versões antigas e por isso, foi necessário desenvolver uma
+grande quantidade de código para tratar de questões de compatibilidade. Ainda,
+como cada driver de placas de vídeo tem sua própria implementação da
+especificação do OpenGL, surgiram diversos problemas de compatibilidade quando o
+código era executado em diferentes computadores.
+
+Minha principal frustração no projeto foi não ter conseguido tempo para
+refatorar código. Uma grande parte da base de código da engine poderia ter sido
+refatorada em diversos componentes com comportamento previsível, porém tal idéia
+só surgiu ao final do projeto. Além disso, não tivemos a oportunidade de
+desenvolver mais exemplos e nem de comparar o nosso trabalho com outras engines
+gráficas, como OGRE3D e OpenSceneGraph.
+
+\section{Disciplinas cursadas mais relevantes}
+
+\begin{itemize}
+\item \textbf{MAC0122 - Princípios de Desenvolvimento de Algoritmos} - Essa
+  matéria é foi o meu primeiro contato com técnicas de análise de algoritmos e
+  estruturas de dados.
+\item \textbf{MAT0121 - Cálculo Diferencial e Integral II} - Por tratar de
+parametrizações e coordenadas paramétricas, essa matéria foi essencial para o
+desenvolvimento do visualizador de campos tensoriais.
+\item \textbf{MAT0139 - Álgebra Linear para Computação} - O conhecimento de
+álgebra linear foi fundamental para o entendimento das transformações lineares
+que ocorrem no pipeline gráfico.
+\item \textbf{MAC0211 - Laboratório de Programação I} - Essa disciplina foi o
+primeiro contato que eu tive com um projeto relativamente grande, além de
+ferramentas de controle de versão e o \LaTeX.
+\item \textbf{MAC0323 - Estruturas de Dados} - Eu acho essa uma das matérias
+mais importantes do BCC. No projeto, essa disciplina ajudou no entendimento e
+escolha de estruturas de dados da STL.
+\item \textbf{MAC0328 - Algoritmos em Grafos} - A principal contribuição dessa
+matéria foi a busca em profundidade utilizada no grafo de cena.
+\item \textbf{MAC0338 - Análise de Algoritmos} - Essa disciplina foi essencial
+para fazer a análise de desempenho tanto do código da engine quanto do código do
+compilador de campos tensoriais.
+\item \textbf{MAC0420 - Introdução à Computação Gráfica} - Disciplina que
+introduz o aluno aos conceitos utilizados na computação gráfica, como por
+exemplo o pipeline. Essa matéria é a base desse trabalho.
+\item \textbf{MAC0441 - Programação Orientada a Objetos} - Introdução
+aos padrões de projetos, utilizados em toda a estrutura da Pandora's Box.
+\item \textbf{MAC0434 - Sistemas de Computação (Programação Funcional
+Contemporânea)} - Essa matéria foi uma introdução a programação funcional e foi
+muito importante para o entendimento da STL e da programação com shaders.
+\item \textbf{MAC0438 - Programação Concorrente} - Essa matéria é importante
+para se entender o modelo de programação utilizado em shaders.
+\end{itemize}
+
+\section{Trabalhos futuros}
+
+Ainda existe muito trabalho a ser feito, por exemplo:
+\begin{itemize}
+  \item Suporte à sistemas 64-bits.
+  \item Suportar outros sistemas operacionais além do Windows.
+  \item Separar o tratamento dos eventos da janela da renderização com o OpenGL
+  (possívelmente separar em várias threads).
+  \item Implementar um modelo de shaders mais avançado, por exemplo, utilizando
+  algo parecido com o conceito de injeção de dependências.
+  \item Utilizar proxies para os mapeamentos dos objetos gráficos.
+  \item Criar implementações para outras APIs gráficas, como Direct 3D.
+  \item Desenvolver mais casos de uso.
+\end{itemize}
+
+\end{document}
