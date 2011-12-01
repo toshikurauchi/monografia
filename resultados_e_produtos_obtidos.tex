@@ -181,7 +181,13 @@ void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
 
 O método \texttt{createProgramFromString} recebe duas strings, sendo a primeira o código do vertex shader e a segunda do fragment shader. Nesse exemplo o vertex shader definido recebe o vértice e a matriz ModelViewProjection e devolve a cor do fragmento. É criada uma matriz de escala que multiplica o vértice e o resultado é por sua vez multiplicado pela ModelViewProjection resultando na posição. A cor definida utiliza as coordenadas \texttt{x,y,z} como componentes \texttt{r,g,b}. O fragment shader define a cor do fragmento como a cor recebida do vertex shader.
 
-Apesar de ser um exemplo simples a estrutura não são necessárias muitas modificações para obter um resultado mais complexo. A Figura~\ref{grama} foi gerada com o auxílio da engine com um código\footnote{https://github.com/victorkendy/PandoraBox/tree/master/grass\_field} semelhante ao apresentado acima. Foi aplicada a técnica de instanciação de geometria sendo a Figura~\ref{tufo} a geometria utilizada.
+Apesar de ser um exemplo simples a estrutura não são necessárias muitas
+modificações para obter um resultado mais complexo. A Figura~\ref{grama} foi
+gerada com o auxílio da engine com um
+código\footnote{https://github.com/victorkendy/PandoraBox/tree/master/grass\_field}
+semelhante ao apresentado acima. Foi aplicada a técnica de instanciação de
+geometria sendo a figura mostrada no canto superior esquerdo a geometria
+utilizada.
 % Verificar o nome instanciação de geometria pra não ficar inconsistente
 
 % Pensar num caption maior (colocar o texto do a e b) 
@@ -190,12 +196,11 @@ Apesar de ser um exemplo simples a estrutura não são necessárias muitas modifica
 
 \begin{wrapfigure}{l}{\textwidth}
 \vspace{-20pt}
-\begin{center}
-\subfigure[Cena gerada com auxílio da Pandora's Box]{\label{grama}\includegraphics[width=0.70\textwidth]{grama}}
-\qquad
-\subfigure[Geometria instanciada múltiplas vezes de forma aleatória ao longo do campo]{\label{tufo}\includegraphics[width=0.2\textwidth]{tufo}}
-\end{center}
+\includegraphics[width=\textwidth]{grama}
 \vspace{-20pt}
-\caption{Campo de grama}
+\caption{Gramado gerado a partir da instanciação aleatória da geometria
+apresentada no canto superior esquerdo da imagem ao longo do
+campo.}
+\label{grama}
 \vspace{-10pt}
 \end{wrapfigure}
