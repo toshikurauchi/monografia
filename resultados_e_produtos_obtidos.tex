@@ -7,18 +7,21 @@ O código do Pandora's Box Graphics Engine, assim como da aplicação de visualizaç
 \subsection{Compilador de campos tensoriais}
 A aplicação de compilação de campos tensoriais pode ser executada através da linha de comando com os seguintes argumentos opcionais:
 
-\begin{verbatim}
+\begin{codigo}
 field_compiler.exe [ARQUIVO DO CAMPO] [ARQUIVO CTF]
-\end{verbatim}
+\end{codigo}
 
-Caso o programa seja executado sem nenhum argumento o usuário deve escolher entre as opções 1 e 2 (campo de uma dupla hélice sintética e de um cérebro humano respectivamente). A opção \texttt{ARQUIVO DO CAMPO} deve indicar o nome de um arquivo .img sem a extensão (supõe-se que o arquivo .hdr tenha o mesmo nome), ou seja, suponha que existam os arquivos \texttt{campo.hdr} e \texttt{campo.img}, então o argumento deve ser \texttt{campo}. O último argumento deve ser o nome do arquivo .ctf a ser criado, por exemplo \texttt{campo.ctf}.
+Caso o programa seja executado sem nenhum argumento o usuário deve escolher
+entre as opções \texttt{1} e \texttt{2} (campo de uma dupla hélice sintética e
+de um cérebro humano respectivamente). A opção \texttt{ARQUIVO DO CAMPO} deve
+indicar o nome de um arquivo .img sem a extensão (supõe-se que o arquivo .hdr tenha o mesmo nome), ou seja, supondo que existam os arquivos \texttt{campo.hdr} e \texttt{campo.img}, então o argumento deve ser \texttt{campo}. O último argumento deve ser o nome do arquivo .ctf a ser criado, por exemplo \texttt{campo.ctf}.
 
 \subsection{Visualizador de campos tensoriais}
-O visualizador de campos tensoriais também pode ser executada através da linha de comando da seguinte maneira:
+O visualizador de campos tensoriais também pode ser executado através da linha de comando da seguinte maneira:
 
-\begin{verbatim}
+\begin{codigo}
 tensor_field.exe [ARQUIVO CTF]
-\end{verbatim}
+\end{codigo}
 
 A execução sem nenhum argumento permitirá ao usuário escolher entre os dois campos utilizados como teste (dupla hélice e cérebro). É possível visualizar outros campos no formato .ctf enviando como argumento o nome do arquivo, por exemplo \texttt{campo.ctf}.
 
@@ -82,33 +85,37 @@ imagem).}}
 
 A seguir será explicada a utilização básica da Pandora's Box. O exemplo desenvolvido utiliza um modelo de uma esfera que é transformada em um elipsóide no vertex shader. Inicialmente é incluído o header da engine:
 
-\begin{verbatim}
+\begin{codigo}
 #include "pbge/pbge.h"
-\end{verbatim}
+\end{codigo}
 
 Na função \texttt{main} são definidas as configurações da janela (título e dimensões), associado um inicializador de cena customizado ao gerenciador de janelas e então é enviado o sinal para a engine iniciar a renderização das imagens na janela. É necessário que o usuário implemente um \texttt{SceneInitializer} que definirá a estrutura do grafo de cena.
 
-\begin{verbatim}
+\begin{codigo}
 int main() {
     pbge::Manager manager;
     MySceneInitializer sceneInitializer;
+    
     manager.setWindowTitle("Ellipsoid demo");
     manager.setWindowDimensions(1024, 768);
     manager.setSceneInitializer(&sceneInitializer);
     manager.displayGraphics();
     return 0;
 }
-\end{verbatim}
+\end{codigo}
 
 O inicializador de cena deve herdar de \texttt{SceneInitializer} e implementar o operador \texttt{()}. É possível ter acesso ao renderizador através da instância de \texttt{Window} recebida como argumento. São então adicionados no renderizador os processadores de cena (\texttt{RenderPassProcessor}  e \texttt{BlitToFramebuffer}). Em seguida é criado o grafo de cena com um nó de transformação identidade como raíz. O grafo é então preenchido com outros nós e devolvido.
 
-\begin{verbatim}
+\begin{codigo}
 class MySceneInitializer : public pbge::SceneInitializer {
 public:
-    pbge::SceneGraph * operator () (pbge::GraphicAPI * gfx, pbge::Window * window) {
+    pbge::SceneGraph * operator () (pbge::GraphicAPI * gfx, 
+    			pbge::Window * window) {
         pbge::Renderer * renderer = window->getRenderer();
+        
         renderer->addSceneProcessor(new pbge::RenderPassProcessor);
         renderer->addPostProcessor(new pbge::BlitToFramebuffer);
+        
         pbge::Node * root = new pbge::TransformationNode;
         pbge::SceneGraph * graph = new pbge::SceneGraph(root);
         
@@ -119,32 +126,38 @@ public:
     }
 
 private:
-    void configureCamera(pbge::Node * parent, pbge::GraphicAPI * gfx) {...}
-    void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {...}
+    void configureCamera(pbge::Node *, pbge::GraphicAPI *);
+    void createModel(pbge::Node *, pbge::GraphicAPI *);
 };
-\end{verbatim}
+\end{codigo}
 
 Para definir a posição da câmera utiliza-se um nó de transformação linear que é adicionado como filho da raíz. A câmera é instanciada, configurada (direção e perspectiva) e adicionada aos filhos da transformação.
 
-\begin{verbatim}
+\begin{codigo}
 void configureCamera(pbge::Node * parent, pbge::GraphicAPI * gfx) {
     pbge::TransformationNode * cameraParent = 
-                      pbge::TransformationNode::translation(0, 0, 10);
+                pbge::TransformationNode::translation(0, 0, 10);
+                  
     pbge::CameraNode * camera = new pbge::CameraNode;
-    camera->lookAt(math3d::vector4(0,1,0), math3d::vector4(0, 0, -1));
+    camera->lookAt(math3d::vector4(0,1,0), 
+    			math3d::vector4(0, 0, -1));
     camera->setPerspective(90, 1.0f, 2.0f, 30.0f);
+    
     cameraParent->addChild(camera);
     parent->addChild(cameraParent);
 }
-\end{verbatim}
+\end{codigo}
 
 A esfera utilizada possui raio 2 e 100 subdivisões. O nó de modelo (\texttt{ModelInstance}) é criado a partir do modelo da esfera. O shader criado é adicionado ao nó, que é então adicionado ao grafo.
 
-\begin{verbatim}
+\begin{codigo}
 void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
-    pbge::VBOModel * sphere = pbge::Geometrics::createSphere(2,100,gfx);
+    pbge::VBOModel * sphere = 
+    		pbge::Geometrics::createSphere(2,100,gfx);
     pbge::ModelInstance * model = new pbge::ModelInstance(sphere);
-    pbge::GPUProgram * shader = gfx->getFactory()->createProgramFromString(
+    
+    pbge::GPUProgram * shader = 
+    	gfx->getFactory()->createProgramFromString(
         "#version 150\n"
         "in vec4 pbge_Vertex;\n"
         "out vec4 color\n;"
@@ -154,7 +167,8 @@ void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
         "                     0,2,0,0,\n"
         "                     0,0,1,0,\n"
         "                     0,0,0,1);\n"
-        "   gl_Position = pbge_ModelViewProjectionMatrix*scale*pbge_Vertex;\n"
+        "   gl_Position = "
+        "     pbge_ModelViewProjectionMatrix*scale*pbge_Vertex;\n"
         "   color = vec4(pbge_Vertex.xyz, 1);\n"
         "}",
         "in vec4 color;\n"
@@ -165,9 +179,10 @@ void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
     model->setRenderPassProgram(shader);
     parent->addChild(model);
 }
-\end{verbatim}
+\end{codigo}
 
 % Melhorar o caption ("elipsoide gerada ..." ou algo assim)
+% Falta ajustar essa imagem no lugar certo
 
 \begin{wrapfigure}{l}{0.5\textwidth}
 \vspace{-20pt}
@@ -179,9 +194,15 @@ void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
 \vspace{-10pt}
 \end{wrapfigure}
 
-O método \texttt{createProgramFromString} recebe duas strings, sendo a primeira o código do vertex shader e a segunda do fragment shader. Nesse exemplo o vertex shader definido recebe o vértice e a matriz ModelViewProjection e devolve a cor do fragmento. É criada uma matriz de escala que multiplica o vértice e o resultado é por sua vez multiplicado pela ModelViewProjection resultando na posição. A cor definida utiliza as coordenadas \texttt{x,y,z} como componentes \texttt{r,g,b}. O fragment shader define a cor do fragmento como a cor recebida do vertex shader.
+O método \texttt{createProgramFromString} recebe duas strings, sendo a primeira
+o código do vertex shader e a segunda do fragment shader. Nesse exemplo o vertex
+shader definido recebe o vértice e a matriz \texttt{ModelViewProjection} e
+devolve a cor do fragmento. É criada uma matriz de escala que multiplica o
+vértice e o resultado é por sua vez multiplicado pela
+\texttt{ModelViewProjection} resultando na posição. A cor definida utiliza as
+coordenadas \texttt{x,y,z} como componentes \texttt{r,g,b}. O fragment shader define a cor do fragmento como a cor recebida do vertex shader.
 
-Apesar de ser um exemplo simples a estrutura não são necessárias muitas
+Apesar de ser um exemplo simples não são necessárias muitas
 modificações para obter um resultado mais complexo. A Figura~\ref{grama} foi
 gerada com o auxílio da engine com um
 código\footnote{https://github.com/victorkendy/PandoraBox/tree/master/grass\_field}
@@ -189,6 +210,7 @@ semelhante ao apresentado acima. Foi aplicada a técnica de instanciação de
 geometria sendo a figura mostrada no canto superior esquerdo a geometria
 utilizada.
 % Verificar o nome instanciação de geometria pra não ficar inconsistente
+% Footnote deveria ficar no fim da pagina
 
 % Pensar num caption maior (colocar o texto do a e b) 
 % Aumentar o gramado

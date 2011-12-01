@@ -6,12 +6,12 @@ As ideias apresentadas a seguir foram aplicadas no desenvolvimento da engine e d
 
 Nessa seção serão descritos os mapeamentos utilizados pela engine para os objetos mais comuns definidos pelo OpenGL. 
 Todos os mapeamentos foram projetados de forma que os objetos pudessem ser utilizados fora de um contexto inicializado e, 
-além disso, os o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
+além disso, o objeto do OpenGL só é instanciado se necessário, o que economiza recursos da placa gráfica.
 
 Como a implementação dos objetos dessa seção é altamente dependente da API
-gráfica, eles devem ser construidos por um componente chamado
+gráfica, eles devem ser construídos por um componente chamado
 \texttt{GraphicObjectsFactory}. Esse componente pode ser obtido a partir de uma
-instância de GraphicAPI da seguinte forma:
+instância de \texttt{GraphicAPI} da seguinte forma:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -36,7 +36,12 @@ Com o buffer associado ao contexto, é necessário inicializar seus dados.
 Essa inicialização é feita pelo comando \texttt{glBufferData}. Após esses procedimentos, o buffer está pronto para ser utilizado.
 
 % Colocar \texttt nos GL_WRITE_ONLY e outras constantes
-Uma das características mais importantes do \texttt{buffer} é a possibilidade de mapeá-lo em uma região de memória que pode ser acessada pela aplicação. Esse mapeamento é importante, pois ele permite que a aplicação informe ao OpenGL que política de acesso a aplicação adotará para ler ou escrever na memória mapeada. Por exemplo, se o buffer for mapeado utilizando-se GL\_WRITE\_ONLY, o driver gráfico não precisa copiar os dados da memória do driver para a memória principal, o que diminui a troca de dados entre a memória de vídeo e a memória principal.
+Uma das características mais importantes do buffer é a possibilidade de mapeá-lo
+em uma região de memória que pode ser acessada pela aplicação. Esse mapeamento é
+importante, pois permite que a aplicação informe ao OpenGL que política de
+acesso a aplicação adotará para ler ou escrever na memória mapeada. Por exemplo,
+se o buffer for mapeado utilizando-se \texttt{GL\_WRITE\_ONLY}, o driver
+gráfico não precisa copiar os dados da memória do driver para a memória principal, o que diminui a troca de dados entre a memória de vídeo e a memória principal.
 
 As políticas de acesso definidas pelo OpenGL são: 
 \begin{itemize}
@@ -55,7 +60,8 @@ glBindBuffer(GL_ARRAY_BUFFER, bufferID);
 void * mappedBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 \end{codigo}
 
-Após a utilização da região mapeada, é importante cancelar o mapeamento feito. Esse cancelamento é feito através da função \texttt{glUnmapBuffer};
+Após a utilização da região mapeada, é importante cancelar o mapeamento feito.
+Esse cancelamento é realizado através da função \texttt{glUnmapBuffer};
 
 % Precisa desses texttt?
 Na Pandora's Box, buffers são implementações da interface
@@ -78,6 +84,7 @@ buffer->unmap();
 
 \vsection{Shaders}
 
+% Estou com a impressao de que em nenhum momento temos algo como 'shaders sao...' -> verificar depois
 Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através 
 de um pipeline, que tem cinco estágios principais: transformação de vértices, 
 tesselagem, criação de novas primitivas, rasterização e operações por fragmento. 
@@ -85,21 +92,23 @@ Com exceção da rasterização, todos os estágios podem ser customizados pelo uso d
 
 No OpenGL, shaders são criados através da função \texttt{glCreateShader}, que 
 retorna um handler para o shader criado, com o handler devolvido, é possível 
-especificar o código fonte que será utilizado utilizando-se a função \texttt{glShaderSource}. 
-Após associar um código fonte ao shader, ele pode ser compilado por \texttt{glCompileShader}. 
+especificar o código fonte que será utilizado por meio da função
+\texttt{glShaderSource}.
+Após associar um código fonte, ele pode ser compilado por \texttt{glCompileShader}. 
 Para utilizar o shader criado, ele deve ser associado a um programa.
 
 Programas, no OpenGL, são criados por \texttt{glCreateProgram}, que retorna o 
-handler para o programa criado. Depois de criado, shaders podem ser associado
-ao programa, a associação é feita pela função \texttt{glAttachShader}. Quando
-todos os shaders necessários estiverem associados ao programa, ele pode ser 
+handler para o programa criado. Depois de criados, os shaders podem ser
+associados ao programa, a associação é feita pela função
+\texttt{glAttachShader}. Quando todos os shaders necessários estiverem associados ao programa, ele pode ser 
 preparado para execução através do comando \texttt{glLinkProgram}. Para sobrescrever 
 o pipeline com o programa criado utiliza-se a função \texttt{glUseProgram}.
 
 Na Pandora's Box, shaders são implementações da classe \texttt{Shader}. Para que possam ser 
-utilizados para sobrescrever o pipeline, os shaders devem ser associados a um GPUProgram. 
-A criação de um GPUProgram que sobrescreve tanto a transformação de vértices quanto o 
-processamento de pixels é exemplificada abaixo:
+utilizados para sobrescrever o pipeline, os shaders devem ser associados a um
+\texttt{GPUProgram}.
+A criação de um \texttt{GPUProgram} que sobrescreve tanto a transformação de
+vértices quanto o processamento de pixels é exemplificada abaixo:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -147,7 +156,7 @@ surgimento da computação genérica em GPU (GPGPU), as texturas passaram a ser uti
 de forma análoga aos vetores e matrizes de linguagens como C++.
 
 No OpenGL as texturas são criadas com o comando \texttt{glGenTextures}, que gera um handler 
-para o objeto vazio criado, em seguida para é necessário associar o objeto criado ao contexto 
+para o objeto vazio criado, em seguida é necessário associar o objeto criado ao contexto 
 do OpenGL, o que é feito pelo comando \texttt{glBindTexture}. Com a textura
 vazia associada ao contexto, é possível inicializar seus dados através de um comando da família \texttt{glTexImage}.
 
@@ -168,19 +177,22 @@ texture->setImageData(image, pbge::Texture::RGBA);
 \end{codigo}
 
 Com o aumento da quantidade de dados enviados à GPU através de texturas, 
-surge um problema, as texturas padrão das APIs gráficas conseguem indexar 
+surge um problema: as texturas padrão das APIs gráficas conseguem indexar 
 apenas um pequeno número de pixels na textura, cerca de 2048 em placas recentes. 
 Para resolver esse problema, o OpenGL introduziu o conceito de texture buffer, 
 uma textura de uma dimensão que utiliza um buffer para armazenar dados, 
 essa nova textura consegue indexar no mínimo 65536 pixels, segundo a
 especificação do OpenGL 4.1~\cite{opengl41}.
 
-A criação de um buffer texture é feita de forma ligeiramente diferente de uma textura convencional. 
+A criação de um texture buffer é feita de forma ligeiramente diferente de uma
+textura convencional.
 Após a criação do handler, a textura deve ser associada ao contexto através da chamada 
 \texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}, após a associação, o buffer que será utilizado 
 pela textura é definido pelo comando \texttt{glTexBuffer}.
+% A frase acima esta repetindo a palavra 'apos'. Acho que cabe um ponto.
 
-Na engine, os texture buffer são texturas que implementam a interface \texttt{TextureBuffer}. 
+Na engine, os texture buffers são texturas que implementam a interface
+\texttt{TextureBuffer}.
 Um exemplo de criação de texture buffer é dado no código abaixo:
 
 \begin{codigo}
@@ -216,12 +228,9 @@ uniforms->getSampler2D("shader_texture")->setValue(texture);
 gfx->pushUniforms(&uniforms);
 \end{codigo}
 
-
-
-
 \vsection{VertexBuffer}
 No início da computação gráfica, os vértices eram especificados um a um através de 
-chamadas à API gráfica, por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
+chamadas à API gráfica. Por exemplo, a especificação de um triângulo no OpenGL era feita da seguinte maneira:
 
 \begin{codigo}
 glBegin(GL_TRIANGLES);
@@ -238,6 +247,7 @@ glEnd();
 do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era 
 especificado através de uma chamada de função diferente.
 
+% Melhorar o caption! É vertexbuffer ou vertex array?
 \begin{wrapfigure}{r}{0.6\textwidth}
 \vspace{-20pt}
 \begin{center}
@@ -259,12 +269,13 @@ Como a especificação desse modelo de dados era flexível e permitia enviar uma gr
 de dados para a GPU em um número constante de chamadas de função, ele foi rapidamente 
 adotado pelos programadores.
 
-Mas esse modelo não solucionava o problema de tráfego de dados entre a memória principal (RAM) 
-e a memória de vídeo (VRAM). A solução foi colocar o vertex array dentro de um buffer 
+Entretanto esse modelo não solucionava o problema de tráfego de dados entre a
+memória principal (RAM) e a memória de vídeo (VRAM). A solução foi colocar o vertex array dentro de um buffer 
 gerenciado pela implementação da API gráfica, assim, a implementação poderia colocar dados muito 
-utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou conhecida como Vertex Buffer
+utilizados dentro de regiões de fácil acesso, como a VRAM. Essa solução ficou
+conhecida como vertex buffer.
 
-Na Pandora's Box, Vertex Buffers são especificados através da classe
+Na Pandora's Box, vertex buffers são especificados através da classe
 \texttt{VertexBuffer}, sua estrutura interna é semelhante à apresentada na
 Figura~\ref{vertexbuffer}.
 Cada vértice é especificado através da classe \texttt{VertexAttrib} que guarda
@@ -276,7 +287,7 @@ A forma recomendada de se criar um \texttt{VertexBuffer} é através do \texttt{Ve
 % como construir com o builder: texto explicando?
 \begin{codigo}
 pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
-	// Inicializa com o número de vértices desejado
+    // Inicializa com o número de vértices desejado
     int nVertices = ...;
     
     pbge::VertexBufferBuilder builder(nVertices);
@@ -302,14 +313,18 @@ pbge::VertexBuffer * criaVertexBuffer(pbge::GraphicAPI * gfx) {
 O framebuffer é o destino dos pixels gerados através do pipeline. Existem dois tipos de framebuffer:
 
 \begin{itemize}
-\item O framebuffer do sistema de janelas: é o framebuffer que deve ser utilizado quando os pixels devem ser enviados para a janela da aplicação.
-\item framebuffer virtual: é o framebuffer utilizado para renderização direta em texturas.
+\item Framebuffer do sistema de janelas: deve ser utilizado quando deseja-se
+que os pixels sejam enviados para a janela da aplicação.
+\item Framebuffer virtual: utilizado para renderização direta em texturas.
 \end{itemize}
 
+% É handler mesmo ou handle?
 Os framebuffer objects encapsulam o segundo tipo. No OpenGL, framebuffer objects são criados pela função \texttt{glGenFramebuffersEXT}, que gera um handler que representa o objeto criado. Para associar uma textura ao framebuffer object criado utiliza-se a função \texttt{glFramebufferTexture2DEXT} e, por fim, para adicionar um buffer de profundidade, para permitir testes de profundidade, usa-se \texttt{glFramebufferTexture2DEXT}.
 
+% Aparentemente as duas últimas funções são a mesma. Está certo isso?
 Para utilizar o framebuffer object criado, é necessário associá-lo ao contexto do OpenGL com o comando \texttt{glBindFramebufferEXT} e em seguida redirecionar os pixels gerados pelo pipeline através do comando \texttt{glDrawBuffers}.
 
+% Esse texttt passa a linha da pagina. Descobrir como quebrar
 Na engine desenvolvida, framebuffer objects são implementações da interface \texttt{FramebufferObject} e devem ser instanciados através da \texttt{GraphicObjectsFactory}. A criação e uso de framebuffer objects dentro da Pandora's Box é exemplificado abaixo:
 
 \begin{codigo}
@@ -342,14 +357,18 @@ Para realizar a renderização da cena são realizadas buscas em profundidade no gr
 %TODO: Verificar se falta informação
 A engine define quatro tipos de nós padrão: \texttt{TransformationNode}, \texttt{CameraNode}, \texttt{ModelInstance} e \texttt{ModelCollection} (transformação, câmera, modelo e coleção de modelos respectivamente). 
 
-Para implementar nós com comportamentos customizados basta criar uma nova classe filha de Node ou de algum de seus descendentes. A classe Node define essencialmente os métodos de atualização (\texttt{updatePass} e \texttt{postUpdatePass}) e renderização (\texttt{renderPass} e \texttt{postRenderPass}) que devem ser implementados por seus filhos, além de outros métodos específicos da estrutura do grafo.
-
-Os métodos de atualização são chamados para preparar a cena para a renderização (inicialização de variáveis ou atualização de valores, por exemplo).
+Para implementar nós com comportamentos customizados basta criar uma nova classe
+filha de \texttt{Node} ou de algum de seus descendentes. A classe \texttt{Node}
+define essencialmente os métodos de atualização (\texttt{updatePass} e
+\texttt{postUpdatePass}, utilizados para preparar a cena para a renderização
+realizando inicialização de variáveis ou atualização de valores, por exemplo) e
+renderização (\texttt{renderPass} e \texttt{postRenderPass}) que devem ser implementados por seus filhos, além de outros métodos específicos da estrutura do grafo.
 
 \begin{itemize}
 % Isso esta suficiente?
 \item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuída à matriz corrente.
-\item \textbf{CameraNode}: O nó possui uma instância da classe Camera que é responsável por receber os parâmetros de câmera (configurações de posição e campo de visão), calcular a matriz de transformação a partir dessas informações e atualizar o estado do OpenGL para utilizá-la. Todas essas ações são realizadas no \texttt{updatePass}.
+\item \textbf{CameraNode}: O nó possui uma instância da classe \texttt{Camera}
+que é responsável por receber os parâmetros de câmera (configurações de posição e campo de visão), calcular a matriz de transformação a partir dessas informações e atualizar o estado do OpenGL para utilizá-la. Todas essas ações são realizadas no \texttt{updatePass}.
 \item \textbf{ModelInstance}: O método \texttt{renderPass} é responsável por adicionar os shaders e suas uniformes e então solicitar a renderização do modelo pela API gráfica. O método \texttt{postRenderPass} retira as uniformes adicionadas.
 \item \textbf{ModelCollection}: A implementação desse nó é análoga à do \texttt{ModelInstance}, com a diferença de que a quantidade de instâncias a serem renderizadas é recebida no construtor e enviada na solicitação da renderização do modelo pela API gráfica.
 \end{itemize}
@@ -357,9 +376,9 @@ Os métodos de atualização são chamados para preparar a cena para a renderização 
 \subsubsection{Node Visitors}
 \label{visitors}
 
-Como foi explicado, o grafo de cena é um grafo enraizado, 
-direcionado e sem circuitos, um Node Visitor é uma classe 
-que dado a raíz do grafo de cena, consegue percorrer os nós 
+Como já explicado, o grafo de cena é um grafo enraizado, 
+direcionado e sem circuitos. Um \texttt{NodeVisitor} é uma classe 
+que, dada a raíz do grafo de cena, consegue percorrer os nós 
 do grafo obedecendo as seguintes regras:
 
 \begin{itemize}
@@ -394,6 +413,7 @@ void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
 }
 \end{codigo}
 
+% RenderVisitor ta passando um pouco da margem
 O \texttt{ColorPassVisitor} é uma implementação concreta da classe abstrata 
 \texttt{RenderVisitor} que tem a função de chamar os métodos \texttt{renderPass} 
 e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} 
@@ -411,6 +431,7 @@ public:
 };
 \end{codigo}
 
+% postVisitAction ta passando um pouco da margem
 O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem renderização. 
 Para extendê-la, a classe filha deve implementar dois métodos: \texttt{visitAction} e 
 \texttt{postVisitAction}. Esse visitor é importante, pois implementa uma técnica
@@ -483,7 +504,8 @@ que tem os seguintes métodos:
 
 \begin{itemize}
 \item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo já preparou todas as suas dependências
-\item \texttt{void initialize(GraphicAPI*, Renderer*)}: esse método deve criar todas as dependencias do método \texttt{process}
+\item \texttt{void initialize(GraphicAPI*, Renderer*)}: esse método deve criar
+todas as dependências do método \texttt{process}
 \item \texttt{void process(GraphicAPI*, Renderer*)}: executa o algoritmo de processamento
 \item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado
 \end{itemize}
@@ -498,6 +520,7 @@ semântica dos métodos do \texttt{SceneProcessor}.
 
 \subsubsection{Algoritmos de processamento de cena pré-definidos}
 
+% RenderPassProcessor esta passando da margem
 A engine atualmente define apenas um algoritmo de processamento padrão, o \texttt{RenderPassProcessor}. 
 Esse algoritmo utiliza \texttt{ColorPassVisitor} para renderizar os nós do grafo de cena.
 
@@ -507,7 +530,8 @@ Atualmente existem 2 algoritmos de pós-processamento padrão implementados pelas
 classes: \texttt{FramebufferImageProcessor} e \texttt{BlitToFramebuffer}.
 
 O \texttt{FramebufferImageProcessor} é utilizado para fazer o pós-processamento 
-da imagem que estiver no buffer chamado color dentro do \texttt{FramebufferObject} atual. 
+da imagem que estiver no buffer chamado \texttt{"color"} dentro do
+\texttt{FramebufferObject} atual.
 O algoritmo executado por esse objeto é descrito pelo código abaixo:
 
 \begin{codigo}
@@ -538,8 +562,8 @@ void FramebufferImageProcessor::process(GraphicAPI *gfx,
 
 O \texttt{BlitToFramebuffer} renderiza um retângulo com as dimensões 
 da janela com a textura de nome \texttt{"color"} armazenada no renderizador. É utilizado 
-para renderizar a imagem armazenada na textura color para o framebuffer
-do sistema de janelas.
+para renderizar a imagem armazenada na textura \texttt{"color"} para o
+framebuffer do sistema de janelas.
 
 \subsubsection{Algoritmos de pós-processamento customizados}
 
@@ -618,6 +642,7 @@ estado podem fazer com que o pipeline gráfico tenha que ser esvaziado, o
 que pode causar um grande impacto no desempenho da aplicação, por isso, é 
 necessário evitar trocas de estado redundantes, minimizar trocas de estado 
 e agrupar as trocas de estado.
+% Esta repetindo trocas de estado muitas vezes
 
 Na Pandora's Box, esse trabalho é delegado à classe \texttt{StateSet} e à duas
 classes que controlam estados que podem ser desabilitados,
@@ -630,14 +655,14 @@ O \texttt{updateState} primeiro atualiza as associações dos objetos gráficos ao
 contexto e em seguida atualiza os parâmetros do shader.
 
 O \texttt{BlendController} controla a combinação de fragmentos no framebuffer.
-Após ser gerado, se o fragmento não for descartado pelo depth test, ele é
-enviado ao framebuffer e substitui o pixel correspondente, porém utilizando o
+Após ser gerado, se o fragmento não for descartado pelo teste de profundidade,
+ele é enviado ao framebuffer e substitui o pixel correspondente, porém utilizando o
 \texttt{BlendController}, pode-se fazer com que o fragmento gerado se combine de
 forma diferente com o pixel existente no framebuffer.
 
-O \texttt{DepthController} configura o depth test, o teste de visibilidade que é
-feito após o fragment shader. Com esse controller é possível, por exemplo
-desabilitar o depth test.
+O \texttt{DepthController} configura o teste de profundidade, o teste de
+visibilidade que é feito após o fragment shader. Com esse controller é possível, por exemplo
+desabilitar o teste de profundidade.
 
 
 
@@ -646,8 +671,10 @@ desabilitar o depth test.
 Existem 2 modos de se enviar vértices para serem processados pelo pipeline, 
 através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas 
 definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja 
-renderizado diversas vezes em um loop (instanced draw). Para lidar com essas situações, 
-a Pandora's Box utiliza a classe \texttt{DrawController}.
+renderizado diversas vezes em um laço (instanced draw). Para lidar com essas
+situações, a Pandora's Box utiliza a classe \texttt{DrawController}.
+% Instanced draw = geometry instancing? Se for precisa ver as ocorrencias no
+% texto
 
 O \texttt{DrawController} é responsável por enviar corretamente ao pipeline 
 modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais 
@@ -661,6 +688,7 @@ de forma simulada se o modelo não for instância de VBOModel.
 A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, 
 uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. 
 Essa técnica pode ser ilustrada pelo código abaixo:
+% O penultimo periodo desse paragrafo ta incompleto
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -738,6 +766,7 @@ O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar
 as uniformes \texttt{built-in}. Para cada um dos tipos de atributo definidos na
 \texttt{enum} \texttt{pbge::VertexAttrib::Type} existe uma classe
 (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
+% Um dos texttt esta passando da linha
 
 \subsection{Visualização de campos tensoriais}
 
@@ -776,7 +805,7 @@ para $i, j \in \mathbb{Z}$, $1 \leq i, j \leq 3$:
 
 São então calculados os autovalores e autovetores de todos os tensores não nulos, geradas as matrizes de transformação linear que levam uma esfera centralizada na origem para um elipsóide na posição correta no campo e armazenadas em um vetor. 
 
-Como tais matrizes são matrizes de transformação homogênea, sabemos que a última linha sempre será $(0,0,0,1)$. Assim é possível ocultar tais dados e enviar outras informações em seu lugar (é necessário substituir os valores dessa linha para realizar quaisquer operações com a matriz). Nessa linha são armazenados os valores das equações (\ref{af}), (\ref{linearCase}), (\ref{planarCase}) e (\ref{sphericalCase}) (definidas na página \pageref{af}) que serão utilizados como diferentes políticas de escolha de nível de transparência (alfa) e cor dos elipsóides.
+Como tais matrizes são matrizes de transformação homogênea, a última linha sempre será $(0,0,0,1)$. Assim é possível ocultar tais dados e enviar outras informações em seu lugar (é necessário substituir os valores dessa linha para realizar quaisquer operações com a matriz). Nessa linha são armazenados os valores das equações (\ref{af}), (\ref{linearCase}), (\ref{planarCase}) e (\ref{sphericalCase}) (definidas na página \pageref{af}) que serão utilizados como diferentes políticas de escolha de nível de transparência (alfa) e cor dos elipsóides.
 
 As matrizes são então reorganizadas em blocos de proximidade para otimizar a utilização pela aplicação de visualização. O vetor de matrizes reordenado é finalmente escrito no arquivo, além das informações iniciais sobre o campo.
 
@@ -803,9 +832,12 @@ Para a translação e rotação do campo foram implementados um \texttt{KeyboardEven
 \subsubsection{Depth Peeling}
 No campo tensorial em diversos casos existem elipsóides sobrepostos. Para observar alguns tipos de estrutura é interessante que tais elipsóides possuam algum nível de transparência. Para isso é necessário simular a transparência através de combinações de cores sobrepostas. Existem técnicas~\cite{alphasorting} que dependem dos objetos serem renderizados dos mais distantes para os mais próximos da câmera, entretanto no caso do campo esse tipo de processo se torna muito lento devido à grande quantidade de objetos a serem ordenados antes de cada renderização. Por esse motivo é necessário algum algoritmo independente da ordem de renderização.
 
-Depth peeling~\cite{everitt} é uma técnica iterativa que consiste de remoções de camadas próximas a cada iteração. Inicialmente a cena é renderizada normalmente armazenando o color buffer e o depth buffer em buffers auxiliares. A cada nova iteração todos os fragmentos com profundidade menor ou igual à profundidade armazenada no depth buffer auxiliar são descartados. Um novo depth buffer auxiliar é gerado a partir das profundidades dos fragmentos restantes, que são então renderizados e o resultado (color buffer) é acumulado no color buffer auxiliar.
+Depth peeling~\cite{everitt} é uma técnica iterativa que consiste de remoções de camadas próximas a cada iteração. Inicialmente a cena é renderizada normalmente armazenando o color buffer e o 
+ buffer em buffers auxiliares. A cada nova iteração todos os fragmentos com profundidade menor ou igual à profundidade armazenada no depth buffer auxiliar são descartados. Um novo depth buffer auxiliar é gerado a partir das profundidades dos fragmentos restantes, que são então renderizados e o resultado (color buffer) é acumulado no color buffer auxiliar.
 
-Para a realização da técnica completa são necessárias $N$ iterações, onde $N$ é o número máximo de fragmentos sobrepostos na cena. Entretanto foi fixado um número de iterações para diminuir a complexidade da técnica.
+Para a realização da técnica completa são necessárias $N$ iterações, onde $N$ é
+o número máximo de fragmentos sobrepostos na cena. Entretanto na aplicação foi
+fixado um número de iterações para diminuir a complexidade da técnica.
 
 Na aplicação de exemplo o depth peeling foi implementado como um processador de cena sendo que a cada iteração o grafo de cena é percorrido uma vez.
 
@@ -820,7 +852,7 @@ As imagens abaixo exemplificam essa técnica com duas esferas acompanhadas do res
 \end{center}
 \vspace{-20pt}
 \caption{Em cada iteração do depth peeling é desconsiderada uma camada de
-pixels. A imagem é combinada ao resultado anterior considerando-se a
-opacidade de cada fragmento.}
+fragmentos. A imagem é combinada ao resultado anterior considerando-se a
+opacidade de cada pixel.}
 \vspace{-10pt}
 \end{wrapfigure}
