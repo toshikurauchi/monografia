@@ -45,11 +45,11 @@ gráfico não precisa copiar os dados da memória do driver para a memória principa
 As políticas de acesso definidas pelo OpenGL são: 
 \begin{itemize}
 \item \texttt{GL\_READ\_ONLY}: quando a aplicação planeja apenas ler a região de
-memória
+memória.
 \item \texttt{GL\_WRITE\_ONLY}: quando a região de memória for utilizada apenas
-para escrita
+para escrita.
 \item \texttt{GL\_READ\_WRITE}: quando a memória mapeada for utilizada para
-leitura e escrita
+leitura e escrita.
 \end{itemize}
 
 O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinte código:
@@ -366,7 +366,6 @@ realizando inicialização de variáveis ou atualização de valores, por exemplo) e
 renderização (\texttt{renderPass} e \texttt{postRenderPass}) que devem ser implementados por seus filhos, além de outros métodos específicos da estrutura do grafo.
 
 \begin{itemize}
-% Isso esta suficiente?
 \item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuída à matriz corrente.
 \item \textbf{CameraNode}: O nó possui uma instância da classe \texttt{Camera}
 que é responsável por receber os parâmetros de câmera (configurações de posição e campo de visão), calcular a matriz de transformação a partir dessas informações e atualizar o estado do OpenGL para utilizá-la. Todas essas ações são realizadas no \texttt{updatePass}.
@@ -474,9 +473,9 @@ estão fora do campo de visão da câmera não são enviados para o pipeline.}}
 O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 
 \begin{itemize}
-\item Atualização dos nós do grafo de cena
-\item Processamento do grafo de cena
-\item Pós-Processamento da imagem gerada pela fase de processamento
+\item Atualização dos nós do grafo de cena.
+\item Processamento do grafo de cena.
+\item Pós-Processamento da imagem gerada pela fase de processamento.
 \end{itemize}
 
 \vsection {Fase de atualização}
@@ -502,11 +501,13 @@ Cada algoritmo deve implementar a interface \texttt{SceneProcessor},
 que tem os seguintes métodos:
 
 \begin{itemize}
-\item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo já preparou todas as suas dependências
+\item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo
+já preparou todas as suas dependências.
 \item \texttt{void initialize(GraphicAPI*, Renderer*)}: esse método deve criar
-todas as dependências do método \texttt{process}
-\item \texttt{void process(GraphicAPI*, Renderer*)}: executa o algoritmo de processamento
-\item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado
+todas as dependências do método \texttt{process}.
+\item \texttt{void process(GraphicAPI*, Renderer*)}: executa o algoritmo de
+processamento.
+\item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado.
 \end{itemize}
 
 \vsection{Fase de pós-processamento}
@@ -765,8 +766,8 @@ A aplicação de visualização de campos tensoriais é dividida em duas etapas:
 
 \begin{itemize}
 \item Compilação do formato Analyze~\cite{Analyze} para o formato \texttt{.ctf}
-(Compiled Tensor Field)
-\item Apresentação do campo contido no arquivo \texttt{.ctg}
+(Compiled Tensor Field).
+\item Apresentação do campo contido no arquivo \texttt{.ctf}.
 \end{itemize}
 
 \subsubsection{O formato Analyze}
