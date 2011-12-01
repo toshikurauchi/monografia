@@ -483,12 +483,11 @@ os nós do grafo de cena. É a única fase não customizável do algoritmo do renderi
 
 Nessa fase executa-se uma sequência de algoritmos definida pelo usuário da engine, a execução é equivalente ao código:
 
-%verificar se os argumentos estão corretos
 \begin{codigo}
 std::vector<SceneProcessor*>::iterator it;
 for(it = processors.begin(); it != processors.end(); it++){
    if(it->isActive()){
-       it->process(gfx, renderer);
+       it->process(gfx, renderer, currentCamera);
    }
 }
 \end{codigo}
@@ -707,7 +706,6 @@ porém essa customização só é interessante devido a possibilidade de passagem de 
 
 Um programa do OpenGL pode receber três tipos de parâmetros:
 
-% falar sobre built-in
 \begin{itemize}
 \item Uniformes: um valor que é constante para uma dada primitiva, 
   por exemplo, para um triângulo, o processamento de seus três vértices utilizam
