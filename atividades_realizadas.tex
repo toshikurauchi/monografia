@@ -643,11 +643,24 @@ desabilitar o depth test.
 
 \subsubsection{Desenho de modelos}
 
-Existem 2 modos de se enviar vértices para serem processados pelo pipeline, através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja renderizado diversas vezes em um loop (instanced draw). Para lidar com essas situações, a Pandora's Box utiliza a classe \texttt{DrawController}.
+Existem 2 modos de se enviar vértices para serem processados pelo pipeline, 
+através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas 
+definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja 
+renderizado diversas vezes em um loop (instanced draw). Para lidar com essas situações, 
+a Pandora's Box utiliza a classe \texttt{DrawController}.
 
-O \texttt{DrawController} é responsável por enviar corretamente ao pipeline modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais modelos são instâncias de \texttt{VBOModel}) assim como instâncias de modelos que utilizam as funções obsoletas. Além de gerenciar a renderização de um modelo, o \texttt{DrawController} é responsável por implementar o instanced draw.
+O \texttt{DrawController} é responsável por enviar corretamente ao pipeline 
+modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais 
+modelos são instâncias de \texttt{VBOModel}) assim como instâncias de modelos 
+que utilizam as funções obsoletas. Além de gerenciar a renderização de um modelo, 
+o \texttt{DrawController} é responsável por implementar o instanced draw.
 
-Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBOModel}, ou seja, utilizando-se as funções específicas do OpenGL que implementam a técnica, e de forma simulada se o modelo não for instância de VBOModel. A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. Essa técnica pode ser ilustrada pelo código abaixo:
+Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBOModel}, 
+ou seja, utilizando-se as funções específicas do OpenGL que implementam a técnica, e 
+de forma simulada se o modelo não for instância de VBOModel. 
+A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, 
+uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. 
+Essa técnica pode ser ilustrada pelo código abaixo:
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -673,49 +686,20 @@ instanceID = 0;
 A customização do pipeline através de shaders gera grande flexibilidade, 
 porém essa customização só é interessante devido a possibilidade de passagem de diferentes parâmetros para o shader.
 
-Um programa do OpenGL pode receber dois tipos de parâmetros:
+Um programa do OpenGL pode receber três tipos de parâmetros:
 
+% falar sobre built-in
 \begin{itemize}
 \item Uniformes: um valor que é constante para uma dada primitiva, 
   por exemplo, para um triângulo, o processamento de seus três vértices utilizam
-o mesmo valor de uniforme.
+  o mesmo valor de uniforme.
+\item Uniformes built-in: são valores que se comportam como uniformes mas que
+  são enviados automaticamente pelo OpenGL. As matrizes de transformação fazem
+  parte dessa classe de valores.
 \item Atributos: um valor que é constante para um vértice. Atributos só podem ser 
   acessados dentro do \texttt{vertex shader}. No exemplo acima, cada um dos
 vértices do triângulo poderia ter um valor diferente para o atributo.
 \end{itemize}
-
-No OpenGL, as uniformes são enviadas de forma homogênea através da seguinte rotina:
-
-\begin{codigo}
-// troca o programa associado ao contexto de renderização
-glUseProgram(programID);
-
-// localização da uniforme dentro do programa
-GLint location = glGetUniformLocation(programID, nome_da_uniforme);
-
-// Existe uma função da família glUniform* para cada tipo de 
-// atributo.
-// Além disso, para o caso de vetores de valores, existem as funções 
-// cujo nome tem o sufixo v, por exemplo, glUniform1fv
-// no caso de um float:
-glUniform1f(location, valor);
-\end{codigo}
-
-Para atributos, o processo é semelhante:
-
-\begin{codigo}
-glUseProgram(programID);
-
-// localização do atributo dentro do programa
-GLint location = glGetAttribLocation(programID, nome_do_atributo);
-
-// Existe uma função da família glVertexAttrib* para cada tipo de
-// atributo.
-// Além disso, para o caso de vetores de valores, existem as funções 
-// cujo nome tem o sufixo v, por exemplo, glVertexAttrib1fv
-// no caso de um float:
-glVertexAttrib1f(location, valor);
-\end{codigo}
 
 Dentro da Pandora's Box, o mecanismo de passagem de parâmetros para o shader 
 é implementado através das classes \texttt{UniformSet}, \texttt{UniformStack},
@@ -736,207 +720,24 @@ void GLProgram::updateUniforms(GraphicAPI * gfx) {
         UniformValue * value = gfx->searchUniform(it->getInfo());
         if(it->shouldUpdate(value)) {
             it->update(value);
+            // associa o valor da uniforme ao shader
             value->bindValueOn(this, it->getInfo(), gfx);
         }
     }
-}
-
-// Cada um dos tipos de UniformValue tem um método de associação
-// específico no GPUProgram
-// Para o caso do UniformFloat:
-void UniformFloat::bindValueOn(GPUProgram *p,
-			   const UniformInfo & info,
-			   GraphicAPI *gfx) {
-    float * values = static_cast<float *>(getValueAt(0));
-    
-    unsigned int nElements =
-    	std::min(getNumberOfElements(), info.getNumberOfElements())
-    p->bindFloat(info, gfx, values, nElements);
 }
 \end{codigo}
 
 % Talvez não citar todas as matrizes. Colocar referencias.
 
-Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são 
-enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, 
-que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as 
-matrizes gl\_ProjectionMatrix, gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ProjectionMatrix, 
-pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
+Após essa etapa de associação de valores, as uniformes built-in são 
+enviadas ao shader. O envio de built-ins é feito
+através dos \texttt{BuiltInUniformBinder}, que são classes especializadas 
+para cada um dos tipos de valor.
 
-Os \texttt{BuiltInUniformBinder} implementados na Pandora's Box são de dois tipos:
-
-\begin{itemize}
-
-% Verificar a palavra "binder". Tem lugares que esta com texttt e outros não.
-
-\item \texttt{binder} de variável obsoleta: são classes que enviam para o shader uniformes que foram 
-extintas por versões novas do OpenGL (gl\_ProjectionMatrix, gl\_ModelViewMatrix e gl\_ModelViewProjectionMatrix). 
-Esses \texttt{binder}s utilizam-se das funções obsoletas \texttt{glMatrixMode} e \texttt{glLoadMatrix} 
-para enviar valores ao shader. Por exemplo, no caso da DeprModelViewProjectionBinder que envia o valor da matriz gl\_ModelViewProjection:
-
-\begin{codigo}
-void DeprModelViewProjectionBinder::bind(pbge::GraphicAPI *gfx) {
-    math3d::matrix44 projection = 
-    	gfx->getProjectionMatrix()->get().transpose();
-    math3d::matrix44 modelView = 
-    	(gfx->getViewMatrix()->get() * 
-    	gfx->getModelMatrix()->get()).transpose();
-    	
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(modelView);
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(projection);
-}
-\end{codigo}
-
-\item \texttt{binder} de \texttt{built-in} da Pandora's Box: são classes que enviam 
-para o shader variáveis que tem significado especial para a engine desenvolvida 
-(pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix e pbge\_ModelViewProjectionMatrix). 
-Esses binders utilizam-se da função glUniformMatrix4fv, que tem a mesma funcionalidade glUniform1f, 
-porém para matrizes. Os \texttt{binder}s dessa categoria são implementados pelo template texttt{MatrixBinder}:
-
-\begin{codigo}
-template<typename MatrixGetter>
-class MatrixBinder : public BuiltInUniformBinder {
-public:
-    MatrixBinder(GLint _location) : location(_location) {}
-
-    void bind(GraphicAPI * gfx) {
-        if(getter.shouldChange(gfx)) {
-            math3d::matrix44 m = getter(gfx);
-            glUniformMatrix4fv(location, 1, GL_TRUE, m);
-        }
-    }
-private:
-    MatrixGetter getter;
-    
-    GLint location;
-};
-\end{codigo}
-Esse template envia uma matriz para a uniforme localizada identificada por \_location e utiliza-se 
-de um MatrixGetter para conseguir o valor que deve ser enviado. Por exemplo, para o caso do 
-pbge\_ModelViewProjectionMatrix, temos o \texttt{MatrixGetter}:
-
-\begin{codigo}
-class ModelViewProjectionMatrixGetter {
-public:
-    const math3d::matrix44 operator() (GraphicAPI* gfx) {
-        viewStamp = gfx->getViewMatrix()->getStamp();
-        modelStamp = gfx->getModelMatrix()->getStamp();
-        projStamp = gfx->getProjectionMatrix()->getStamp();
-        
-        math3d::matrix44 view = gfx->getViewMatrix()->get();
-        math3d::matrix44 model = gfx->getModelMatrix()->get();
-        math3d::matrix44 projection = 
-			gfx->getProjectionMatrix()->get();
-        
-        return projection * view * model;
-    }
-    
-    bool shouldChange(GraphicAPI * gfx) {
-        return viewStamp != gfx->getViewMatrix()->getStamp() ||
-               modelStamp != gfx->getModelMatrix()->getStamp() ||
-               projStamp != gfx->getProjectionMatrix()->getStamp();
-    }
-    
-private:
-    unsigned long viewStamp, modelStamp, projStamp;
-};
-\end{codigo}
-\end{itemize}
-
-O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada 
-um dos tipos de atributo definidos na \texttt{enum}
-\texttt{pbge::VertexAttrib::Type} tem uma classe (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
-
-Os \texttt{AttrBinder}s pertencem à uma das três categorias abaixo:
-
-\begin{itemize}
-
-\item binder de atributo obsoleto: Atributos obsoletos são aqueles que existiam na linguagem de shader GLSL 
-mas que foram removidos em versões mais recentes. A Pandora's Box oferece suporte aos seguintes atributos 
-obsoletos: gl\_Vertex, gl\_Normal, gl\_Color e gl\_SecondaryColor.
-
-No caso do atributo gl\_Vertex, temos o seguinte binder:
-
-\begin{codigo}
-class DeprVertexBinder : public AttrBinder {
-public:
-    void bind(VertexBuffer * attrs) {
-        VertexAttrib * attr = 
-			attrs->findByType(VertexAttrib::VERTEX);
-        				
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(attr->getNCoord(), 
-			GL_FLOAT, 
-			attr->getStride(), 
-			ATTRIB_POINTER_OFFSET(attr->getOffset()));
-    }
-
-    void unbind() {
-        glDisableClientState(GL_VERTEX_ARRAY);
-    }
-};
-\end{codigo}
-
-\item binder de atributo definido pela engine: A Pandora's Box define os seguintes atributos: 
-pbge\_Vertex, pbge\_Normal, pbge\_Color e pbge\_SecondaryColor, sendo que todos esses atributos 
-enviados para o shader através da classe \texttt{SemanticAttribBinder}:
-
-\begin{codigo}
-class SemanticAttribBinder : public AttrBinder {
-public:
-    SemanticAttribBinder(const VertexAttrib::Type attrType, 
-			 GLint attrLocation): type(attrType), 
-			 location(attrLocation){}
-
-    void bind(VertexBuffer * attrs) {
-        VertexAttrib * attr = attrs->findByType(type);
-        
-        glVertexAttribPointer(location, attr->getNCoord(), 
-			  GL_FLOAT, GL_FALSE, attr->getStride(),
-        ATTRIB_POINTER_OFFSET(attr->getOffset()));
-        glEnableVertexAttribArray(location);
-    }
-
-    void unbind() {
-        glDisableVertexAttribArray(location);
-    }
-private:
-    VertexAttrib::Type type;
-    GLint location;
-};
-\end{codigo}
-
-\item binder de atributo definido pelo usuário da engine: 
-Esses atributos são mapeados para o shader através do \texttt{CustomAttrBinder}:
-
-\begin{codigo}
-class CustomAttrBinder : public AttrBinder {
-public:
-    CustomAttrBinder(std::string attrName, GLint attrLocation) : 
-			name(attrName), location(attrLocation) {}
-
-    void bind(VertexBuffer * attrs) {
-        VertexAttrib * attr = attrs->findByName(name);
-        
-        glVertexAttribPointer(location, attr->getNCoord(), GL_FLOAT, 
-			  GL_FALSE, attr->getStride(),
-			  ATTRIB_POINTER_OFFSET(attr->getOffset()));
-        glEnableVertexAttribArray(location);
-    }
-
-    void unbind() {
-        glDisableVertexAttribArray(location);
-    }
-private:
-    std::string name;
-    GLint location;
-};
-\end{codigo}
-
-\end{itemize}
+O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar 
+as uniformes \texttt{built-in}. Para cada um dos tipos de atributo definidos na
+\texttt{enum} \texttt{pbge::VertexAttrib::Type} existe uma classe
+(\texttt{AttrBinder}) especializada em associar o atributo ao shader.
 
 \subsection{Visualização de campos tensoriais}
 
