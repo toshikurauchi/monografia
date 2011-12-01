@@ -611,15 +611,77 @@ pbge::FramebufferImageProcessor * senoidalLens() {
 
 \subsection{Mecanismos da Engine}
 
+\subsubsection{Mapeamento e gerenciamento dos estados}
+
+Em placas de vídeo modernas, dispositivos altamente paralelos, as trocas de 
+estado podem fazer com que o pipeline gráfico tenha que ser esvaziado, o 
+que pode causar um grande impacto no desempenho da aplicação, por isso, é 
+necessário evitar trocas de estado redundantes, minimizar trocas de estado 
+e agrupar as trocas de estado.
+
+Na Pandora's Box, esse trabalho é delegado à classe \texttt{StateSet} e à duas
+classes que controlam estados que podem ser desabilitados,
+\texttt{BlendController} e \texttt{DepthController}. 
+
+O \texttt{StateSet} é uma classe que controla a associação de objetos ao
+contexto gráfico. As modificações feitas através da \texttt{StateSet} são
+sempre acumuladas e só ocorrem quando o método \texttt{updateState} é chamado.
+O \texttt{updateState} primeiro atualiza as associações dos objetos gráficos ao
+contexto e em seguida atualiza os parâmetros do shader.
+
+O \texttt{BlendController} controla a combinação de fragmentos no framebuffer.
+Após ser gerado, se o fragmento não for descartado pelo depth test, ele é
+enviado ao framebuffer e substitui o pixel correspondente, porém utilizando o
+\texttt{BlendController}, pode-se fazer com que o fragmento gerado se combine de
+forma diferente com o pixel existente no framebuffer.
+
+O \texttt{DepthController} configura o depth test, o teste de visibilidade que é
+feito após o fragment shader. Com esse controller é possível, por exemplo
+desabilitar o depth test.
+
+
+
+\subsubsection{Desenho de modelos}
+
+Existem 2 modos de se enviar vértices para serem processados pelo pipeline, através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja renderizado diversas vezes em um loop (instanced draw). Para lidar com essas situações, a Pandora's Box utiliza a classe \texttt{DrawController}.
+
+O \texttt{DrawController} é responsável por enviar corretamente ao pipeline modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais modelos são instâncias de \texttt{VBOModel}) assim como instâncias de modelos que utilizam as funções obsoletas. Além de gerenciar a renderização de um modelo, o \texttt{DrawController} é responsável por implementar o instanced draw.
+
+Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBOModel}, ou seja, utilizando-se as funções específicas do OpenGL que implementam a técnica, e de forma simulada se o modelo não for instância de VBOModel. A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. Essa técnica pode ser ilustrada pelo código abaixo:
+
+\begin{codigo}
+GraphicAPI * gfx = ...;
+Model * model = ...;
+
+// prepara o modelo para a renderização
+model->beforeRender(gfx);
+
+for(int i = 0; i < number_of_instances; i++) {
+    int instanceID = i;
+    
+    // renderiza a instância instanceID
+    // a variável instanceID fica disponível no vertex shader
+    model->render(gfx)
+}
+
+model->afterRender(gfx);
+instanceID = 0;
+\end{codigo}
+
 \subsubsection{Passagem de parâmetros para o GPUProgram}
 
-A customização do pipeline através de shaders gera grande flexibilidade, porém essa customização só é interessante devido a possibilidade de passagem de diferentes parâmetros para o shader.
+A customização do pipeline através de shaders gera grande flexibilidade, 
+porém essa customização só é interessante devido a possibilidade de passagem de diferentes parâmetros para o shader.
 
 Um programa do OpenGL pode receber dois tipos de parâmetros:
 
 \begin{itemize}
-\item Uniformes: um valor que é constante para uma dada primitiva, por exemplo, para um triângulo, o processamento de seus três vértices utilizam o mesmo valor de uniforme.
-\item Atributos: um valor que é constante para um vértice. Atributos só podem ser acessados dentro do \texttt{vertex shader}. No exemplo acima, cada um dos vértices do triângulo poderia ter um valor diferente para o atributo.
+\item Uniformes: um valor que é constante para uma dada primitiva, 
+  por exemplo, para um triângulo, o processamento de seus três vértices utilizam
+o mesmo valor de uniforme.
+\item Atributos: um valor que é constante para um vértice. Atributos só podem ser 
+  acessados dentro do \texttt{vertex shader}. No exemplo acima, cada um dos
+vértices do triângulo poderia ter um valor diferente para o atributo.
 \end{itemize}
 
 No OpenGL, as uniformes são enviadas de forma homogênea através da seguinte rotina:
@@ -655,9 +717,17 @@ GLint location = glGetAttribLocation(programID, nome_do_atributo);
 glVertexAttrib1f(location, valor);
 \end{codigo}
 
-Dentro da Pandora's Box, o mecanismo de passagem de parâmetros para o shader é implementado através do \texttt{UniformSet}, \texttt{UniformStack}, \texttt{GPUProgram}, \texttt{UniformValue}, \texttt{AttribBinder} e \texttt{BuiltInUniformBinder}.
+Dentro da Pandora's Box, o mecanismo de passagem de parâmetros para o shader 
+é implementado através das classes \texttt{UniformSet}, \texttt{UniformStack},
+\texttt{GPUProgram}, \texttt{UniformValue} e \texttt{BuiltInUniformBinder} para
+uniformes e da classe \texttt{AttribBinder} para atributos.
 
-Como foi citado anteriormente, a última etapa da atualização de estados é a sincronização dos parâmetros do shader. Nessa fase, inicialmente, cada um dos \texttt{UniformInfo} gerados durante a compilação do shader é utilizado para buscar um \texttt{UniformValue} dentro da \texttt{UniformStack}, o uniform value encontrado é então associado ao programa através do mecanismo ilustrado no código abaixo para o caso do GPUProgram implementado para OpenGL:
+Como foi citado anteriormente, a última etapa da atualização de estados 
+é a sincronização dos parâmetros do shader. Nessa fase, inicialmente, cada 
+um dos \texttt{UniformInfo} gerados durante a compilação do shader é utilizado 
+para buscar um \texttt{UniformValue} dentro da \texttt{UniformStack}, o uniform 
+value encontrado é então associado ao programa através do mecanismo ilustrado 
+no código abaixo para o caso do GPUProgram implementado para OpenGL:
 
 \begin{codigo}
 void GLProgram::updateUniforms(GraphicAPI * gfx) {
@@ -687,7 +757,11 @@ void UniformFloat::bindValueOn(GPUProgram *p,
 
 % Talvez não citar todas as matrizes. Colocar referencias.
 
-Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as matrizes gl\_ProjectionMatrix, gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
+Após essa etapa de associação de valores, os valores uniformes \texttt{built-in} são 
+enviados ao shader. O envio de \texttt{built-in}s é feito através dos \texttt{BuiltInUniformBinder}, 
+que são classes especializadas para cada um dos tipos de valor built-in (atualmente apenas as 
+matrizes gl\_ProjectionMatrix, gl\_ModelViewMatrix, gl\_ModelViewProjectionMatrix, pbge\_ProjectionMatrix, 
+pbge\_ViewMatrix, pbge\_ModelViewMatrix, pbge\_ModelViewProjectionMatrix têm um \texttt{BuiltInUniformBinder} associado).
 
 Os \texttt{BuiltInUniformBinder} implementados na Pandora's Box são de dois tipos:
 
@@ -695,7 +769,10 @@ Os \texttt{BuiltInUniformBinder} implementados na Pandora's Box são de dois tipo
 
 % Verificar a palavra "binder". Tem lugares que esta com texttt e outros não.
 
-\item \texttt{binder} de variável obsoleta: são classes que enviam para o shader uniformes que foram extintas por versões novas do OpenGL (gl\_ProjectionMatrix, gl\_ModelViewMatrix e gl\_ModelViewProjectionMatrix). Esses \texttt{binder}s utilizam-se das funções obsoletas \texttt{glMatrixMode} e \texttt{glLoadMatrix} para enviar valores ao shader. Por exemplo, no caso da DeprModelViewProjectionBinder que envia o valor da matriz gl\_ModelViewProjection:
+\item \texttt{binder} de variável obsoleta: são classes que enviam para o shader uniformes que foram 
+extintas por versões novas do OpenGL (gl\_ProjectionMatrix, gl\_ModelViewMatrix e gl\_ModelViewProjectionMatrix). 
+Esses \texttt{binder}s utilizam-se das funções obsoletas \texttt{glMatrixMode} e \texttt{glLoadMatrix} 
+para enviar valores ao shader. Por exemplo, no caso da DeprModelViewProjectionBinder que envia o valor da matriz gl\_ModelViewProjection:
 
 \begin{codigo}
 void DeprModelViewProjectionBinder::bind(pbge::GraphicAPI *gfx) {
@@ -713,7 +790,11 @@ void DeprModelViewProjectionBinder::bind(pbge::GraphicAPI *gfx) {
 }
 \end{codigo}
 
-\item \texttt{binder} de \texttt{built-in} da Pandora's Box: são classes que enviam para o shader variáveis que tem significado especial para a engine desenvolvida (pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix e pbge\_ModelViewProjectionMatrix). Esses binders utilizam-se da função glUniformMatrix4fv, que tem a mesma funcionalidade glUniform1f, porém para matrizes. Os \texttt{binder}s dessa categoria são implementados pelo template texttt{MatrixBinder}:
+\item \texttt{binder} de \texttt{built-in} da Pandora's Box: são classes que enviam 
+para o shader variáveis que tem significado especial para a engine desenvolvida 
+(pbge\_ProjectionMatrix, pbge\_ViewMatrix, pbge\_ModelViewMatrix e pbge\_ModelViewProjectionMatrix). 
+Esses binders utilizam-se da função glUniformMatrix4fv, que tem a mesma funcionalidade glUniform1f, 
+porém para matrizes. Os \texttt{binder}s dessa categoria são implementados pelo template texttt{MatrixBinder}:
 
 \begin{codigo}
 template<typename MatrixGetter>
@@ -733,7 +814,9 @@ private:
     GLint location;
 };
 \end{codigo}
-Esse template envia uma matriz para a uniforme localizada identificada por \_location e utiliza-se de um MatrixGetter para conseguir o valor que deve ser enviado. Por exemplo, para o caso do pbge\_ModelViewProjectionMatrix, temos o \texttt{MatrixGetter}:
+Esse template envia uma matriz para a uniforme localizada identificada por \_location e utiliza-se 
+de um MatrixGetter para conseguir o valor que deve ser enviado. Por exemplo, para o caso do 
+pbge\_ModelViewProjectionMatrix, temos o \texttt{MatrixGetter}:
 
 \begin{codigo}
 class ModelViewProjectionMatrixGetter {
@@ -763,13 +846,17 @@ private:
 \end{codigo}
 \end{itemize}
 
-O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada um dos tipos de atributo definidos na \texttt{enum} \texttt{pbge::VertexAttrib::Type} tem uma classe (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
+O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar as uniformes \texttt{built-in}. Cada 
+um dos tipos de atributo definidos na \texttt{enum}
+\texttt{pbge::VertexAttrib::Type} tem uma classe (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
 
 Os \texttt{AttrBinder}s pertencem à uma das três categorias abaixo:
 
 \begin{itemize}
 
-\item binder de atributo obsoleto: Atributos obsoletos são aqueles que existiam na linguagem de shader GLSL mas que foram removidos em versões mais recentes. A Pandora's Box oferece suporte aos seguintes atributos obsoletos: gl\_Vertex, gl\_Normal, gl\_Color e gl\_SecondaryColor.
+\item binder de atributo obsoleto: Atributos obsoletos são aqueles que existiam na linguagem de shader GLSL 
+mas que foram removidos em versões mais recentes. A Pandora's Box oferece suporte aos seguintes atributos 
+obsoletos: gl\_Vertex, gl\_Normal, gl\_Color e gl\_SecondaryColor.
 
 No caso do atributo gl\_Vertex, temos o seguinte binder:
 
@@ -793,7 +880,9 @@ public:
 };
 \end{codigo}
 
-\item binder de atributo definido pela engine: A Pandora's Box define os seguintes atributos: pbge\_Vertex, pbge\_Normal, pbge\_Color e pbge\_SecondaryColor, sendo que todos esses atributos enviados para o shader através da classe \texttt{SemanticAttribBinder}:
+\item binder de atributo definido pela engine: A Pandora's Box define os seguintes atributos: 
+pbge\_Vertex, pbge\_Normal, pbge\_Color e pbge\_SecondaryColor, sendo que todos esses atributos 
+enviados para o shader através da classe \texttt{SemanticAttribBinder}:
 
 \begin{codigo}
 class SemanticAttribBinder : public AttrBinder {
@@ -820,7 +909,8 @@ private:
 };
 \end{codigo}
 
-\item binder de atributo definido pelo usuário da engine: Esses atributos são mapeados para o shader através do \texttt{CustomAttrBinder}:
+\item binder de atributo definido pelo usuário da engine: 
+Esses atributos são mapeados para o shader através do \texttt{CustomAttrBinder}:
 
 \begin{codigo}
 class CustomAttrBinder : public AttrBinder {
@@ -847,40 +937,6 @@ private:
 \end{codigo}
 
 \end{itemize}
-
-% TODO: mover o mapeamento para antes dos parâmetros do shader
-\subsubsection{Mapeamento e gerenciamento dos estados}
-
-Em placas de vídeo modernas, dispositivos altamente paralelos, as trocas de estado podem fazer com que o pipeline gráfico tenha que ser esvaziado, o que pode causar um grande impacto no desempenho da aplicação, por isso, é necessário evitar trocas de estado redundantes, minimizar trocas de estado e agrupar as trocas de estado.
-
-Na Pandora's Box, esse trabalho é delegado à classe \texttt{StateSet} e à algumas classes controladoras menores. A \texttt{StateSet} é uma classe que controla os objetos que estão associados ao contexto gráfico.
-
-\subsubsection{Desenho de modelos}
-
-Existem 2 modos de se enviar vértices para serem processados pelo pipeline, através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja renderizado diversas vezes em um loop (instanced draw). Para lidar com essas situações, a Pandora's Box utiliza a classe \texttt{DrawController}.
-
-O \texttt{DrawController} é responsável por enviar corretamente ao pipeline modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais modelos são instâncias de \texttt{VBOModel}) assim como instâncias de modelos que utilizam as funções obsoletas. Além de gerenciar a renderização de um modelo, o \texttt{DrawController} é responsável por implementar o instanced draw.
-
-Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBOModel}, ou seja, utilizando-se as funções específicas do OpenGL que implementam a técnica, e de forma simulada se o modelo não for instância de VBOModel. A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. Essa técnica pode ser ilustrada pelo código abaixo:
-
-\begin{codigo}
-GraphicAPI * gfx = ...;
-Model * model = ...;
-
-// prepara o modelo para a renderização
-model->beforeRender(gfx);
-
-for(int i = 0; i < number_of_instances; i++) {
-    int instanceID = i;
-    
-    // renderiza a instância instanceID
-    // a variável instanceID fica disponível no vertex shader
-    model->render(gfx)
-}
-
-model->afterRender(gfx);
-instanceID = 0;
-\end{codigo}
 
 \subsection{Visualização de campos tensoriais}
 
