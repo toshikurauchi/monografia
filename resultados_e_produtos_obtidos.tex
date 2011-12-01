@@ -181,17 +181,16 @@ void createModel(pbge::Node * parent, pbge::GraphicAPI * gfx) {
 }
 \end{codigo}
 
-% Melhorar o caption ("elipsoide gerada ..." ou algo assim)
-% Falta ajustar essa imagem no lugar certo
-
-\begin{wrapfigure}{l}{0.5\textwidth}
+\begin{wrapfigure}{l}{0.3\textwidth}
 \vspace{-20pt}
 \begin{center}
-\includegraphics[width=0.5\textwidth]{basicexample}
+\includegraphics[width=0.3\textwidth]{basicexample}
 \end{center}
 \vspace{-20pt}
-\caption{Imagem gerada a partir do código acima}
-\vspace{-10pt}
+\caption{Após ser processado pelos shaders a esfera se transforma em um
+elipsóide e as cores são aplicadas nos fragmentos dependendo de sua posição,
+resultando na imagem acima.}
+\vspace{-20pt}
 \end{wrapfigure}
 
 O método \texttt{createProgramFromString} recebe duas strings, sendo a primeira
@@ -206,23 +205,15 @@ Apesar de ser um exemplo simples não são necessárias muitas
 modificações para obter um resultado mais complexo. A Figura~\ref{grama} foi
 gerada com o auxílio da engine com um
 código\footnote{https://github.com/victorkendy/PandoraBox/tree/master/grass\_field}
-semelhante ao apresentado acima. Foi aplicada a técnica de instanciação de
-geometria sendo a figura mostrada no canto superior esquerdo a geometria
-utilizada.
-% Verificar o nome instanciação de geometria pra não ficar inconsistente
-% Footnote deveria ficar no fim da pagina
-
-% Pensar num caption maior (colocar o texto do a e b) 
-% Aumentar o gramado
-% Colocar o tufo de grama no canto da imagem principal
+semelhante ao apresentado acima. Foi aplicada a técnica de instanced draw sendo
+a figura mostrada no canto superior esquerdo a geometria utilizada.
 
 \begin{wrapfigure}{l}{\textwidth}
-\vspace{-20pt}
 \includegraphics[width=\textwidth]{grama}
 \vspace{-20pt}
-\caption{Gramado gerado a partir da instanciação aleatória da geometria
+\caption{Gramado gerado a partir da instanciação da geometria
 apresentada no canto superior esquerdo da imagem ao longo do
-campo.}
+campo em posições aleatórias.}
 \label{grama}
 \vspace{-10pt}
 \end{wrapfigure}
