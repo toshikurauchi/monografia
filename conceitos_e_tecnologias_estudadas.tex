@@ -168,17 +168,15 @@ oferece um conjunto grande de algoritmos e estruturas de dados genéricos.
 void imprime(int i) {
     printf("%d ", i);
 }
-
 int main() {
     std::vector<int> vetor;
     // Adicionando os valores 1, 2 e 3 no vetor
     vetor.push_back(1);
     vetor.push_back(2);
     vetor.push_back(3);
-
+    
     for_each(vetor.begin(), vetor.end(), imprime);
     // Saída: 1 2 3
-
     return 0;
 }
 \end{codigo}
@@ -202,12 +200,11 @@ int main() {
 
     for_each(vetor.begin(), vetor.end(), meuImpressor);
     // Saída: 1 2 3
-
     return 0;
 }
 \end{codigo}
 
-Há diversos outros tipos de algoritmos implementados na STL~\cite{algorithm}
+Há diversos outros tipos de algoritmos implementados na STL~\cite{algorithm}.
 
 \subsection{Boost C++ Libraries}
 
@@ -344,7 +341,7 @@ principais compostos por shaders (programas executados pela GPU):
 No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, 
 entretanto na Pandora's Box somente o vertex shader e o fragment shader podem ser 
 modificados. Mais detalhes são apresentados na seção~\ref{atividades}.
-
+\newpage
 \vsection{O contexto do OpenGL}
 
 O OpenGL é implementado internamente como uma máquina de estados. 
@@ -390,7 +387,7 @@ operacional Windows que está contida no \texttt{windows.h}.
 Um texto detalhado sobre a criação de janelas pode ser encontrado
 no apêndice~\ref{criacaojanela} e a documentação da Windows API
 encontra-se no site da MSDN~\cite{msdn}
-
+\newpage
 \vsection{Carregamento dinâmico de DLL}
 
 Para que seja possível suportar diversas implementações independentes de especificações 

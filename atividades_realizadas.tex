@@ -143,7 +143,7 @@ GPUProgram * program = ...;
 gfx->getState()->useProgram(program);
 \end{codigo}
 
-
+\newpage
 \vsection{Texturas}
 
 Texturas no OpenGL são simplesmente tabelas de valores. Em aplicações mais antigas, as 
@@ -473,7 +473,7 @@ O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 \item Processamento do grafo de cena.
 \item Pós-Processamento da imagem gerada pela fase de processamento.
 \end{itemize}
-
+\newpage
 \vsection {Fase de atualização}
 
 Nessa fase, um \texttt{UpdaterVisitor} é utilizado para visitar e atualizar todos 
@@ -567,7 +567,7 @@ Eles estão disponíveis na aplicação de visualização de campos tensoriais. A impl
 de cada algoritmo se resume a um fragment shader utilizado para instanciar um 
 \texttt{FramebufferImageProcessor}. Esse fragment shader recebe a posição do fragmento 
 e uma textura contendo a imagem a ser renderizada.
-
+\newpage
 \begin{itemize}
 \item \textbf{Inversor de cores:} O algoritmo de inversão de cores cria um vetor com 
 os componentes \texttt{r,g,b}, calcula seu complemento e utiliza o resultado como 
