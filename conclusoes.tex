@@ -2,10 +2,15 @@
 Para o desenvolvimento de aplicações de computação gráfica são necessárias diversas técnicas de otimização e organização das informações. A Pandora's Box Graphics Engine tem por objetivo disponibilizar uma interface simples para utilização de algumas dessas técnicas:
 
 \begin{itemize}
-\item As cenas são representadas por grafos de cena nos quais é possível utilizar os nós já definidos na engine ou criar novos tipos para implementar outras técnicas
-\item Uma cena pode ser renderizada através dos processadores de cena adicionados ao renderizador sendo possível também criar novos processadores (que percorram o grafo executando métodos específicos de nós customizados, por exemplo)
-\item A utilização de shaders se resume a escrever o código e associá-lo a algum nó do grafo (a compilação e o bind são gerenciados pela engine)
-\item Texturas são gerenciadas pela engine, cabendo ao usuário carregá-las e associá-las a nós do grafo de cena
+\item As cenas são representadas por grafos de cena nos quais é possível
+utilizar os nós já definidos na engine ou criar novos tipos para implementar
+outras técnicas.
+\item Uma cena pode ser renderizada através dos processadores de cena
+adicionados ao renderizador sendo possível também criar novos processadores (que percorram o grafo executando métodos específicos de nós customizados, por exemplo).
+\item A utilização de shaders se resume a escrever o código e associá-lo a algum
+nó do grafo (a compilação e o bind são gerenciados pela engine).
+\item Texturas são gerenciadas pela engine, cabendo ao usuário carregá-las e
+associá-las a nós do grafo de cena.
 \end{itemize}
 
 Com o auxílio da Pandora's Box foi possível desenvolver algumas aplicações de exemplo, incluindo o visualizador de campos tensoriais de imagens de ressonância magnética sensíveis à difusão. Essa aplicação exigiu a utilização de diversas técnicas de otimização para ser possível a visualização de campos com grandes quantidades de tensores em tempo real. 

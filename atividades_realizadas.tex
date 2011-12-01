@@ -45,11 +45,11 @@ gráfico não precisa copiar os dados da memória do driver para a memória principa
 As políticas de acesso definidas pelo OpenGL são: 
 \begin{itemize}
 \item \texttt{GL\_READ\_ONLY}: quando a aplicação planeja apenas ler a região de
-memória
+memória.
 \item \texttt{GL\_WRITE\_ONLY}: quando a região de memória for utilizada apenas
-para escrita
+para escrita.
 \item \texttt{GL\_READ\_WRITE}: quando a memória mapeada for utilizada para
-leitura e escrita
+leitura e escrita.
 \end{itemize}
 
 O mapeamento de um vertex buffer que será utilizado somente para escrita pode ser feito através do seguinte código:
@@ -82,7 +82,6 @@ buffer->unmap();
 
 \vsection{Shaders}
 
-% Estou com a impressao de que em nenhum momento temos algo como 'shaders sao...' -> verificar depois
 Como explicado anteriormente, o OpenGL opera nas primitivas gráficas através 
 de um pipeline, que tem cinco estágios principais: transformação de vértices, 
 tesselagem, criação de novas primitivas, rasterização e operações por fragmento. 
@@ -184,10 +183,9 @@ especificação do OpenGL 4.1~\cite{opengl41}.
 
 A criação de um texture buffer é feita de forma ligeiramente diferente de uma
 textura convencional.
-Após a criação do handler, a textura deve ser associada ao contexto através da chamada 
-\texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}, após a associação, o buffer que será utilizado 
-pela textura é definido pelo comando \texttt{glTexBuffer}.
-% A frase acima esta repetindo a palavra 'apos'. Acho que cabe um ponto.
+Após a criação do handler, a textura deve ser associada ao contexto através da
+chamada a \texttt{glBindTexture(GL\_TEXTURE\_BUFFER, handler)}. O buffer a
+ser utilizado pela textura é então definido pelo comando \texttt{glTexBuffer}.
 
 Na engine, os texture buffers são texturas que implementam a interface
 \texttt{TextureBuffer}.
@@ -245,14 +243,14 @@ glEnd();
 do modelo, além disso cada um dos atributos do vértice (posição, cor, normal, entre outros) era 
 especificado através de uma chamada de função diferente.
 
-% Melhorar o caption! É vertexbuffer ou vertex array?
 \begin{wrapfigure}{r}{0.6\textwidth}
 \vspace{-20pt}
 \begin{center}
 \includegraphics[width=0.6\textwidth]{vertexbuffer}
 \end{center}
 \vspace{-20pt}
-\caption{O vertex buffer\label{vertexbuffer}}
+\caption{É possível adicionar diferentes tipos de atributos, na ordem mais
+conveniente, em um vertex array.\label{vertexbuffer}}
 \vspace{-10pt}
 \end{wrapfigure}
 
@@ -368,7 +366,6 @@ realizando inicialização de variáveis ou atualização de valores, por exemplo) e
 renderização (\texttt{renderPass} e \texttt{postRenderPass}) que devem ser implementados por seus filhos, além de outros métodos específicos da estrutura do grafo.
 
 \begin{itemize}
-% Isso esta suficiente?
 \item \textbf{TransformationNode}: Esse nó guarda uma matriz de transformação $T$. No \texttt{updatePass} e \texttt{renderPass} a matriz corrente $M$ é armazenada e multiplicada por $T$ e o resultado é utilizado como a nova matriz de transformação corrente. Então no \texttt{postUpdatePass} e \texttt{postRenderPass} $M$ é reatribuída à matriz corrente.
 \item \textbf{CameraNode}: O nó possui uma instância da classe \texttt{Camera}
 que é responsável por receber os parâmetros de câmera (configurações de posição e campo de visão), calcular a matriz de transformação a partir dessas informações e atualizar o estado do OpenGL para utilizá-la. Todas essas ações são realizadas no \texttt{updatePass}.
@@ -416,7 +413,6 @@ void UpdaterVisitor::dfsVisit(Node * node, GraphicAPI * gfx) {
 }
 \end{codigo}
 
-% RenderVisitor ta passando um pouco da margem
 O \texttt{ColorPassVisitor} é uma implementação concreta da classe abstrata 
 \texttt{Render\-Visitor} que tem a função de chamar os métodos
 \texttt{renderPass} e \texttt{postRenderPass} do nó durante a execução dos métodos \texttt{visitAction} 
@@ -434,7 +430,6 @@ public:
 };
 \end{codigo}
 
-% postVisitAction ta passando um pouco da margem
 O \texttt{RenderVisitor} é a classe base de todos os \texttt{visitors} que fazem renderização. 
 Para extendê-la, a classe filha deve implementar dois métodos: \texttt{visitAction} e 
 \texttt{postVisit\-Action}. Esse visitor é importante, pois implementa uma
@@ -478,9 +473,9 @@ estão fora do campo de visão da câmera não são enviados para o pipeline.}}
 O renderizador da engine gráfica utiliza um algoritmo de 3 fases:
 
 \begin{itemize}
-\item Atualização dos nós do grafo de cena
-\item Processamento do grafo de cena
-\item Pós-Processamento da imagem gerada pela fase de processamento
+\item Atualização dos nós do grafo de cena.
+\item Processamento do grafo de cena.
+\item Pós-Processamento da imagem gerada pela fase de processamento.
 \end{itemize}
 
 \vsection {Fase de atualização}
@@ -506,11 +501,13 @@ Cada algoritmo deve implementar a interface \texttt{SceneProcessor},
 que tem os seguintes métodos:
 
 \begin{itemize}
-\item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo já preparou todas as suas dependências
+\item \texttt{bool isInitialized(GraphicAPI*)}: método que indica se o algoritmo
+já preparou todas as suas dependências.
 \item \texttt{void initialize(GraphicAPI*, Renderer*)}: esse método deve criar
-todas as dependências do método \texttt{process}
-\item \texttt{void process(GraphicAPI*, Renderer*)}: executa o algoritmo de processamento
-\item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado
+todas as dependências do método \texttt{process}.
+\item \texttt{void process(GraphicAPI*, Renderer*)}: executa o algoritmo de
+processamento.
+\item \texttt{bool isActive()}: indica se o algoritmo deve ou não ser executado.
 \end{itemize}
 
 \vsection{Fase de pós-processamento}
@@ -523,7 +520,6 @@ semântica dos métodos do \texttt{SceneProcessor}.
 
 \subsubsection{Algoritmos de processamento de cena pré-definidos}
 
-% RenderPassProcessor esta passando da margem
 O \texttt{RenderPassProcessor} é, atualmente, o único algoritmo de processamento
 de cena padrão da engine. Esse algoritmo utiliza \texttt{ColorPassVisitor} para
 renderizar os nós do grafo de cena.
@@ -643,10 +639,9 @@ pbge::FramebufferImageProcessor * senoidalLens() {
 
 Em placas de vídeo modernas, dispositivos altamente paralelos, as trocas de 
 estado podem fazer com que o pipeline gráfico tenha que ser esvaziado, o 
-que pode causar um grande impacto no desempenho da aplicação, por isso, é 
-necessário evitar trocas de estado redundantes, minimizar trocas de estado 
-e agrupar as trocas de estado.
-% Esta repetindo trocas de estado muitas vezes
+que pode causar um grande impacto no desempenho da aplicação. Por isso, é 
+necessário evitar trocas de estado redundantes, além de minimizá-las e
+agrupá-las sempre que possível.
 
 Na Pandora's Box, esse trabalho é delegado à classe \texttt{StateSet} e à duas
 classes que controlam estados que podem ser desabilitados,
@@ -668,8 +663,6 @@ O \texttt{DepthController} configura o teste de profundidade, o teste de
 visibilidade que é feito após o fragment shader. Com esse controller é possível, por exemplo
 desabilitar o teste de profundidade.
 
-
-
 \subsubsection{Desenho de modelos}
 
 Existem 2 modos de se enviar vértices para serem processados pelo pipeline, 
@@ -677,8 +670,6 @@ através de \texttt{VertexBuffer} ou através de chamadas de função obsoletas
 definidas pelo OpenGL, além disso, algumas vezes deseja-se que um mesmo modelo seja 
 renderizado diversas vezes em um laço (instanced draw). Para lidar com essas
 situações, a Pandora's Box utiliza a classe \texttt{DrawController}.
-% Instanced draw = geometry instancing? Se for precisa ver as ocorrencias no
-% texto
 
 O \texttt{DrawController} é responsável por enviar corretamente ao pipeline 
 modelos definidos por instâncias de \texttt{VertexBuffer} (na engine tais 
@@ -690,9 +681,9 @@ Na Pandora's Box, instanced draw é implementado de forma nativa para \texttt{VBO
 ou seja, utilizando-se as funções específicas do OpenGL que implementam a técnica, e 
 de forma simulada se o modelo não for instância de VBOModel. 
 A versão simulada da técnica é conhecida como pseudo-instanciação. Em ambas as versões, 
-uma variável que indica qual é a instância do modelo que está atualmente sendo renderizada. 
+uma variável que indica a instância do modelo atualmente sendo renderizada é
+disponibilizada.
 Essa técnica pode ser ilustrada pelo código abaixo:
-% O penultimo periodo desse paragrafo ta incompleto
 
 \begin{codigo}
 GraphicAPI * gfx = ...;
@@ -759,8 +750,6 @@ void GLProgram::updateUniforms(GraphicAPI * gfx) {
 }
 \end{codigo}
 
-% Talvez não citar todas as matrizes. Colocar referencias.
-
 Após essa etapa de associação de valores, as uniformes built-in são 
 enviadas ao shader. O envio de built-ins é feito
 através dos \texttt{BuiltInUniformBinder}, que são classes especializadas 
@@ -770,7 +759,6 @@ O mecanismo para o envio dos atributos é semelhante ao utilizada para enviar
 as uniformes \texttt{built-in}. Para cada um dos tipos de atributo definidos na
 \texttt{enum} \texttt{Type} dentro da classe \texttt{pbge::VertexAttrib}
 existe uma classe (\texttt{AttrBinder}) especializada em associar o atributo ao shader.
-% Um dos texttt esta passando da linha
 
 \subsection{Visualização de campos tensoriais}
 
@@ -778,8 +766,8 @@ A aplicação de visualização de campos tensoriais é dividida em duas etapas:
 
 \begin{itemize}
 \item Compilação do formato Analyze~\cite{Analyze} para o formato \texttt{.ctf}
-(Compiled Tensor Field)
-\item Apresentação do campo contido no arquivo \texttt{.ctg}
+(Compiled Tensor Field).
+\item Apresentação do campo contido no arquivo \texttt{.ctf}.
 \end{itemize}
 
 \subsubsection{O formato Analyze}
@@ -799,7 +787,6 @@ tensor $A_{3
 maior do que um dado $\varepsilon > 0$. Ou seja, $A$ é nulo quando a seguinte expressão é válida
 para $i, j \in \mathbb{Z}$, $1 \leq i, j \leq 3$:
 
-% Ficou melhor explicado assim?
 \vspace{10pt}
 \hspace{10pt}
 \begin{math}
