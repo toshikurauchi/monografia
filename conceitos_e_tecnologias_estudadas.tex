@@ -248,6 +248,7 @@ void f (int i, int j, int k) {
 boost::function3<void,int,int,int> funcao = f;
 \end{codigo}
 
+% É biblioteca mesmo? Ou é função?
 A biblioteca \texttt{bind} cria functors a partir de uma função ou outro functor
 mas com alguns argumentos já definidos, por exemplo:
 
@@ -255,9 +256,11 @@ mas com alguns argumentos já definidos, por exemplo:
 boost::bind(f, 1, _1, _2)
 \end{codigo}
 
-Nesse caso boost::bind cria um functor que recebe apenas dois argumentos, indicados pelos nomes \_1 e \_2, o primeiro e o segundo argumento do functor criado respectivamente.
+Nesse caso \texttt{boost::bind} cria um functor que recebe apenas dois
+argumentos, indicados pelos nomes \texttt{\_1} e \texttt{\_2}, o primeiro e o
+segundo argumento do functor criado respectivamente.
 
-As funcionalidades de bind e function podem ser combinadas:
+As funcionalidades de \texttt{bind} e \texttt{function} podem ser combinadas:
 
 \begin{codigo}
 // functor sem retorno que recebe dois argumentos inteiros
@@ -269,8 +272,9 @@ boost::function2<void, int, int> functor1 =
 boost::function1<void, int> functor2 = boost::bind(functor1, 2, _1);
 \end{codigo}
 
-Os módulos bind e function da boost são utilizados principalmente em conjunto
-com algoritmos da STL, como o std::for\_each:
+Os módulos \texttt{bind} e \texttt{function} da boost são utilizados
+principalmente em conjunto com algoritmos da STL, como o
+\texttt{std::for\_each}:
 
 \begin{codigo}
 void imprime(int i) {
@@ -298,7 +302,7 @@ Essas classes tem comportamento semelhante ao de ponteiros nativos da linguagem,
 elas desalocam o recurso a que referenciam em momento adequado. Existem seis tipos \texttt{smart\_ptr} definidos:
 
 \begin{itemize}
-\item \texttt{scoped\_ptr}: representa o conceito de ponteiro não compartilhável, logo não podem ser copiados. Desalocam a memória ao sair de escopo.
+\item \texttt{scoped\_ptr}: representa o conceito de ponteiro não compartilhável, logo não pode ser copiado. Desaloca a memória ao sair de escopo.
 \item \texttt{scoped\_array}: mesmo que \texttt{scoped\_ptr} mas para um array de objetos.
 \item \texttt{shared\_ptr}: representa um ponteiro com diversos donos, pode ser
 copiado e só é destruído quando todos os donos forem destruídos.
@@ -319,8 +323,7 @@ entrada e saída de dados, assim como também não suporta nenhum tipo de formato
 de arquivo como imagens (png, jpg, bmp) e modelos (3ds~\cite{3dsfileformat},
 blend~\cite{blendfileformat}, ou obj~\cite{objfileformat}), ele apenas oferece
 formas de se combinar diferentes vértices para se formar primitivas e de fazer
-com que essas primitivas sejam transformadas em pixels. Essa transformação de
-uma primitiva para um pixel ocorre em um processo conhecido como pipeline.
+com que essas primitivas sejam transformadas em pixels.
 
 \begin{wrapfigure}{r}{0.3\textwidth}
 \vspace{-20pt}
@@ -331,28 +334,29 @@ uma primitiva para um pixel ocorre em um processo conhecido como pipeline.
 \captionsetup{margin=15pt}
 \caption{Na GPU as primitivas do OpenGL passam pelos 5 estágios do pipeline
 representados acima.}
-\vspace{-40pt}
+\vspace{-45pt}
 \end{wrapfigure}
 
-As primitivas geradas na CPU (Central Processing Unit) são enviadas para a GPU (Graphics 
-Processing Unit) onde serão processadas e utilizadas para gerar uma imagem que será mostrada 
-na janela. Esse processo é conhecido como pipeline e é dividido em 5 estágios
+As primitivas criadas na CPU (Central Processing Unit) são enviadas para a GPU
+(Graphics Processing Unit) onde serão processadas e utilizadas para gerar os pixels de uma
+imagem que será mostrada na janela. Esse processo é conhecido como pipeline e é dividido em 5 estágios
 principais:
 
 \begin{itemize}
-  \item vertex shader: cada vértice é transformado para a sua coordenada final.
-  \item tesselation shaders: as primitivas formadas após a execução do vertex
-  shader podem ser opcionalmente quebradas em primitivas menores.
-  \item geometry shader: a partir das primitivas geradas nos passos anteriores,
-  o geometry shader decide se novas primitivas devem ser geradas.
-  \item rasterização: Nessa etapa as primitivas de 3 dimensões são projetadas em
-  um plano, que representa a janela do usuário. Essa projeção gera fragmentos,
-  que são possíveis pixels.
-  \item fragment shader: cada fragmento gerado no processo de rasterização é
-  processado pelo fragment shader e, após a execução do shader, eles passam por
-  um teste de profundidade, que determina se o fragmento é visível, se ele passar no
-  teste, o fragmento é escrito no framebuffer e se torna um pixel visível,
-  senão, o fragmento é descartado.
+  \item \textbf{Vertex shader}: cada vértice é transformado para a sua
+  coordenada final.
+  \item \textbf{Tesselation shaders}: as primitivas formadas após a execução do
+  vertex shader podem ser opcionalmente quebradas em primitivas menores.
+  \item \textbf{Geometry shader}: a partir das primitivas geradas nos passos
+  anteriores, o geometry shader decide se novas primitivas devem ser geradas.
+  \item \textbf{Rasterização}: nessa etapa as primitivas de 3 dimensões são
+  projetadas em um plano, que representa a janela do usuário. Essa projeção gera fragmentos,
+  que são candidatos a pixels.
+  \item \textbf{Fragment shader}: cada fragmento gerado na
+  rasterização é processado pelo fragment shader e, após a execução, passa por
+  um teste de profundidade, que determina se o fragmento é visível. Caso
+  passe no teste, ele é escrito no framebuffer e se torna um pixel visível,
+  senão, é descartado.
 \end{itemize}
 
 No OpenGL todos esses processos (com exceção da rasterização) são customizáveis, 
@@ -404,8 +408,8 @@ programa será executado. Nesse trabalho foi utilizada apenas a API do sistema
 operacional Windows que está contida no \texttt{windows.h}.
 
 Um texto detalhado sobre a criação de janelas pode ser encontrado
-no apêndice~\ref{criacaojanela} e a documentação detalhada sobre a windows API
-pode ser encontrada no site da MSDN~\cite{msdn}
+no apêndice~\ref{criacaojanela} e a documentação da Windows API
+encontra-se no site da MSDN~\cite{msdn}
 
 \vsection{Carregamento dinâmico de DLL}
 
@@ -421,13 +425,15 @@ A seguir serão apresentados os conceitos que foram estudados para a implementaçã
 
 \subsection{Transformações lineares}
 O conceito de transformações lineares é de importância fundamental para a 
-computação gráfica. As transformações lineares podem ser traduzidas para
-matrizes e a composição de transformações é simplesmente pode ser
-calculada através da multiplicação das matrizes que representam as transformações. 
+computação gráfica, pois podem ser aplicadas sobre geometrias sem alterar a
+sua forma (realizando movimentos de translação ou rotação por exemplo). Podem
+ser representadas como matrizes bastando multiplicá-las para realizar
+composições.
 
 Em computação gráfica, é comum a utilização de coordenadas homogêneas para
-a representação de vértices~\cite{redbook} e de matrizes de transformação $4x4$.
-As transformações mais utilizadas para transformar modelos geométricos e suas
+a representação de vértices~\cite{redbook} e de matrizes de transformação
+$4\times4$.
+As transformações mais aplicadas sobre modelos geométricos e suas
 respectivas matrizes são:
 
 \begin{itemize}
@@ -510,7 +516,7 @@ tecidos biológicos.
 \subfigure[Moléculas de água tendem a se difundir com maior facilidade nas direções que não apresentam barreiras (membranas)]{\includegraphics[width=0.45\textwidth]{neuronio}}
 \end{center}
 \vspace{-20pt}
-\caption{O conceito de isotropia e anisotropia aplicado em tecidos biológicos.}
+\caption{O conceito de isotropia e anisotropia aplicado a tecidos biológicos.}
 \vspace{-10pt}
 \end{figure}
 
